@@ -1,0 +1,65 @@
+- $ expansion in heredoc wasnt supported
+- no space in export was allowed
+- didnt like that the pipes were running with |||||| and no error message
+
+
+segfault with the exit (exit | exit 42)
+
+
+mkdir -p a/b/c/d
+cd a/b/c/d/
+rm -rf ../../../../
+pwd -> Memory leak (but no segfault)
+
+126, 127 err codes
+ajsdfkljasdfj -> command not found
+echo $? -> Invalid read/write
+
+empty input
+check allowe var names
+empty delimiter heredoc
+
+
+- Memory leaks
+	- Leaks when you have a permission denied (ex: /bin/)
+	- In case of a correct / incorrect command
+	- Also some problems with allocations, sometimes reading too much and getting invalid values that
+	can lead to some weird problems
+
+Echo
+	- when you encounter a false option, you will continue to parse and split, even if bash
+	would stop at this point
+		example: echo -s -nnnnnnnnnnnnnnn -n -n yo
+
+- Expander
+	- Doubles quotes are not working, in the case of echo "$USER", it should expand but it's actually not
+
+Exit
+	- If no argument are provided, it should take the previous exit code
+
+Return status
+	- When pressing enter, the exit status is not changed and still use the previous one
+	TLDR: fix ur waitpid
+	- Syntax error, the value should be 2 and not 127 like an invalid command
+
+export
+	- If an export start with a value which is not a number, it should work
+	(so if you do export _1test=yo it should work)
+
+Redirections
+	- No output file -> segfault
+Pipes
+	- Pipe without argument -> segfault
+
+
+Parsing
+	- not correctly parsed when builtins + something else
+		example: pwd >> hello
+
+Backrooms escape code:
+	minishell: cat << ''
+	> ''
+	>
+	> ""
+	> "''"
+	>
