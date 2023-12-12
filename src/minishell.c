@@ -1,24 +1,44 @@
-#include <stdio.h>
-#include <readline/readline.h>
-#include <readline/history.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/12/12 20:05:41 by tkasbari          #+#    #+#             */
+/*   Updated: 2023/12/12 23:30:46 by tkasbari         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#include <unistd.h>
+#include "minishell.h"
+
+void	handle_input(t_minish *minish, char *input)
+{
+	if (ft_strncmp(input, "pwd", ft_strlen("pwd") == 0))
+		printf("\n%s", getcwd(minish->pwd, PATH_MAX));
+}
 
 int	main()
 {
-	char 	*lines[5];
-	int		i;
+	t_minish	minish;
+	char		*input;
 
-	i = 0;
+	ms_init(&minish);
 	while(1)
 	{
+		ms_update(&minish);
+		input = readline(minish.prompt);
+		if (input)
+		{
+			printf("%s\n", input);
+			add_history(input);
+			handle_input(&minish, input);
+		}
+	}
+}
 		// rl_on_new_line();
 		// rl_replace_line()
 		// rl_redisplay();
-		lines[i] = readline("xxx: ");
-		printf("%s\n", lines[i]);
-		if (lines[i])
-			add_history(lines[i]);
 
 		// printf("rl_point: %d\n", rl_point);
 		// printf("rl_end: %d\n", rl_end);
@@ -27,6 +47,3 @@ int	main()
 		// printf("rl_num_chars_to_read: %d\n", rl_num_chars_to_read);
 		// printf("rl_erase: %d\n", rl_erase_empty_line);
 		// printf("rl_terminal_name: %s\n", rl_terminal_name);
-		i++;
-	}
-}
