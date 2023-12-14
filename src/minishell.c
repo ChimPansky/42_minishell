@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	handle_input(t_minish *minish, char *input)
+void	handle_input(t_msh *minish, char *input)
 {
 	if (ft_strncmp(input, "pwd", ft_strlen("pwd")) == 0)
 		printf("%s\n", getcwd(minish->pwd, PATH_MAX));
@@ -20,7 +20,7 @@ void	handle_input(t_minish *minish, char *input)
 
 int	main()
 {
-	t_minish	minish;
+	t_msh	minish;
 	char		*input;
 
 	ms_init(&minish);

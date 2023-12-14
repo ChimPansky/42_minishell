@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	ms_update(t_minish *minish)
+void	ms_update(t_msh *minish)
 {
 	getcwd(minish->pwd, PATH_MAX);
 	if (minish->prompt)

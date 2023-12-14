@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	ms_init(t_minish *minish)
+void	ms_init(t_msh *minish)
 {
 	minish->pwd[0] = '\0';
 	minish->prompt = NULL;
