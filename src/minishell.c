@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 20:05:41 by tkasbari          #+#    #+#             */
-/*   Updated: 2023/12/12 23:38:50 by tkasbari         ###   ########.fr       */
+/*   Updated: 2023/12/15 13:01:04 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,25 +15,29 @@
 void	handle_input(t_minish *minish, char *input)
 {
 	if (ft_strncmp(input, "pwd", ft_strlen("pwd")) == 0)
-		printf("%s\n", getcwd(minish->pwd, PATH_MAX));
+		ms_builtin_pwd(minish, &input);
+	if (ft_strncmp(input, "exit", ft_strlen("exit")) == 0)
+		ms_builtin_exit(minish, &input);
 }
 
 int	main()
 {
 	t_minish	minish;
-	char		*input;
 
 	ms_init(&minish);
 	while(1)
 	{
 		ms_update(&minish);
-		input = readline(minish.prompt);
-		if (input)
+		minish.rl_input = readline(minish.prompt);
+		if (minish.rl_input)
 		{
 			//printf("%s\n", input);
-			add_history(input);
-			handle_input(&minish, input);
+			add_history(minish.rl_input);
+			handle_input(&minish, minish.rl_input);
+			free(minish.rl_input);
 		}
+		else
+			ms_exit(&minish, EXIT_FAILURE);
 	}
 }
 		// rl_on_new_line();

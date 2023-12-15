@@ -13,9 +13,11 @@ include $(LIBFT_DIR)/colors.mk
 
 MS_FILENAMES = \
 	minishell.c \
+	ms_builtin_cmds.c \
+	ms_destroy.c \
+	ms_exit_error.c \
 	ms_init.c \
-	ms_update.c \
-	ms_error_handling.c
+	ms_update.c
 
 SRC = $(addprefix $(SOURCE_DIR)/,$(MS_FILENAMES))
 

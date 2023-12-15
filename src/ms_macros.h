@@ -11,4 +11,9 @@
 # define ERR_MALLOC "Memory Allocation Error"
 # define ERR_UNKOWN "Unknown Error"
 
+// Error Codes
+# define SUCCESS 0
+# define ERROR 1
+
+
 #endif
