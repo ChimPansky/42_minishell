@@ -26,8 +26,6 @@ typedef struct s_msh
 
 typedef int (*t_built_in)(t_msh *msh, char **cmd_with_args);
 
-int built_ex(t_msh *msh, char **cmd_with_args);
-
 t_built_in get_built_in_by_name(char *func_name);
 
 void	ms_init(t_msh *minish);
