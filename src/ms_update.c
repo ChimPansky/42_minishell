@@ -6,18 +6,18 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 11:49:31 by tkasbari          #+#    #+#             */
-/*   Updated: 2023/12/15 12:55:19 by tkasbari         ###   ########.fr       */
+/*   Updated: 2023/12/15 14:18:14 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ms_update_pwd(t_minish *minish)
+void	ms_update_pwd(t_msh *minish)
 {
 	getcwd(minish->pwd, PATH_MAX);
 }
 
-void	ms_update_prompt(t_minish *minish)
+void	ms_update_prompt(t_msh *minish)
 {
 	getcwd(minish->pwd, PATH_MAX);
 	if (minish->prompt)
@@ -30,7 +30,7 @@ void	ms_update_prompt(t_minish *minish)
 		ms_exit(minish, EXIT_FAILURE);
 }
 
-void	ms_update(t_minish *minish)
+void	ms_update(t_msh *minish)
 {
 	ms_update_pwd(minish);
 	ms_update_prompt(minish);

@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 15:04:32 by tkasbari          #+#    #+#             */
-/*   Updated: 2023/12/15 12:46:12 by tkasbari         ###   ########.fr       */
+/*   Updated: 2023/12/15 14:16:06 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,11 @@ static void	ms_error(int error_nr)
 		ms_error_msg(error_nr);
 }
 
-void	ms_exit(t_minish *minish, int error_nr)
+void	ms_exit(t_msh *msh, int error_nr)
 {
 	if (error_nr)
 		ms_error(error_nr);
-	ms_destroy(minish);
+	ms_destroy(msh);
 	if (error_nr)
 		exit(error_nr);
 	if (errno)

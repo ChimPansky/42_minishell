@@ -2,23 +2,25 @@
 - no space in export was allowed
 - didnt like that the pipes were running with |||||| and no error message
 
+echo before > 1.txt after   // before after
+echo 1321 > 1.txt | cat 	// pipe skipped
+echo 1321 > 1.txt > 2.txt	// first trunkated but skipped
+cat 0>1.txt					// error
+cd - | cat					// works like if cd was forked
+exit | exit 42				// forked exits ret_code 42
 
-segfault with the exit (exit | exit 42)
-
-
-mkdir -p a/b/c/d
-cd a/b/c/d/
-rm -rf ../../../../
-pwd -> Memory leak (but no segfault)
+mkdir -p $HOME/a/b/c/d
+cd $HOME/a/b/c/d/
+rm -rf ../../../
+pwd 				// $HOME/a/b/c/d/
+cd ..				// error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+echo $?				// 0
 
 126, 127 err codes
-ajsdfkljasdfj -> command not found
-echo $? -> Invalid read/write
 
 empty input
-check allowe var names
+check allowed var names
 empty delimiter heredoc
-
 
 - Memory leaks
 	- Leaks when you have a permission denied (ex: /bin/)

@@ -17,7 +17,10 @@ MS_FILENAMES = \
 	ms_destroy.c \
 	ms_exit_error.c \
 	ms_init.c \
-	ms_update.c
+	ms_update.c \
+	pipex.c \
+	parser.c \
+	scratches.c
 
 SRC = $(addprefix $(SOURCE_DIR)/,$(MS_FILENAMES))
 
@@ -43,4 +46,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all $(NAME) clean fclean re
+.PHONY: all bonus clean fclean re test
