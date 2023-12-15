@@ -12,12 +12,15 @@
 
 #include "minishell.h"
 
-int	main()
+// consider -c flag;
+int	main(int ac, char **av, char **envp)
 {
 	t_msh	minish;
 	char		*input;
 
-	ms_init(&minish);
+	(void) ac;
+	(void) av;
+	ms_init(&minish, envp);
 	while(1)
 	{
 		ms_update(&minish);
