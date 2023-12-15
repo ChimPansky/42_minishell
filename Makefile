@@ -18,6 +18,7 @@ MS_FILENAMES = \
 	ms_error_handling.c \
 	pipex.c \
 	parser.c \
+	variables.c \
 	scratches.c
 
 SRC = $(addprefix $(SOURCE_DIR)/,$(MS_FILENAMES))
