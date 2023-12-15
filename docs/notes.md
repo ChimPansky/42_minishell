@@ -1,21 +1,22 @@
 # minishell
 
-```
-typedef struct s_minishell
-{
-	env
-} t_msh
+string library
 
-```
+string replace
+is empty
+char
+
+exit export cd echo pwd
+
+
 ## signature of built-in functions
 
-function should exit with correct return code
-and err msg if one occurs;
-
+exit with correct error code, perror if one happened
+output to msh->out_fd, err to msh->err_fd
 cmd_with_args[0] == built-in func name, e.g. "pwd"
 
 ```
-void name(t_msh *msh, char **cmd_with_args);
+int name(t_msh *msh, char **cmd_with_args);
 ```
 
 ## signature of pipex:

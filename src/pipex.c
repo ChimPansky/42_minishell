@@ -1,29 +1,6 @@
 #include "minishell.h"
 #include <errno.h>
 
-char **env;
-
-t_built_in get_built_in_by_name(char *func_name);
-
-// noreturn built-in
-void pwd(t_msh *msh, char **cmd_with_args)
-{
-	(void) msh;
-	ft_printf("yikes! u called pwd!");
-}
-
-char *find_env(t_msh *msh, const char *var_name)
-{
-	(void) msh;
-	(void) var_name;
-	return "/bin:/usr/bin";
-}
-
-bool is_empty(const char *str)
-{
-	return (str != NULL && *str == '\0');
-}
-
 // noreturn if found
 void try_exec_built_in(t_msh *msh, char **cmd_with_args)
 {
@@ -47,24 +24,26 @@ char *try_find_in_path(t_msh *msh, const char *exec)
 		perror("ft_split"), exit(EXIT_FAILURE);
 	while (*path_entries)
 	{
-		exec_in_path = ft_strnjoin(3, *path++, "/", exec);
+		exec_in_path = ft_strnjoin(3, *path_entries++, "/", exec);
 		if (!exec_in_path)
 			free(path_entries), perror("ft_strnjoin"), exit(EXIT_FAILURE);
 		if (access(exec_in_path, F_OK) == SUCCESS)
-			return (free(path_entries), exec_in_path);
+			return exec_in_path;
+			// return (free(path_entries), exec_in_path);
 		free(exec_in_path);
 		path_entries++;
 	}
 	return NULL;
 }
 
-// noreturn, every
-void pipex(t_msh *msh, char **cmd_with_arguments, int in_fd, int out_fd) {
+// noreturn, call only in child process
+void execute_by_cmd_with_args(t_msh *msh, char **cmd_with_arguments) {
 	const char *exec = cmd_with_arguments[0];
 	char *exec_with_path;
 
-	dup2(in_fd, STDIN_FILENO);
-	dup2(out_fd, STDOUT_FILENO);
+	dup2(msh->in_fd, STDIN_FILENO);
+	dup2(msh->out_fd, STDOUT_FILENO);
+	dup2(msh->err_fd, STDERR_FILENO);
 	exec_with_path = NULL;
 	if (NULL == strchr(exec, '/'))
 	{
@@ -74,9 +53,9 @@ void pipex(t_msh *msh, char **cmd_with_arguments, int in_fd, int out_fd) {
 	else if (SUCCESS == access(exec, F_OK))
 		exec_with_path = (char *)exec;
 	if (exec_with_path == NULL)
-		ft_printf_fd(STDERR_FILENO, "msh: command not found: %s", exec), exit(EXIT_COMMAND_NOT_FOUND);
-	else if (SUCCESS != access(exec, F_EXLCK))
-		ft_printf_fd(STDERR_FILENO, "msh: permission denied: %s", exec), exit(EXIT_PERMISSION_DENIED);
-	execve(exec, cmd_with_arguments, env);
+		ft_printf_fd(STDERR_FILENO, "msh: command not found: %s\n", exec), exit(EXIT_COMMAND_NOT_FOUND);
+	else if (SUCCESS != access(exec_with_path, X_OK))
+		ft_printf_fd(STDERR_FILENO, "msh: permission denied: %s\n", exec_with_path), exit(EXIT_PERMISSION_DENIED);
+	execve(exec_with_path, cmd_with_arguments, msh->envp);
 	perror("execve"), exit(errno);
 }
