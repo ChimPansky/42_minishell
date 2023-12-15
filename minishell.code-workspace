@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"editor.insertSpaces": false,
+		"editor.tabSize": 4,
+		"files.trimTrailingWhitespace": true,
+		"editor.rulers": [80],
+		"editor.lineNumbers": "relative",
+	}
+}

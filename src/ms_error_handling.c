@@ -23,7 +23,7 @@ void	ms_error(char *err_msg)
 		ft_putendl_fd(err_msg, STDERR_FILENO);
 }
 
-void	ms_exit(t_minish *minish)
+void	ms_exit(t_msh *minish)
 {
 	//ms_destroy(minish);
 	(void)minish;
@@ -33,7 +33,7 @@ void	ms_exit(t_minish *minish)
 		exit(EXIT_FAILURE);
 }
 
-void	ms_error_exit(t_minish *minish, char *err_msg)
+void	ms_error_exit(t_msh *minish, char *err_msg)
 {
 	ms_error(err_msg);
 	ms_exit(minish);

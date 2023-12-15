@@ -15,7 +15,10 @@ MS_FILENAMES = \
 	minishell.c \
 	ms_init.c \
 	ms_update.c \
-	ms_error_handling.c
+	ms_error_handling.c \
+	pipex.c \
+	parser.c \
+	scratches.c
 
 SRC = $(addprefix $(SOURCE_DIR)/,$(MS_FILENAMES))
 
@@ -41,4 +44,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all $(NAME) clean fclean re
+.PHONY: all bonus clean fclean re test
