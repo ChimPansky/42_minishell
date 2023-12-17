@@ -1,31 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_builtin_cmds.c                                  :+:      :+:    :+:   */
+/*   built_in.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/14 07:22:53 by tkasbari          #+#    #+#             */
-/*   Updated: 2023/12/15 14:18:14 by tkasbari         ###   ########.fr       */
+/*   Created: 2023/12/15 17:18:58 by tkasbari          #+#    #+#             */
+/*   Updated: 2023/12/15 17:37:16 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
-int	ms_builtin_pwd(t_msh *minish, char **cmd_with_args)
-{
-	(void)cmd_with_args;
-	ms_update_pwd(minish);
-	if (!minish->pwd)
-		return (errno);
-	printf("%s\n", minish->pwd);
-	return (SUCCESS);
-}
-
-int	ms_builtin_exit(t_msh *minish, char **cmd_with_args)
-{
-	(void)cmd_with_args;
-	ms_exit(minish, EXIT_SUCCESS);
-	//ms_exit(minish, EXIT_FAILURE);
-	return (SUCCESS);
-}
+int		built_in_echo(t_msh *msh, char **cmd_with_args);
+int		built_in_cd(t_msh *msh, char **cmd_with_args);
+int		built_in_pwd(t_msh *msh, char **cmd_with_args);
+int		built_in_export(t_msh *msh, char **cmd_with_args);
+int		built_in_unset(t_msh *msh, char **cmd_with_args);
+int		built_in_env(t_msh *msh, char **cmd_with_args);
+int		built_in_exit(t_msh *msh, char **cmd_with_args);

@@ -7,20 +7,30 @@ LIBFT = $(LIBFT_DIR)/libft.a
 IFLAGS = -I $(LIBFT_DIR)/include
 LFLAGS = -lreadline -L$(LIBFT_DIR) -lft
 SOURCE_DIR = src
+BUILT_INS_DIR = built_ins
 MS_HEADER = $(SOURCE_DIR)/$(NAME).h
 
 include $(LIBFT_DIR)/colors.mk
 
 MS_FILENAMES = \
 	minishell.c \
-	ms_builtin_cmds.c \
-	ms_destroy.c \
-	ms_exit_error.c \
-	ms_init.c \
-	ms_update.c \
+	destroy.c \
+	exit_error.c \
+	init.c \
+	update.c \
 	pipex.c \
 	parser.c \
 	scratches.c
+
+MS_FILENAMES += \
+	$(BUILT_INS_DIR)/built_in.c \
+	$(BUILT_INS_DIR)/cd.c \
+	$(BUILT_INS_DIR)/echo.c \
+	$(BUILT_INS_DIR)/env.c \
+	$(BUILT_INS_DIR)/exit.c \
+	$(BUILT_INS_DIR)/export.c \
+	$(BUILT_INS_DIR)/pwd.c \
+	$(BUILT_INS_DIR)/unset.c
 
 SRC = $(addprefix $(SOURCE_DIR)/,$(MS_FILENAMES))
 

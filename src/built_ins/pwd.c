@@ -1,23 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_destroy.c                                       :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/15 12:28:07 by tkasbari          #+#    #+#             */
-/*   Updated: 2023/12/15 14:18:14 by tkasbari         ###   ########.fr       */
+/*   Created: 2023/12/15 17:33:15 by tkasbari          #+#    #+#             */
+/*   Updated: 2023/12/15 17:44:19 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "built_in.h"
 
-void	ms_destroy(t_msh *minish)
+int	built_in_pwd(t_msh *msh, char **cmd_with_args)
 {
-	if (minish->rl_input)
-		free_null((void **)&minish->rl_input);
-	if (minish->prompt)
-		free_null((void **)&minish->prompt);
-	if (minish->envp)
-		free_null((void **)&minish->prompt);
+	(void)cmd_with_args;
+
+	update_pwd(msh);
+	if (!msh->pwd)
+		return (errno);
+	printf("%s\n", msh->pwd);
+	return (SUCCESS);
 }

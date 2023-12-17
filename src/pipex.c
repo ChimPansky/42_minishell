@@ -19,7 +19,7 @@ char *try_find_in_path(t_msh *msh, const char *exec)
 
 	if (path == NULL || is_empty(path))
 		return NULL;
-	path_entries = ft_split(path, ':');
+	path_entries = ft_split(path, ":");
 	if (path_entries == NULL)
 		perror("ft_split"), exit(EXIT_FAILURE);
 	while (*path_entries)

@@ -1,37 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_update.c                                        :+:      :+:    :+:   */
+/*   update.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 11:49:31 by tkasbari          #+#    #+#             */
-/*   Updated: 2023/12/15 14:18:14 by tkasbari         ###   ########.fr       */
+/*   Updated: 2023/12/15 15:33:24 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ms_update_pwd(t_msh *minish)
+void	update_pwd(t_msh *msh)
 {
-	getcwd(minish->pwd, PATH_MAX);
+	if (!getcwd(msh->pwd, PATH_MAX))
+	{
+		ft_strlcpy(msh->pwd, "Unknown", ft_strlen("Unknown") + 1);
+		errno = 1;
+		//perror("pwd: error retrieving current working directory: getcwd");
+		ms_error(0);
+	}
 }
 
-void	ms_update_prompt(t_msh *minish)
+void	update_prompt(t_msh *msh)
 {
-	getcwd(minish->pwd, PATH_MAX);
-	if (minish->prompt)
-		free_null((void **)&minish->prompt);
-	if (minish->pwd[0])
-		minish->prompt = ft_strjoin(minish->pwd, ": ");
+	if (msh->pwd[0])
+		msh->prompt = ft_strjoin(msh->pwd, ": ");
 	else
-		minish->prompt = ft_strjoin("", ": ");
-	if (!minish->prompt)
-		ms_exit(minish, EXIT_FAILURE);
+		msh->prompt = ft_strjoin("", ": ");
+	if (!msh->prompt)
+		ms_exit(msh, EXIT_FAILURE);
 }
-
-void	ms_update(t_msh *minish)
+// void set_env_var(t_msh *msh, char *var_name);
+// void get_env_var();
+void	update(t_msh *msh)
 {
-	ms_update_pwd(minish);
-	ms_update_prompt(minish);
+	(void)msh;
+	//update_pwd(msh);
+	//update_prompt(msh);
 }

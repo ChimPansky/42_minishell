@@ -5,7 +5,7 @@ string library
 string replace
 is empty
 char
-
+edit ft_split: separator is char * instead of char
 exit export cd echo pwd
 
 
@@ -20,3 +20,4 @@ int name(t_msh *msh, char **cmd_with_args);
 ```
 
 ## signature of pipex:
+" abc"

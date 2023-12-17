@@ -65,3 +65,18 @@ Backrooms escape code:
 	> ""
 	> "''"
 	>
+
+chimpansky@chimpanskyubuntu:~$ exit > 1.txt
+exit
+(base) ➜  ~ cat 1.txt
+(base) ➜  ~ bash
+chimpansky@chimpanskyubuntu:~$ exit 2>1.txt
+(base) ➜  ~ cat 1.txt
+exit
+(base) ➜  ~ bash
+chimpansky@chimpanskyubuntu:~$ exit 2 2 > 1.txt
+exit
+bash: exit: too many arguments
+chimpansky@chimpanskyubuntu:~$ exit 2 2 > 1.txt
+exit
+bash: exit: too many arguments
