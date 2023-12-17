@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 17:33:15 by tkasbari          #+#    #+#             */
-/*   Updated: 2023/12/17 09:16:00 by tkasbari         ###   ########.fr       */
+/*   Updated: 2023/12/17 15:43:22 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	built_in_echo(t_msh *msh, char **cmd_with_args)
 		{
 			printf("%s", cmd_with_args[i]);
 			if (cmd_with_args[i + 1])
-				printf("\x20");
+				printf(" ");
 		}
 		i++;
 	}

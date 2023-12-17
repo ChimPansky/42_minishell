@@ -18,6 +18,15 @@ cmd_with_args[0] == built-in func name, e.g. "pwd"
 ```
 int name(t_msh *msh, char **cmd_with_args);
 ```
+if subject says "implement env without options or arguments":
+	shall we ignore all arguments and options and just mimic "env" or output an error:
+	"invalid argument/option" / "no arguments/options allowed"...
 
 ## signature of pipex:
 " abc"
+
+# env variables:
+in init: create copy of env and store in local? check format of output of "export" in bash...
+
+validate variablenames (check for invalid characters). e.g. VAR.1 is not a valid name...
+=.!;:

@@ -7,28 +7,35 @@
 # include "ms_macros.h"
 # include "libft.h"
 
-#define SUCCESS 0
-
 #define EXIT_COMMAND_NOT_FOUND		127
 #define  EXIT_PERMISSION_DENIED		126
 
+typedef struct s_var
+{
+	char *name;
+	char *value;
+}	t_var;
+
+typedef t_list t_variables;
+
 typedef struct s_msh
 {
-	char	*rl_input;
-	char	*prompt;
-	char	pwd[PATH_MAX + 1];
-	char	**envp; // will be read from main envp argument and stored in linked list, so we can add and remove and modifvy env variables
-	int		in_fd;
-	int		out_fd;
-	int		err_fd;
-	int		last_exit_code;
-	int		pid_to_wait;
+	char		*rl_input;
+	char		pwd[PATH_MAX + 1];
+	char		*prompt;
+	int			in_fd;
+	int			out_fd;
+	int			err_fd;
+	int			last_exit_code;
+	int			pid_to_wait;
+	t_variables *env;
+	t_variables	*locals;
 }			t_msh;
 
 typedef int (*t_built_in)(t_msh *msh, char **cmd_with_args);
 
 // init.c
-void	init(t_msh *msh);
+void	init(t_msh *msh, char **envp);
 
 // update.c
 void	update_pwd(t_msh *msh);
@@ -54,5 +61,12 @@ int 	parse(t_msh *msh, char *input);
 
 // destroy.c
 void	destroy(t_msh *msh);
+
+t_var 		*var_find(t_variables *vars, const char *name);
+t_var		*var_set(t_variables **vars_p, const char *name, const char *value);
+t_var 		*var_add(t_variables **vars_p, const char *name, const char *value);
+void 		var_delete(t_variables **vars_p, const char *name);
+t_variables *vars_init_from_envp(char **envp);
+char 		**vars_convert_to_array(t_variables *vars);
 
 #endif

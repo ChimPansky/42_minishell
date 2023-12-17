@@ -39,11 +39,14 @@ char *try_find_in_path(t_msh *msh, const char *exec)
 // noreturn, call only in child process
 void execute_by_cmd_with_args(t_msh *msh, char **cmd_with_arguments) {
 	const char *exec = cmd_with_arguments[0];
+	char *const *envp = vars_convert_to_array(msh->env);
 	char *exec_with_path;
 
-	dup2(msh->in_fd, STDIN_FILENO);
-	dup2(msh->out_fd, STDOUT_FILENO);
-	dup2(msh->err_fd, STDERR_FILENO);
+	if (NULL == envp
+			|| SUCCESS != dup2(msh->in_fd, STDIN_FILENO)
+			|| SUCCESS != dup2(msh->out_fd, STDOUT_FILENO)
+			|| SUCCESS != dup2(msh->err_fd, STDERR_FILENO))
+		exit(EXIT_FAILURE); // ??
 	exec_with_path = NULL;
 	if (NULL == strchr(exec, '/'))
 	{
@@ -56,6 +59,6 @@ void execute_by_cmd_with_args(t_msh *msh, char **cmd_with_arguments) {
 		ft_printf_fd(STDERR_FILENO, "msh: command not found: %s\n", exec), exit(EXIT_COMMAND_NOT_FOUND);
 	else if (SUCCESS != access(exec_with_path, X_OK))
 		ft_printf_fd(STDERR_FILENO, "msh: permission denied: %s\n", exec_with_path), exit(EXIT_PERMISSION_DENIED);
-	execve(exec_with_path, cmd_with_arguments, msh->envp);
+	execve(exec_with_path, cmd_with_arguments, envp);
 	perror("execve"), exit(errno);
 }

@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 17:33:15 by tkasbari          #+#    #+#             */
-/*   Updated: 2023/12/15 17:46:51 by tkasbari         ###   ########.fr       */
+/*   Updated: 2023/12/17 15:29:55 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,17 @@
 
 int	built_in_unset(t_msh *msh, char **cmd_with_args)
 {
-	(void)msh;
-	(void)cmd_with_args;
-	printf("built-in-unset\n");
-	return (0);
+	int	i;
+
+	i = 1;
+	// problem with unsetting several variables at the same time...
+	while (cmd_with_args[i])
+	{
+		if (1)	// validate var_name...
+			var_delete(&msh->env, cmd_with_args[i]);
+		else
+			printf("unset: invalid variable name"); // error handling...
+		i++;
+	}
+	return (SUCCESS);
 }

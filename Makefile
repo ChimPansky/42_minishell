@@ -20,6 +20,7 @@ MS_FILENAMES = \
 	update.c \
 	pipex.c \
 	parser.c \
+	variables.c \
 	scratches.c
 
 MS_FILENAMES += \
