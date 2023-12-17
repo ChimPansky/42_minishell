@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 11:49:31 by tkasbari          #+#    #+#             */
-/*   Updated: 2023/12/15 15:33:24 by tkasbari         ###   ########.fr       */
+/*   Updated: 2023/12/17 22:35:50 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,7 @@ void	update_pwd(t_msh *msh)
 
 void	update_prompt(t_msh *msh)
 {
-	if (msh->pwd[0])
-		msh->prompt = ft_strjoin(msh->pwd, ": ");
-	else
-		msh->prompt = ft_strjoin("", ": ");
+	msh->prompt = ft_strnjoin(4, FT_COL_MAGENTA, msh->pwd, FT_COL_DEFAULT, "$ ");
 	if (!msh->prompt)
 		ms_exit(msh, EXIT_FAILURE);
 }

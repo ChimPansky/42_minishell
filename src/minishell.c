@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 20:05:41 by tkasbari          #+#    #+#             */
-/*   Updated: 2023/12/17 15:33:06 by tkasbari         ###   ########.fr       */
+/*   Updated: 2023/12/17 22:25:05 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,9 @@ int	main(int ac, char **av, char **envp)
 			free(msh.rl_input);
 		}
 		else
-			ms_exit(&msh, EXIT_FAILURE);
+		{
+			perror(NULL);
+			ms_exit(&msh, EXIT_SUCCESS);
+		}
 	}
 }
