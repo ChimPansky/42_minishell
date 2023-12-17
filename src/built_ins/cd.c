@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 17:33:15 by tkasbari          #+#    #+#             */
-/*   Updated: 2023/12/17 15:42:57 by tkasbari         ###   ########.fr       */
+/*   Updated: 2023/12/17 18:10:51 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,27 @@
 
 int	built_in_cd(t_msh *msh, char **cmd_with_args)
 {
-	int	return_code;
+	int		return_code;
+	char	*dir;
 
 	return_code = 0;
-	if (!cmd_with_args[1])
-		return (SUCCESS);
-	if (cmd_with_args[2])
+	dir = NULL;
+	if (cmd_with_args[2]) // too many args; error handling...
 		return (1);
-	return_code = chdir(cmd_with_args[1]);
+	if (!cmd_with_args[1])
+	{
+		dir = var_get_value(msh->env, "HOME");
+		if (!dir)
+			dir = "";
+	}
+	else
+		dir = cmd_with_args[1]; // implement cd - ?
+	return_code = chdir(dir);
 	if (return_code != 0)	//error_handling...
 		printf("cd: error\n");
 	else
 	{
+		// var_set OLD_PWD...
 		update_pwd(msh);
 		update_prompt(msh);
 	}

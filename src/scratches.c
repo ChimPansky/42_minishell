@@ -23,6 +23,15 @@
 // 	}
 // 	return NULL;
 // }
+// char	*var_get_value(t_variables *vars, const char *name)
+// {
+// 	t_var	*target;
+
+// 	target = var_find(vars, name);
+// 	if (!target)
+// 		return (NULL);
+// 	return (target->value);
+// }
 
 char *find_env(t_msh *msh, const char *var_name)
 {

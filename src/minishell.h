@@ -63,6 +63,7 @@ int 	parse(t_msh *msh, char *input);
 void	destroy(t_msh *msh);
 
 t_var 		*var_find(t_variables *vars, const char *name);
+char		*var_get_value(t_variables *vars, const char *name);
 t_var		*var_set(t_variables **vars_p, const char *name, const char *value);
 t_var 		*var_add(t_variables **vars_p, const char *name, const char *value);
 void 		var_delete(t_variables **vars_p, const char *name);

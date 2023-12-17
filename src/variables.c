@@ -29,6 +29,16 @@ void destroy_variable(void *var_void)
 	free(var);
 }
 
+char	*var_get_value(t_variables *vars, const char *name)
+{
+	t_var	*target;
+
+	target = var_find(vars, name);
+	if (!target)
+		return (NULL);
+	return (target->value);
+}
+
 t_var *var_find(t_variables *vars, const char *name)
 {
 	while (vars)
