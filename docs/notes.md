@@ -30,3 +30,8 @@ in init: create copy of env and store in local? check format of output of "expor
 
 validate variablenames (check for invalid characters). e.g. VAR.1 is not a valid name...
 =.!;:
+
+
+# TODO Tom:
+Syntax check of whole input (from readline)
+Tokenizer: convert whole input into tokens (string:redir_in, pipe:NULL, OB, CB, string:redir_out, ...)
