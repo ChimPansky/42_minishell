@@ -9,13 +9,32 @@
 // if no pipe in expression check for builtins first, then fork
 // work with braces
 
-enum fd_type {
-    IN_FILE,
-    HEREDOC,
-    OUT_FILE_TRUNK,
-    OUT_FILE_APPEND,
+enum e_fd_type {
+    FD_IN,
+    FD_HEREDOC,
+    FD_OUT_TRUNC,
+    FD_OUT_APPEND,
 };
 
+enum e_token_type
+{
+    SEPARATOR,
+    TEXT,
+    ASSIGNMENT,
+    REDIR_IN,
+    REDIR_OUT_TRUNC,
+    REDIR_OUT_APPEND,
+    HEREDOC,
+    PIPE,
+    BRACKET_OPEN,
+    BRACKET_CLOSE,
+    LOGIC_AND,
+    LOGIC_OR,
+    DQUOTE_OPEN,
+    DQUOTE_CLOSE,
+    SQUOTE_OPEN,
+    SQUOTE_CLOSE,
+};
 
 int execute_in_subshell(t_msh *msh, char **cmd_with_args)
 {

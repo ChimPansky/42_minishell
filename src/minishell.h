@@ -12,34 +12,34 @@
 
 // PARSER STUFF START
 
-typedef struct s_token{
-			enum type;
-			char	*str;
+// typedef struct s_token{
+// 			enum type;
+// 			char	*str;
 
-}
+// }
 
 typedef t_list t_tokens;
 
 
 // struct for isolated command including arguments
 // e.g.: "ls -l"
-typedef struct s_command
-{
-	char		*cmd_with_args;
-	// redirections
-	s_command	*next;
-}			t_command;
+// typedef struct s_command
+// {
+// 	char		*cmd_with_args;
+// 	// redirections
+// 	s_command	*next;
+// }			t_command;
 
 // struct for several commands (can we use t_list instead?)
 // e.g.: "ls -l | cat -e"
 // e.g.: "cat | grep test < infile.txt"
 // ...
-typedef struct s_command_chain
-{
-	t_command	*cmd_list;
+// typedef struct s_command_chain
+// {
+// 	t_command	*cmd_list;
 
 
-}			t_command_chain;
+// }			t_command_chain;
 // PARSER STUFF END
 
 typedef struct s_var

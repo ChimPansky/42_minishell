@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 17:33:15 by tkasbari          #+#    #+#             */
-/*   Updated: 2023/12/15 17:44:19 by tkasbari         ###   ########.fr       */
+/*   Updated: 2023/12/28 20:02:34 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ int	built_in_pwd(t_msh *msh, char **cmd_with_args)
 	(void)cmd_with_args;
 
 	update_pwd(msh);
-	if (!msh->pwd)
-		return (errno);
+	// if (!msh->pwd)
+	// 	return (errno);
 	printf("%s\n", msh->pwd);
 	return (SUCCESS);
 }
