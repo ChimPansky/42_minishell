@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 11:49:31 by tkasbari          #+#    #+#             */
-/*   Updated: 2023/12/17 22:35:50 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/01/04 15:32:35 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,3 +37,4 @@ void	update(t_msh *msh)
 	//update_pwd(msh);
 	//update_prompt(msh);
 }
+

@@ -12,11 +12,35 @@
 
 // PARSER STUFF START
 
-// typedef struct s_token{
-// 			enum type;
-// 			char	*str;
+typedef enum e_redir_type
+{
+    FD_IN,
+    FD_HEREDOC,
+    FD_OUT_TRUNC,
+    FD_OUT_APPEND
+}	t_redir_type;
 
-// }
+// words: sindle quote, dquote, wildcard
+typedef enum e_token_type
+{
+    TK_WORD,
+    TK_ASSIGNMENT,
+    TK_REDIR,
+    TK_PIPE,
+	TK_BRACKET,
+	TK_LOGIC_AND,
+    TK_LOGIC_OR
+}	t_token_type;
+
+// maybe add union
+typedef struct s_token
+{
+	t_token_type	tk_type;
+	t_redir_type	fd_type;
+	char			*str;
+	t_tokens		*subshell;
+	int				sub_exit_code;
+}	t_token;
 
 typedef t_list t_tokens;
 
@@ -52,16 +76,17 @@ typedef t_list t_variables;
 
 typedef struct s_msh
 {
-	char		*rl_input;
-	char		pwd[PATH_MAX + 1];
-	char		*prompt;
-	int			in_fd;
-	int			out_fd;
-	int			err_fd;
-	int			last_exit_code;
-	int			pid_to_wait;
-	t_variables *env;
-	t_variables	*locals;
+	char			*rl_input;
+	char			pwd[PATH_MAX + 1];
+	char			*prompt;
+	int				in_fd;
+	int				out_fd;
+	int				err_fd;
+	int				last_exit_code;
+	int				pid_to_wait;
+	t_tokens		*tokens;
+	t_variables 	*env;
+	t_variables		*locals;
 }			t_msh;
 
 typedef int (*t_built_in)(t_msh *msh, char **cmd_with_args);
@@ -81,6 +106,7 @@ void	ms_error(int error_nr);
 // scratches.c
 char 	*find_env(t_msh *msh, const char *var_name);
 bool 	is_empty(const char *str);
+void	print_splitted(char **splitted);
 
 // pipex.c
 void 	execute_by_cmd_with_args(t_msh *msh, char **cmd_with_arguments);
@@ -90,10 +116,18 @@ t_built_in get_built_in_by_name(char *func_name);
 
 // parser.c
 int 	parse(t_msh *msh, char *input);
+int 	new_parse(t_msh *msh, t_tokens *tokens, char *input);
+void	print_tokens(t_tokens **tokens);
 
 // destroy.c
 void	destroy(t_msh *msh);
 
+// tokens.c
+t_token		*token_add(t_tokens **tokens, t_token_type tk_type,
+			t_redir_type fd_type, char *str);
+void 		destroy_token(void *token_void);
+
+// variables.c
 t_var 		*var_find(t_variables *vars, const char *name);
 char		*var_get_value(t_variables *vars, const char *name);
 t_var		*var_set(t_variables **vars_p, const char *name, const char *value);

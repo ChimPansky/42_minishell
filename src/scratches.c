@@ -44,3 +44,28 @@ bool is_empty(const char *str)
 {
 	return (str != NULL && *str == '\0');
 }
+
+void	print_splitted(char **splitted)
+{
+	int	i;
+
+	i = 0;
+	if (!splitted)
+	{
+		ft_putstr_fd("NULL\n", 1);
+		return ;
+	}
+	while (splitted && splitted[i])
+	{
+		ft_putstr_fd("char[",1);
+		ft_putnbr_fd(i, 1);
+		ft_putstr_fd("]: ", 1);
+		ft_putstr_fd(splitted[i], 1);
+		ft_putstr_fd("\n", 1);
+		i++;
+	}
+	ft_putstr_fd("char[",1);
+	ft_putnbr_fd(i, 1);
+	ft_putstr_fd("]: ", 1);
+	ft_putstr_fd("NULL\n", 1);
+}

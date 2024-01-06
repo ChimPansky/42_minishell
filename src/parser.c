@@ -9,32 +9,7 @@
 // if no pipe in expression check for builtins first, then fork
 // work with braces
 
-enum e_fd_type {
-    FD_IN,
-    FD_HEREDOC,
-    FD_OUT_TRUNC,
-    FD_OUT_APPEND,
-};
 
-enum e_token_type
-{
-    SEPARATOR,
-    TEXT,
-    ASSIGNMENT,
-    REDIR_IN,
-    REDIR_OUT_TRUNC,
-    REDIR_OUT_APPEND,
-    HEREDOC,
-    PIPE,
-    BRACKET_OPEN,
-    BRACKET_CLOSE,
-    LOGIC_AND,
-    LOGIC_OR,
-    DQUOTE_OPEN,
-    DQUOTE_CLOSE,
-    SQUOTE_OPEN,
-    SQUOTE_CLOSE,
-};
 
 int execute_in_subshell(t_msh *msh, char **cmd_with_args)
 {
@@ -49,6 +24,90 @@ int execute_in_subshell(t_msh *msh, char **cmd_with_args)
     // printf("IM CHILD\n");
     execute_by_cmd_with_args(msh, cmd_with_args);
     return 0;
+}
+bool    is_shell_space(char c)
+{
+    if (ft_strchr(MS_WHITESPACES, c))
+        return (true);
+    return (false);
+}
+
+bool    is_word_sep(char c)
+{
+    return (is_shell_space(c)); // add other seperators like = | &&...
+}
+
+int token_add_redir(t_msh *msh, t_tokens *tokens, char *input, int *i)
+{
+    
+    //strcmp(input, ">>") == SUCCESS
+}
+
+// TODO: rewrite new_parse...
+int new_parse(t_msh *msh, t_tokens *tokens, char *input)
+{
+    int     i;
+    bool    in_squotes;
+    bool    in_dquotes;
+    bool    in_brackets;
+    bool    in_word;
+    size_t  start;
+    char    *word;
+
+    i = 0;
+    in_squotes = false;
+    in_dquotes = false;
+    in_brackets = false;
+    in_word = false;
+    start = 0;
+    while (*input)
+    {
+        if ((in_squotes && *input == '\'') || (in_dquotes && *input == '"') || (in_word && is_word_sep(*input)))
+        {
+            in_squotes = false;
+            in_dquotes = false;
+            in_word = false;
+            word = ft_substr(input, start, i - start);
+            if (!word)
+                ms_exit(msh, ERROR);    // TODO ERROR
+            token_add(&tokens, TK_WORD, 0, word);
+        }
+        else if (!in_squotes && !in_dquotes && !in_word && (*input == '\'' || *input == '"'))
+        {
+            start = i + 1;
+            if (*input == '\'')
+                in_squotes = true;
+            else
+                in_dquotes = true;
+        }
+        if (*input == '=')
+            token_add(&tokens, TK_ASSIGNMENT, 0, NULL);
+        if (*input == '<' || *input == '>')
+            token_add_redir(msh, tokens, &input, &i)
+        if (*input == '|')
+            token_add(&msh->tokens, TK_PIPE, NULL);
+        // BONUS:
+        if (*input == '*')
+            token_add(&msh->tokens, TK_WILDCARD, NULL);
+        if (*input == '(')
+            token_add(&msh->tokens, TK_BRACKET_OPEN, NULL);
+        if (*input == ')')
+            token_add(&msh->tokens, TK_BRACKET_CLOSE, NULL);
+        if (strcmp(input, "&&") == SUCCESS)
+        {
+            token_add(&msh->tokens, TK_LOGIC_AND, NULL);
+            input += 1;
+        }
+        if (strcmp(input, "||") == SUCCESS)
+        {
+            token_add(&msh->tokens, TK_LOGIC_OR, NULL);
+            input += 1;
+        }
+        input++;
+        i++;
+    }
+    print_tokens(&msh->tokens);
+    return (0);
 }
 
 // tokens gonna be linked list
@@ -82,6 +141,7 @@ int parse(t_msh *msh, char *input)
         tokens++;
     }
     cmd_with_args[i] = NULL;
+    print_splitted(cmd_with_args);
     t_built_in f = get_built_in_by_name(cmd_with_args[0]);
     if (f != NULL)
         msh->last_exit_code = f(msh, cmd_with_args);

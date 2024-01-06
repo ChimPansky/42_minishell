@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 20:05:41 by tkasbari          #+#    #+#             */
-/*   Updated: 2023/12/17 22:25:05 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/01/06 14:07:37 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,10 @@ int	main(int ac, char **av, char **envp)
 		{
 			// if (CTRL+D)
 			//		built_in_exit();
-			parse(&msh, msh.rl_input);
+			//parse(&msh, msh.rl_input);
+			new_parse(&msh, msh.tokens, msh.rl_input);
 			add_history(msh.rl_input);
+			ft_lstclear(&msh.tokens, destroy_token);
 			free(msh.rl_input);
 		}
 		else
