@@ -50,15 +50,16 @@ void	print_tokens(t_tokens **tokens)
 	while (cur_list && cur_list->content)
 	{
 		cur_token = cur_list->content;
-		ft_putstr_fd("Token Nr.", 1);
-		ft_putnbr_fd(i, 1);
-		ft_putstr_fd(": Type: ", 1);
-		ft_putnbr_fd(cur_token->type, 1);
-		ft_putstr_fd("; Str: ", 1);
-		if (cur_token->str)
-			ft_putendl_fd(cur_token->str, 1);
-		else
-			ft_putendl_fd("(null)", 1);
+		printf("%p <--(Token Nr. %d: Type: %d; Str: %s)-->%p", cur_list->prev, i, cur_token->tk_type, cur_token->str, cur_list->next);
+		// ft_putstr_fd("Token Nr.", 1);
+		// ft_putnbr_fd(i, 1);
+		// ft_putstr_fd(": Type: ", 1);
+		// ft_putnbr_fd(cur_token->type, 1);
+		// ft_putstr_fd("; Str: ", 1);
+		// if (cur_token->str)
+		// 	ft_putendl_fd(cur_token->str, 1);
+		// else
+		// 	ft_putendl_fd("(null)", 1);
 		cur_list = cur_list->next;
 		i++;
 	}

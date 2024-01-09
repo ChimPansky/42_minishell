@@ -18,32 +18,49 @@ typedef enum e_redir_type
     FD_HEREDOC,
     FD_OUT_TRUNC,
     FD_OUT_APPEND
-}	t_redir_type;
+}		t_redir_type;
+
+typedef structs_redir_descr
+{
+	t_redir_type	type;
+	char			*doc;
+}		t_redir_descr;
 
 // words: sindle quote, dquote, wildcard
 typedef enum e_token_type
 {
     TK_WORD,
-    TK_ASSIGNMENT,
     TK_REDIR,
-    TK_PIPE,
+	TK_PIPE,
 	TK_BRACKET,
 	TK_LOGIC_AND,
     TK_LOGIC_OR
-}	t_token_type;
+}		t_token_type;
+
+typedef t_list t_tokens;
 
 // maybe add union
 typedef struct s_token
 {
 	t_token_type	tk_type;
-	t_redir_type	fd_type;
-	char			*str;
-	t_tokens		*subshell;
-	int				sub_exit_code;
+	union {
+		char			*str;
+		t_redir_descr	redir;
+		t_tokens		*subshell;
+		int				sub_exit_code;
+	};
 }	t_token;
 
-typedef t_list t_tokens;
 
+typedef t_list t_command_chain;
+
+typedef struct s_simple_command
+{
+	char	**cmd_with_args;
+	t_list	redirections;
+}		t_simple_command;
+
+int execute(t_msh *msh, t_long_command *cmd);
 
 // struct for isolated command including arguments
 // e.g.: "ls -l"
