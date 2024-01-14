@@ -22,7 +22,7 @@ void	print_list(t_list **list)
 	while (cur_list && cur_list->content)
 	{
 		val = cur_list->content;
-		printf("%p <--(Node Nr. %d (%p): Val: %d)-->%p\n", cur_list->prev, i, &cur_list, *val, cur_list->next);
+		printf("%p <-- {Node %d (%p): Val: %d} -->%p\n", cur_list->prev, i, cur_list, *val, cur_list->next);
 		cur_list = cur_list->next;
 		i++;
 	}
@@ -32,10 +32,51 @@ void list_del(void *list_node)
 	(void) list_node;
 	return ;
 }
+
+char **strings_append(char **strings, char *appendix)
+{
+	char	**new_strings;
+	size_t	s_count;
+
+	s_count = 0;
+	if (!appendix)
+		return (strings);
+	while (strings[s_count])
+		s_count++;
+	new_strings = ft_calloc(s_count + 1, sizeof(char *));
+	if (!new_strings)
+		return (strings);
+	s_count = 0;
+	while (strings[s_count])
+	{
+		new_strings[s_count] = strings[s_count];
+		s_count++;
+	}
+	new_strings[s_count] = ft_strdup(appendix);
+	return (new_strings);
+}
+
+void str_print(char **strings)
+{
+	int i;
+	i = 0;
+
+	while (strings[i])
+	{
+		printf("%s\n", strings[i]);
+		i++;
+	}
+}
 int	main()
 {
 	t_list	*my_list;
 	t_list	*new_node;
+	char **strings;
+
+	strings = NULL;
+	str_print(strings);
+	strings_append(strings, "hello");
+	str_print(strings);
 	int	a;
 	int b;
 	int c;
@@ -44,18 +85,18 @@ int	main()
 	b = 24;
 	c = 242;
 
-	new_node = ft_lstnew(&a);
-	my_list = new_node;
+	// new_node = ft_lstnew(&a);
+	// my_list = new_node;
 
 
-	ft_lstadd_back(&my_list, new_node = ft_lstnew(&b));
-	ft_lstadd_front(&my_list, ft_lstnew(&c));
-	//printf("%d", *(int*)(my_list->next->content));
-	print_list(&my_list);
-	printf("\n%d\n", *(int*)(new_node->content));
-	ft_lstdel_node(&my_list, new_node, list_del);
-	print_list(&my_list);
-	ft_lstclear(&my_list, list_del);
-	print_list(&my_list);
+	// ft_lstadd_back(&my_list, new_node = ft_lstnew(&b));
+	// ft_lstadd_front(&my_list, ft_lstnew(&c));
+	// //printf("%d", *(int*)(my_list->next->content));
+	// print_list(&my_list);
+	// printf("\n%d\n", *(int*)(new_node->content));
+	// ft_lstdel_node(&my_list, new_node, list_del);
+	// print_list(&my_list);
+	//ft_lstclear(&my_list, list_del);
+	// print_list(&my_list);
 
 }

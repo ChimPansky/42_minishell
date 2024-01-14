@@ -35,3 +35,7 @@ validate variablenames (check for invalid characters). e.g. VAR.1 is not a valid
 # TODO Tom:
 Syntax check of whole input (from readline)
 Tokenizer: convert whole input into tokens (string:redir_in, pipe:NULL, OB, CB, string:redir_out, ...)
+
+# Malloc Errors:
+find a nice way to handle them, without exiting the whole minishell.
+when a malloc error in a random function occurs while lexing/parsing/executing/... -> reset and give control back to user (show msh prompt)

@@ -16,14 +16,15 @@ MS_FILENAMES = \
 	destroy.c \
 	exit_error.c \
 	init.c \
+	lexer.c \
+	list_commands.c \
+	list_tokens.c \
+	list_variables.c \
 	minishell.c \
 	parser.c \
 	pipex.c \
 	scratches.c \
-	tokens.c \
-	update.c \
-	variables.c
-
+	update.c
 
 MS_FILENAMES += \
 	$(BUILT_INS_DIR)/built_in.c \

@@ -20,11 +20,11 @@ typedef enum e_redir_type
     FD_OUT_APPEND
 }		t_redir_type;
 
-typedef structs_redir_descr
+typedef struct s_redir_detail
 {
 	t_redir_type	type;
 	char			*doc;
-}		t_redir_descr;
+}		t_redir_detail;
 
 // words: sindle quote, dquote, wildcard
 typedef enum e_token_type
@@ -37,6 +37,15 @@ typedef enum e_token_type
     TK_LOGIC_OR
 }		t_token_type;
 
+typedef enum e_ms_error
+{
+    ER_UNDEFINED,
+    ER_QUOTES,
+	ER_UNEXPECTED_TOKEN,
+	ER_READLINE,
+	ER_MALLOC
+}		t_ms_error;
+
 typedef t_list t_tokens;
 
 // maybe add union
@@ -45,22 +54,21 @@ typedef struct s_token
 	t_token_type	tk_type;
 	union {
 		char			*str;
-		t_redir_descr	redir;
-		t_tokens		*subshell;
-		int				sub_exit_code;
+		t_redir_detail	*redir;
+		t_tokens		*subshell;		//	only for bonus
+		int				sub_exit_code;	//	only for bonus
 	};
 }	t_token;
-
 
 typedef t_list t_command_chain;
 
 typedef struct s_simple_command
 {
 	char	**cmd_with_args;
-	t_list	redirections;
+	t_list	*redirections; // list of t_redir_details...
 }		t_simple_command;
 
-int execute(t_msh *msh, t_long_command *cmd);
+
 
 // struct for isolated command including arguments
 // e.g.: "ls -l"
@@ -96,17 +104,30 @@ typedef struct s_msh
 	char			*rl_input;
 	char			pwd[PATH_MAX + 1];
 	char			*prompt;
+	const char		*mult_line_prompt;
+	bool			mult_line_input;
 	int				in_fd;
 	int				out_fd;
 	int				err_fd;
 	int				last_exit_code;
 	int				pid_to_wait;
+	bool			err_syntax;
+	char			*unexpected_token;
 	t_tokens		*tokens;
+	t_token			*last_token;
+	t_command_chain	*commands;
 	t_variables 	*env;
 	t_variables		*locals;
 }			t_msh;
 
 typedef int (*t_built_in)(t_msh *msh, char **cmd_with_args);
+
+//minishell.c
+// for libft:
+char **strings_append(char **strings, char *appendix);
+
+// TODO Vova:
+int execute(t_msh *msh, t_command_chain *cmds);
 
 // init.c
 void	init(t_msh *msh, char **envp);
@@ -117,6 +138,7 @@ void	update_prompt(t_msh *msh);
 void	update(t_msh *msh);
 
 //exit_error.c
+void	ms_error_msg(int error_nr, char *err_info);
 void	ms_exit(t_msh *msh, int error_nr);
 void	ms_error(int error_nr);
 
@@ -131,20 +153,26 @@ void 	execute_by_cmd_with_args(t_msh *msh, char **cmd_with_arguments);
 // built_ins/built_in.c
 t_built_in get_built_in_by_name(char *func_name);
 
-// parser.c
-int 	parse(t_msh *msh, char *input);
-int 	new_parse(t_msh *msh, t_tokens *tokens, char *input);
+// lexer.c
+int 	lexer(t_msh *msh, char *input, t_tokens **tokens);
 void	print_tokens(t_tokens **tokens);
+
+// parser.c
+int 	parser(t_msh *msh, t_tokens **tokens, t_command_chain *cmds);
 
 // destroy.c
 void	destroy(t_msh *msh);
 
-// tokens.c
+// list_tokens.c
 t_token		*token_add(t_tokens **tokens, t_token_type tk_type,
-			t_redir_type fd_type, char *str);
+						char *str, t_redir_detail *redir);
 void 		destroy_token(void *token_void);
 
-// variables.c
+// list_commands.c
+t_simple_command	*command_add(t_command_chain **commands, char **cmd_with_args, t_list *redirections);
+void 		destroy_command(void *command_void);
+
+// list_variables.c
 t_var 		*var_find(t_variables *vars, const char *name);
 char		*var_get_value(t_variables *vars, const char *name);
 t_var		*var_set(t_variables **vars_p, const char *name, const char *value);

@@ -1,5 +1,6 @@
 #include "minishell.h"
 #include <errno.h>
+#include <sys/wait.h>
 
 
 int execute_in_subshell(t_msh *msh, char **cmd_with_args)
@@ -18,45 +19,48 @@ int execute_in_subshell(t_msh *msh, char **cmd_with_args)
 }
 
 // tokens gonna be linked list
-int execute(t_msh *msh, t_command_chain *cmd)
+int execute(t_msh *msh, t_command_chain *cmds)
 {
-    char **tokens = ft_split(input, " \t"); // (ft_split, many seps)
-    // int pipefds[2];
-    char *cmd_with_args[10] = {};
-    int i = 0;
+    (void)msh;
+    (void)cmds;
+    printf("executing command_chain...\n");
+    // char **tokens = ft_split(input, " \t");
+    // // int pipefds[2];
+    // char *cmd_with_args[10] = {};
+    // int i = 0;
 
-    if (!tokens)
-        exit(EXIT_FAILURE);
-    // char **cur_start_token = tokens;
-    while (*tokens)
-    {
-        if (ft_strncmp(*tokens, ">", 2) == SUCCESS) {
-            // *tokens = "SKIP";
-            tokens++;
-            // close(msh->out_fd); // in subprocess to not close stdin/out/err
-            msh->out_fd = open(*tokens, O_TRUNC | O_CREAT | O_WRONLY, 0644);
-            // *tokens = "SKIP";
-        } else if (ft_strncmp(*tokens, "<", 2) == SUCCESS) {
-            // *tokens = "SKIP";
-            tokens++;
-            // close(msh->in_fd);
-            msh->in_fd = open(*tokens, O_RDONLY);
-            // *tokens = "SKIP";
-        } else {
-            cmd_with_args[i++] = ft_strdup(*tokens);
-        }
-        tokens++;
-    }
-    cmd_with_args[i] = NULL;
-    print_splitted(cmd_with_args);
-    t_built_in f = get_built_in_by_name(cmd_with_args[0]);
-    if (f != NULL)
-        msh->last_exit_code = f(msh, cmd_with_args);
-    else
-        msh->last_exit_code = execute_in_subshell(msh, cmd_with_args);
-    msh->in_fd = STDIN_FILENO;
-    msh->out_fd = STDOUT_FILENO;
-    msh->err_fd = STDERR_FILENO;
+    // if (!tokens)
+    //     exit(EXIT_FAILURE);
+    // // char **cur_start_token = tokens;
+    // while (*tokens)
+    // {
+    //     if (ft_strncmp(*tokens, ">", 2) == SUCCESS) {
+    //         // *tokens = "SKIP";
+    //         tokens++;
+    //         // close(msh->out_fd); // in subprocess to not close stdin/out/err
+    //         msh->out_fd = open(*tokens, O_TRUNC | O_CREAT | O_WRONLY, 0644);
+    //         // *tokens = "SKIP";
+    //     } else if (ft_strncmp(*tokens, "<", 2) == SUCCESS) {
+    //         // *tokens = "SKIP";
+    //         tokens++;
+    //         // close(msh->in_fd);
+    //         msh->in_fd = open(*tokens, O_RDONLY);
+    //         // *tokens = "SKIP";
+    //     } else {
+    //         cmd_with_args[i++] = ft_strdup(*tokens);
+    //     }
+    //     tokens++;
+    // }
+    // cmd_with_args[i] = NULL;
+    // print_splitted(cmd_with_args);
+    // t_built_in f = get_built_in_by_name(cmd_with_args[0]);
+    // if (f != NULL)
+    //     msh->last_exit_code = f(msh, cmd_with_args);
+    // else
+    //     msh->last_exit_code = execute_in_subshell(msh, cmd_with_args);
+    // msh->in_fd = STDIN_FILENO;
+    // msh->out_fd = STDOUT_FILENO;
+    // msh->err_fd = STDERR_FILENO;
     return 0;
 }
 

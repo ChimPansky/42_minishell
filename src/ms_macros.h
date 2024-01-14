@@ -3,6 +3,7 @@
 
 // String of valid Shell Separators (default: space and tab):
 # define MS_WHITESPACES " \t"
+# define MS_SPECIAL_CHARS "|&<>;!"	// TODO add characters...
 
 // Error Messages
 # define ERR_MALLOC "Memory Allocation Error"
