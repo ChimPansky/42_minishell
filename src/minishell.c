@@ -6,13 +6,13 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 20:05:41 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/01/14 17:40:05 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/01/15 20:09:30 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// for libft:
+// for libft (to append char* to char**):
 char **strings_append(char **strings, char *appendix)
 {
 	char	**new_strings;
@@ -21,19 +21,35 @@ char **strings_append(char **strings, char *appendix)
 	s_count = 0;
 	if (!appendix)
 		return (strings);
-	while (strings[s_count])
+	while (strings && strings[s_count])
 		s_count++;
-	new_strings = ft_calloc(s_count + 1, sizeof(char *));
+	new_strings = ft_calloc(s_count + 2, sizeof(char *));
 	if (!new_strings)
 		return (strings);
 	s_count = 0;
-	while (strings[s_count])
+	while (strings && strings[s_count])
 	{
 		new_strings[s_count] = strings[s_count];
 		s_count++;
 	}
 	new_strings[s_count] = ft_strdup(appendix);
+	new_strings[s_count + 1] = NULL;
 	return (new_strings);
+}
+// for libft (to print out char**):
+void str_print(char **strings)
+{
+	int i;
+	i = 0;
+
+	if (!strings)
+		printf("{NULL}\n");
+	while (strings && strings[i])
+	{
+		printf("%d: %s\n", i, strings[i]);
+		i++;
+	}
+	printf("%d: %s\n", i, "NULL");
 }
 
 int	main(int ac, char **av, char **envp)
@@ -69,7 +85,7 @@ int	main(int ac, char **av, char **envp)
 			// if (CTRL+D)
 			//		built_in_exit();
 			// lexer: turns input into token_list; stores token_list in msh.tokens
-			lexer(&msh, rl_chunk, &msh.tokens);
+			lexer(&msh, rl_chunk);
 			if (rl_chunk)
 				free(rl_chunk);
 			// parser: takes list of tokens and turns it (with expansions) into list of one or several commands (=command chain)
@@ -89,7 +105,7 @@ int	main(int ac, char **av, char **envp)
 			{
 				if (msh.tokens)
 				{
-					parser(&msh, &msh.tokens, msh.commands);
+					parser(&msh);
 					execute(&msh, msh.commands);
 					ft_lstclear(&msh.tokens, destroy_token);
 					ft_lstclear(&msh.commands, destroy_command);

@@ -121,11 +121,7 @@ char    *read_word(char **input)
         (*input) += 1;
     }
     if (in_quotes)
-    {
-        ms_error(ER_QUOTES);    // throw syntax error: unclosed quotes...
-        free_null((void**)word);
-        return (NULL);
-    }
+        return (free_null((void**)&word), NULL);
     return (word);
 }
 
@@ -157,7 +153,7 @@ t_redir_detail  *read_redir(char **input)
 }
 
 // turns input into token_list; stores token_list in msh.tokens
-int lexer(t_msh *msh, char *input, t_tokens **tokens)
+int lexer(t_msh *msh, char *input)
 {
     t_redir_detail  *redir;
     char            *word;
@@ -167,14 +163,14 @@ int lexer(t_msh *msh, char *input, t_tokens **tokens)
     if (ft_strcmp(input, "exit") == SUCCESS)
         ms_exit(msh, EXIT_SUCCESS);
     if (ft_strcmp(input, "pipe") == SUCCESS)
-         msh->last_token = token_add(tokens, TK_PIPE, 0, NULL);
+         msh->last_token = token_add(&msh->tokens, TK_PIPE, 0, NULL);
     while (*input)
     {
         if (*input == '<' || *input == '>')
         {
             redir = read_redir(&input);
             if (redir)
-                msh->last_token = token_add(tokens, TK_REDIR, NULL, redir);
+                msh->last_token = token_add(&msh->tokens, TK_REDIR, NULL, redir);
             else
             {   // TODO: there was a problem reading the redirection...
                 msh->err_syntax = true;
@@ -184,13 +180,13 @@ int lexer(t_msh *msh, char *input, t_tokens **tokens)
         }
         else if (*input == '|')
         {
-            if (msh->last_token && msh->last_token->tk_type == TK_PIPE)
-            {    // TODO throw syntax error: 2 pipes in a row...
+            if (!msh->last_token || msh->last_token->tk_type == TK_PIPE)
+            {    // TODO throw syntax error: 2 pipes in a row or pipe is first token...
                 msh->err_syntax = true;
                 msh->unexpected_token = "|";
                 break;
             }
-             msh->last_token = token_add(tokens, TK_PIPE, NULL, NULL);
+             msh->last_token = token_add(&msh->tokens, TK_PIPE, NULL, NULL);
              input++;
         }
         else if (is_shell_space(*input))
@@ -199,7 +195,7 @@ int lexer(t_msh *msh, char *input, t_tokens **tokens)
         {
             word = read_word(&input);
             if (word)
-                msh->last_token = token_add(tokens, TK_WORD, word, NULL);
+                msh->last_token = token_add(&msh->tokens, TK_WORD, word, NULL);
             else
             {   // TODO: there was a problem reading the word...
                 msh->err_syntax = true;
@@ -208,7 +204,7 @@ int lexer(t_msh *msh, char *input, t_tokens **tokens)
             }
         }
     }
-    print_tokens(tokens);
+    print_tokens(&msh->tokens);
     if (msh->last_token && msh->last_token->tk_type == TK_PIPE)
         msh->mult_line_input = true;
     else

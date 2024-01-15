@@ -41,18 +41,19 @@ char **strings_append(char **strings, char *appendix)
 	s_count = 0;
 	if (!appendix)
 		return (strings);
-	while (strings[s_count])
+	while (strings && strings[s_count])
 		s_count++;
-	new_strings = ft_calloc(s_count + 1, sizeof(char *));
+	new_strings = ft_calloc(s_count + 2, sizeof(char *));
 	if (!new_strings)
 		return (strings);
 	s_count = 0;
-	while (strings[s_count])
+	while (strings && strings[s_count])
 	{
 		new_strings[s_count] = strings[s_count];
 		s_count++;
 	}
 	new_strings[s_count] = ft_strdup(appendix);
+	new_strings[s_count + 1] = NULL;
 	return (new_strings);
 }
 
@@ -61,11 +62,14 @@ void str_print(char **strings)
 	int i;
 	i = 0;
 
-	while (strings[i])
+	if (!strings)
+		printf("{NULL}\n");
+	while (strings && strings[i])
 	{
-		printf("%s\n", strings[i]);
+		printf("%d: %s\n", i, strings[i]);
 		i++;
 	}
+	printf("%d: %s\n", i, "NULL");
 }
 int	main()
 {
@@ -75,7 +79,11 @@ int	main()
 
 	strings = NULL;
 	str_print(strings);
-	strings_append(strings, "hello");
+	printf("before append\n");
+	strings = strings_append(strings, "hello");
+	strings = strings_append(strings, "-asd");
+	strings = strings_append(strings, "thats it");
+	printf("after append\n");
 	str_print(strings);
 	int	a;
 	int b;

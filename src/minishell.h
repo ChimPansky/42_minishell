@@ -26,6 +26,8 @@ typedef struct s_redir_detail
 	char			*doc;
 }		t_redir_detail;
 
+typedef t_list t_redirections;
+
 // words: sindle quote, dquote, wildcard
 typedef enum e_token_type
 {
@@ -125,6 +127,7 @@ typedef int (*t_built_in)(t_msh *msh, char **cmd_with_args);
 //minishell.c
 // for libft:
 char **strings_append(char **strings, char *appendix);
+void str_print(char **strings);
 
 // TODO Vova:
 int execute(t_msh *msh, t_command_chain *cmds);
@@ -154,11 +157,10 @@ void 	execute_by_cmd_with_args(t_msh *msh, char **cmd_with_arguments);
 t_built_in get_built_in_by_name(char *func_name);
 
 // lexer.c
-int 	lexer(t_msh *msh, char *input, t_tokens **tokens);
-void	print_tokens(t_tokens **tokens);
+int 	lexer(t_msh *msh, char *input);
 
 // parser.c
-int 	parser(t_msh *msh, t_tokens **tokens, t_command_chain *cmds);
+int 	parser(t_msh *msh);
 
 // destroy.c
 void	destroy(t_msh *msh);
@@ -167,10 +169,12 @@ void	destroy(t_msh *msh);
 t_token		*token_add(t_tokens **tokens, t_token_type tk_type,
 						char *str, t_redir_detail *redir);
 void 		destroy_token(void *token_void);
+void	print_tokens(t_tokens **tokens);
 
 // list_commands.c
 t_simple_command	*command_add(t_command_chain **commands, char **cmd_with_args, t_list *redirections);
-void 		destroy_command(void *command_void);
+void 	destroy_command(void *command_void);
+void	print_commands(t_command_chain **commands);
 
 // list_variables.c
 t_var 		*var_find(t_variables *vars, const char *name);
