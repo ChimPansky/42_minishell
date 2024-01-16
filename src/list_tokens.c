@@ -1,7 +1,7 @@
 #include "minishell.h"
 #include "libft.h"
 
-t_redir_detail	*redir_detail_create(t_redir_type fd_type, char *doc)
+t_redir_detail	*redir_detail_create(t_redir_type fd_type, char *str)
 {
 	t_redir_detail	*redir;
 
@@ -10,17 +10,17 @@ t_redir_detail	*redir_detail_create(t_redir_type fd_type, char *doc)
 		return (NULL);
 	ft_bzero(redir, sizeof(redir));
 	redir->type = fd_type;
-	if (doc)
+	if (str)
 	{
-		redir->doc = ft_strdup(doc);
-		if (!redir->doc)
+		redir->str = ft_strdup(str);
+		if (!redir->str)
 			return (free(redir), NULL);
 	}
 	return (redir);
 }
 
 t_token		*token_add(t_tokens **tokens, t_token_type tk_type,
-						char *str, t_redir_detail *redir)
+						char *word, t_redir_detail *redir)
 {
 	t_token 		*token;
 
@@ -37,14 +37,14 @@ t_token		*token_add(t_tokens **tokens, t_token_type tk_type,
 	}
 	else
 	{
-		if (str)
+		if (word)
 		{
-			token->str = ft_strdup(str);
-			if (!token->str)
+			token->word = ft_strdup(word);
+			if (!token->word)
 				return (free(token), NULL);
 		}
 		else
-			token->str = NULL;
+			token->word = NULL;
 	}
 	t_tokens *new_token = ft_lstnew(token);
 	if (!new_token)
@@ -59,12 +59,12 @@ void	destroy_token(void *token_void)
 
 	if (token->tk_type == TK_REDIR && token->redir)
 	{
-		if (token->redir->doc)
-			free(token->redir->doc);
+		if (token->redir->str)
+			free(token->redir->str);
 		free(token->redir);
 	}
-	else if (token->str)
-		free(token->str);
+	else if (token->word)
+		free(token->word);
 	free(token);
 }
 
@@ -74,7 +74,7 @@ void	print_tokens(t_tokens **tokens)
 	t_token		*cur_token;
 	char		*type_text;
 	char		*fd_type;
-	char		*fd_doc;
+	char		*fd_str;
 	int			i;
 
 
@@ -91,12 +91,12 @@ void	print_tokens(t_tokens **tokens)
 		{
 			type_text = "WORD";
 			fd_type = NULL;
-			fd_doc = NULL;
+			fd_str = NULL;
 		}
 		else if (cur_token->tk_type == TK_REDIR)
 		{
 			type_text = "REDIR";
-			fd_doc = cur_token->redir->doc;
+			fd_str = cur_token->redir->str;
 			if (cur_token->redir->type == FD_IN)
 				fd_type = "<";
 			else if (cur_token->redir->type == FD_HEREDOC)
@@ -110,10 +110,10 @@ void	print_tokens(t_tokens **tokens)
 		{
 			type_text = "PIPE";
 			fd_type = NULL;
-			fd_doc = NULL;
+			fd_str = NULL;
 		}
 
-		printf(" {T%d: Type: %s; Str: %s; FD_Type: %s; FD_Doc: %s)} -->\n",  i, type_text, cur_token->str, fd_type, fd_doc);
+		printf(" {T%d: Type: %s; Str: %s; FD_Type: %s; FD_Str: %s)} -->\n",  i, type_text, cur_token->word, fd_type, fd_str);
 		cur_list = cur_list->next;
 		i++;
 	}
@@ -134,7 +134,7 @@ void	print_tokens(t_tokens **tokens)
 // 	while (cur_list && cur_list->content)
 // 	{
 // 		cur_token = cur_list->content;
-// 		printf(" {Token %d (%p): Type: %d; Str: %s Next: %p)} --> ",  i, cur_list, cur_token->tk_type, cur_token->str, cur_list->next);
+// 		printf(" {Token %d (%p): Type: %d; Str: %s Next: %p)} --> ",  i, cur_list, cur_token->tk_type, cur_token->word, cur_list->next);
 // 		cur_list = cur_list->next;
 // 		i++;
 // 	}

@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:43:57 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/01/15 20:33:07 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/01/16 09:04:24 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	print_redirs(t_list **redirections)
 			fd_type = ">>";
 		printf("%d:\n", i);
 		printf("type: %s\n", fd_type);
-		printf("doc: %s\n", redir->doc);
+		printf("str: %s\n", redir->str);
 		cur_redir = cur_redir->next;
 		i++;
 	}

@@ -146,8 +146,8 @@ t_redir_detail  *read_redir(char **input)
     else
         (*input) += 1;
     read_shell_seps(input);
-    redir_detail->doc = read_word(input);
-    if (redir_detail->doc)      // TODO syntax error!
+    redir_detail->str = read_word(input);
+    if (redir_detail->str)      // TODO syntax error!
         return (redir_detail);
     return (free(redir_detail), NULL);
 }
