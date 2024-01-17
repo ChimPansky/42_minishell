@@ -20,7 +20,8 @@ typedef t_list t_variables;
 
 typedef struct s_msh
 {
-	char		pwd[PATH_MAX];
+	char		*rl_input;
+	char		pwd[PATH_MAX + 1];
 	char		*prompt;
 	int			in_fd;
 	int			out_fd;
@@ -33,22 +34,40 @@ typedef struct s_msh
 
 typedef int (*t_built_in)(t_msh *msh, char **cmd_with_args);
 
+// init.c
+void	init(t_msh *msh, char **envp);
+
+// update.c
+void	update_pwd(t_msh *msh);
+void	update_prompt(t_msh *msh);
+void	update(t_msh *msh);
+
+//exit_error.c
+void	ms_exit(t_msh *msh, int error_nr);
+void	ms_error(int error_nr);
+
+// scratches.c
+char 	*find_env(t_msh *msh, const char *var_name);
+bool 	is_empty(const char *str);
+
+// pipex.c
+void 	execute_by_cmd_with_args(t_msh *msh, char **cmd_with_arguments);
+
+// built_ins/built_in.c
 t_built_in get_built_in_by_name(char *func_name);
 
-void	ms_init(t_msh *minish, char **envp);
-void	ms_update(t_msh *minish);
-void	ms_error_exit(t_msh *minish, char *err_msg);
+// parser.c
+int 	parse(t_msh *msh, char *input);
 
-void execute_by_cmd_with_args(t_msh *msh, char **cmd_with_arguments);
-int parse(t_msh *msh, char *input);
+// destroy.c
+void	destroy(t_msh *msh);
 
-char *find_env(t_msh *msh, const char *var_name);
-bool is_empty(const char *str);
-
-t_var *var_find(t_variables *vars, const char *name);
-t_var *var_add(t_variables **vars_p, const char *name, const char *value);
-void var_delete(t_variables **vars_p, const char *name);
+t_var 		*var_find(t_variables *vars, const char *name);
+char		*var_get_value(t_variables *vars, const char *name);
+t_var		*var_set(t_variables **vars_p, const char *name, const char *value);
+t_var 		*var_add(t_variables **vars_p, const char *name, const char *value);
+void 		var_delete(t_variables **vars_p, const char *name);
 t_variables *vars_init_from_envp(char **envp);
-char **vars_convert_to_array(t_variables *vars);
+char 		**vars_convert_to_array(t_variables *vars);
 
 #endif

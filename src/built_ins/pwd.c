@@ -1,23 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_update.c                                        :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/12 11:49:31 by tkasbari          #+#    #+#             */
-/*   Updated: 2023/12/12 23:26:32 by tkasbari         ###   ########.fr       */
+/*   Created: 2023/12/15 17:33:15 by tkasbari          #+#    #+#             */
+/*   Updated: 2023/12/15 17:44:19 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "built_in.h"
 
-void	ms_update(t_msh *minish)
+int	built_in_pwd(t_msh *msh, char **cmd_with_args)
 {
-	getcwd(minish->pwd, PATH_MAX);
-	if (minish->prompt)
-		free_null((void **)&minish->prompt);
-	minish->prompt = ft_strjoin(minish->pwd, ": ");
-	if (!minish->prompt)
-		ms_error_exit(minish, ERR_MALLOC);
+	(void)cmd_with_args;
+
+	update_pwd(msh);
+	if (!msh->pwd)
+		return (errno);
+	printf("%s\n", msh->pwd);
+	return (SUCCESS);
 }

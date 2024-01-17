@@ -29,6 +29,16 @@ void destroy_variable(void *var_void)
 	free(var);
 }
 
+char	*var_get_value(t_variables *vars, const char *name)
+{
+	t_var	*target;
+
+	target = var_find(vars, name);
+	if (!target)
+		return (NULL);
+	return (target->value);
+}
+
 t_var *var_find(t_variables *vars, const char *name)
 {
 	while (vars)
@@ -38,6 +48,23 @@ t_var *var_find(t_variables *vars, const char *name)
 		vars = vars->next;
 	}
 	return NULL;
+}
+t_var	*var_set(t_variables **vars_p, const char *name, const char *value)
+{
+	t_var	*existing_var;
+	char	*new_value;
+
+	if ((existing_var = var_find(*vars_p, name)) != NULL)
+	{
+		new_value = ft_strdup(value);
+		if (!new_value)
+			return (NULL);
+		free(existing_var->value);
+		existing_var->value = new_value;
+		return (existing_var);
+	}
+	else
+		return (var_add(vars_p, name, value));
 }
 
 t_var *var_add(t_variables **vars_p, const char *name, const char *value)
@@ -60,7 +87,10 @@ void var_delete(t_variables **vars_p, const char *name)
 	while (vars)
 	{
 		if (ft_strcmp(((t_var*)vars->content)->name, name) == SUCCESS)
+		{
 			ft_lstdel_node(vars_p, vars, destroy_variable);
+			return ;
+		}
 		vars = vars->next;
 	}
 }

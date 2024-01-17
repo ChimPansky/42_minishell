@@ -1,40 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_error_handling.c                                :+:      :+:    :+:   */
+/*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/29 15:04:32 by tkasbari          #+#    #+#             */
-/*   Updated: 2023/12/12 23:18:29 by tkasbari         ###   ########.fr       */
+/*   Created: 2023/12/12 11:46:05 by tkasbari          #+#    #+#             */
+/*   Updated: 2023/12/17 15:44:39 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ms_error(char *err_msg)
+void	init(t_msh *msh, char **envp)
 {
-	if (errno)
+	ft_bzero(msh, sizeof(t_msh));
+	update_pwd(msh);
+	update_prompt(msh);
+	if (envp && envp[0])
 	{
-		ft_putstr_fd(strerror(errno), STDERR_FILENO);
-		ft_putstr_fd(": ", STDERR_FILENO);
+		msh->env = vars_init_from_envp(envp);
+		if (!msh->env)
+			exit(EXIT_FAILURE);
 	}
-	if (err_msg)
-		ft_putendl_fd(err_msg, STDERR_FILENO);
-}
-
-void	ms_exit(t_msh *minish)
-{
-	//ms_destroy(minish);
-	(void)minish;
-	if (errno)
-		exit(errno);
-	else
-		exit(EXIT_FAILURE);
-}
-
-void	ms_error_exit(t_msh *minish, char *err_msg)
-{
-	ms_error(err_msg);
-	ms_exit(minish);
+	msh->in_fd = STDIN_FILENO;
+	msh->out_fd = STDOUT_FILENO;
+	msh->err_fd = STDERR_FILENO;
+	// char** a = vars_convert_to_array(minish->env);
+	// while (*a)
+	// {
+	// 	printf("%s\n", *a++);
+	// }
 }

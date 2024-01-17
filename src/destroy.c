@@ -1,40 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   destroy.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/12 20:05:41 by tkasbari          #+#    #+#             */
-/*   Updated: 2023/12/17 22:25:05 by tkasbari         ###   ########.fr       */
+/*   Created: 2023/12/15 12:28:07 by tkasbari          #+#    #+#             */
+/*   Updated: 2023/12/17 11:17:36 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int ac, char **av, char **envp)
+void	destroy(t_msh *minish)
 {
-	t_msh	msh;
-	(void) ac;
-	(void) av;
-
-	init(&msh, envp);
-	while(1)
-	{
-		//update(&msh);
-		msh.rl_input = readline(msh.prompt);
-		if (msh.rl_input)
-		{
-			// if (CTRL+D)
-			//		built_in_exit();
-			parse(&msh, msh.rl_input);
-			add_history(msh.rl_input);
-			free(msh.rl_input);
-		}
-		else
-		{
-			perror(NULL);
-			ms_exit(&msh, EXIT_SUCCESS);
-		}
-	}
+	if (minish->rl_input)
+		free_null((void **)&minish->rl_input);
+	if (minish->prompt)
+		free_null((void **)&minish->prompt);
+	// free t_variables env...
+	// free t_variables locals...
 }

@@ -19,7 +19,7 @@ char *try_find_in_path(t_msh *msh, const char *exec)
 
 	if (path == NULL || is_empty(path))
 		return NULL;
-	path_entries = ft_split(path, ':');
+	path_entries = ft_split(path, ":");
 	if (path_entries == NULL)
 		perror("ft_split"), exit(EXIT_FAILURE);
 	while (*path_entries)
@@ -43,10 +43,10 @@ void execute_by_cmd_with_args(t_msh *msh, char **cmd_with_arguments) {
 	char *exec_with_path;
 
 	if (NULL == envp
-			|| SUCCESS != dup2(msh->in_fd, STDIN_FILENO)
-			|| SUCCESS != dup2(msh->out_fd, STDOUT_FILENO)
-			|| SUCCESS != dup2(msh->err_fd, STDERR_FILENO))
-		exit(EXIT_FAILURE); // ??
+			|| STDIN_FILENO != dup2(msh->in_fd, STDIN_FILENO)
+			|| STDOUT_FILENO != dup2(msh->out_fd, STDOUT_FILENO)
+			|| STDERR_FILENO != dup2(msh->err_fd, STDERR_FILENO))
+		perror(NULL), exit(EXIT_FAILURE);
 	exec_with_path = NULL;
 	if (NULL == strchr(exec, '/'))
 	{

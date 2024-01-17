@@ -1,40 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/12 20:05:41 by tkasbari          #+#    #+#             */
-/*   Updated: 2023/12/17 22:25:05 by tkasbari         ###   ########.fr       */
+/*   Created: 2023/12/15 17:33:15 by tkasbari          #+#    #+#             */
+/*   Updated: 2023/12/17 15:29:55 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "built_in.h"
 
-int	main(int ac, char **av, char **envp)
+int	built_in_unset(t_msh *msh, char **cmd_with_args)
 {
-	t_msh	msh;
-	(void) ac;
-	(void) av;
+	int	i;
 
-	init(&msh, envp);
-	while(1)
+	i = 1;
+	// problem with unsetting several variables at the same time...
+	while (cmd_with_args[i])
 	{
-		//update(&msh);
-		msh.rl_input = readline(msh.prompt);
-		if (msh.rl_input)
-		{
-			// if (CTRL+D)
-			//		built_in_exit();
-			parse(&msh, msh.rl_input);
-			add_history(msh.rl_input);
-			free(msh.rl_input);
-		}
+		if (1)	// validate var_name...
+			var_delete(&msh->env, cmd_with_args[i]);
 		else
-		{
-			perror(NULL);
-			ms_exit(&msh, EXIT_SUCCESS);
-		}
+			printf("unset: invalid variable name"); // error handling...
+		i++;
 	}
+	return (SUCCESS);
 }

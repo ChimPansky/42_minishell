@@ -16,6 +16,7 @@ enum fd_type {
     OUT_FILE_APPEND,
 };
 
+
 int execute_in_subshell(t_msh *msh, char **cmd_with_args)
 {
     // char **curr_token;
@@ -34,7 +35,7 @@ int execute_in_subshell(t_msh *msh, char **cmd_with_args)
 // tokens gonna be linked list
 int parse(t_msh *msh, char *input)
 {
-    char **tokens = ft_split(input, ' '); // (ft_split, many seps)
+    char **tokens = ft_split(input, " \t"); // (ft_split, many seps)
     // int pipefds[2];
     char *cmd_with_args[10] = {};
     int i = 0;
