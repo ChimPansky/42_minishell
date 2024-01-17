@@ -13,15 +13,19 @@ MS_HEADER = $(SOURCE_DIR)/$(NAME).h
 include $(LIBFT_DIR)/colors.mk
 
 MS_FILENAMES = \
-	minishell.c \
 	destroy.c \
 	exit_error.c \
+	expander.c \
 	init.c \
-	update.c \
-	pipex.c \
+	lexer.c \
+	list_commands.c \
+	list_tokens.c \
+	list_variables.c \
+	minishell.c \
 	parser.c \
-	variables.c \
-	scratches.c
+	pipex.c \
+	scratches.c \
+	update.c
 
 MS_FILENAMES += \
 	$(BUILT_INS_DIR)/built_in.c \

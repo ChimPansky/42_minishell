@@ -6,12 +6,13 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 17:33:15 by tkasbari          #+#    #+#             */
-/*   Updated: 2023/12/17 15:43:43 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/01/09 19:36:49 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "built_in.h"
 
+// ask peers
 int	built_in_env(t_msh *msh, char **cmd_with_args)
 {
 	(void)msh;

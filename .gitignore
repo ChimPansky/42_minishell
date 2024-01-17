@@ -12,6 +12,7 @@ minishell
 *.so
 *.a
 test.c
+test_list.c
 
 # Prerequisites
 *.d

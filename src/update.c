@@ -6,9 +6,11 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 11:49:31 by tkasbari          #+#    #+#             */
-/*   Updated: 2023/12/17 22:35:50 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/01/14 14:11:32 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+
 
 #include "minishell.h"
 
@@ -19,7 +21,7 @@ void	update_pwd(t_msh *msh)
 		ft_strlcpy(msh->pwd, "Unknown", ft_strlen("Unknown") + 1);
 		errno = 1;
 		//perror("pwd: error retrieving current working directory: getcwd");
-		ms_error(0);
+		ms_error(ER_UNDEFINED);
 	}
 }
 

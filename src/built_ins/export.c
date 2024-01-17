@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 17:33:15 by tkasbari          #+#    #+#             */
-/*   Updated: 2023/12/17 14:57:57 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/01/09 19:42:40 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,11 @@ int	built_in_export(t_msh *msh, char **cmd_with_args)
 			*pos_equals = '\0';
 			var_value = pos_equals + 1;
 			if (!var_set(&msh->env, var_name, var_value))
-				return (1);
+				return (!SUCCESS);
 		}
 		else
 		{
-			//find local variable with name == var_name and copy (export) it to env
+			//find local variable with name == var_name and copy (export) it to env or if not exist, export with empty value
 			var_value = "";
 		}
 		i++;
