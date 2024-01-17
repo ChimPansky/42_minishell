@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 15:04:32 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/01/14 14:14:32 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/01/17 10:33:31 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,15 @@ void	ms_error_msg(int error_nr, char *err_info)
 		ft_putendl_fd("Readline error.", STDERR_FILENO);
 	else if (error_nr == ER_MALLOC)
 		ft_putendl_fd("Memory Allocation Error.", STDERR_FILENO);
+	else if (error_nr == ER_AMBIGUOUS_REDIRECT)
+	{
+		if (err_info)
+		{
+			ft_putstr_fd(err_info, STDERR_FILENO);
+			ft_putendl_fd(": ", STDERR_FILENO);
+		}
+		ft_putendl_fd("ambiguous redirect", STDERR_FILENO);
+	}
 }
 
 void	ms_error(int error_nr)

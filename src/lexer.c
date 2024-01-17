@@ -108,16 +108,13 @@ char    *read_word(char **input)
     {
         if (!in_quotes && is_word_sep(**input))
             break;
-        else if (!in_quotes && (**input == '\'' || **input == '"')) // found opening quote
+        if (!in_quotes && (**input == '\'' || **input == '"')) // found opening quote
             in_quotes = **input;
         else if (**input == in_quotes)  // found closing quote
             in_quotes = 0;
-        else
-        {
-            word = add_to_word(&word, **input);
-            if (!word)
-                return (NULL);
-        }
+        word = add_to_word(&word, **input);
+        if (!word)
+            return (NULL);
         (*input) += 1;
     }
     if (in_quotes)
@@ -173,8 +170,8 @@ int lexer(t_msh *msh, char *input)
                 msh->last_token = token_add(&msh->tokens, TK_REDIR, NULL, redir);
             else
             {   // TODO: there was a problem reading the redirection...
-                msh->err_syntax = true;
-                msh->unexpected_token = "newline";
+                msh->err_number = ER_UNEXPECTED_TOKEN;
+                msh->err_info = "newline";
                 break;
             }
         }
@@ -182,8 +179,8 @@ int lexer(t_msh *msh, char *input)
         {
             if (!msh->last_token || msh->last_token->tk_type == TK_PIPE)
             {    // TODO throw syntax error: 2 pipes in a row or pipe is first token...
-                msh->err_syntax = true;
-                msh->unexpected_token = "|";
+                msh->err_number = ER_UNEXPECTED_TOKEN;
+                msh->err_info = "|";
                 break;
             }
              msh->last_token = token_add(&msh->tokens, TK_PIPE, NULL, NULL);
@@ -198,8 +195,8 @@ int lexer(t_msh *msh, char *input)
                 msh->last_token = token_add(&msh->tokens, TK_WORD, word, NULL);
             else
             {   // TODO: there was a problem reading the word...
-                msh->err_syntax = true;
-                msh->unexpected_token = "newline";
+                msh->err_number = ER_UNEXPECTED_TOKEN;
+                msh->err_info = "newline";
                 break;
             }
         }

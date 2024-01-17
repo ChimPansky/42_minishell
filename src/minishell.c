@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 20:05:41 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/01/16 09:00:30 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/01/17 13:27:09 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ int	main(int ac, char **av, char **envp)
 	(void) ac;
 	(void) av;
 
+	// add parameter check? are we allowed to caall for example: ./minishell arg1 arg2...
 	init(&msh, envp);
 	while(1)
 	{
@@ -84,20 +85,23 @@ int	main(int ac, char **av, char **envp)
 
 			// if (CTRL+D)
 			//		built_in_exit();
-			
+
 			// lexer: turns input into token_list; stores token_list in msh.tokens
-			lexer(&msh, rl_chunk);
+			// expander: scans through token_list and looks for $-signs to expand
+			// parser: takes list of tokens and turns it (with expansions) into list of one or several commands (=command chain)
+			// executor: takes list of commands command chain and executes them (piping them together); Bonus: executor also has to be able to logically connect commands (&&, ||)
+			if (lexer(&msh, rl_chunk) == SUCCESS)
+				expander(&msh);
 			if (rl_chunk)
 				free(rl_chunk);
-			// parser: takes list of tokens and turns it (with expansions) into list of one or several commands (=command chain)
-			if (msh.err_syntax)
-				ms_error_msg(ER_UNEXPECTED_TOKEN, msh.unexpected_token);
+			if (msh.err_number)
+				ms_error_msg(msh.err_number, msh.err_info);
 			else if (!msh.mult_line_input && msh.tokens)
 			{
-					parser(&msh);
-					execute(&msh, msh.commands);
+				parser(&msh);
+				execute(&msh, msh.commands);
 			}
-			if (msh.err_syntax || !msh.mult_line_input)
+			if (msh.err_number || !msh.mult_line_input)
 			{
 				ft_lstclear(&msh.tokens, destroy_token);
 				msh.last_token = NULL;
@@ -109,8 +113,8 @@ int	main(int ac, char **av, char **envp)
 					free_null((void **)&msh.rl_input);
 				}
 				msh.mult_line_input = false;
-				msh.err_syntax = false;
-				msh.unexpected_token = NULL;
+				msh.err_number = SUCCESS;
+				msh.err_info = NULL;
 			}
 		}
 	}

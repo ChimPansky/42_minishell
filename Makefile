@@ -15,6 +15,7 @@ include $(LIBFT_DIR)/colors.mk
 MS_FILENAMES = \
 	destroy.c \
 	exit_error.c \
+	expander.c \
 	init.c \
 	lexer.c \
 	list_commands.c \

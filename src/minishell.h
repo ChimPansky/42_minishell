@@ -45,7 +45,8 @@ typedef enum e_ms_error
     ER_QUOTES,
 	ER_UNEXPECTED_TOKEN,
 	ER_READLINE,
-	ER_MALLOC
+	ER_MALLOC,
+	ER_AMBIGUOUS_REDIRECT
 }		t_ms_error;
 
 typedef t_list t_tokens;
@@ -113,8 +114,8 @@ typedef struct s_msh
 	int				err_fd;
 	int				last_exit_code;
 	int				pid_to_wait;
-	bool			err_syntax;
-	char			*unexpected_token;
+	int				err_number;
+	char			*err_info;
 	t_tokens		*tokens;
 	t_token			*last_token;
 	t_command_chain	*commands;
@@ -158,6 +159,10 @@ t_built_in get_built_in_by_name(char *func_name);
 
 // lexer.c
 int 	lexer(t_msh *msh, char *input);
+char    *add_to_word(char **word, char new_char);
+
+// expander.c
+int 	expander(t_msh *msh);
 
 // parser.c
 int 	parser(t_msh *msh);
