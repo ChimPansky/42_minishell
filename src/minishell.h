@@ -20,6 +20,7 @@ typedef enum e_redir_type
     FD_OUT_APPEND
 }		t_redir_type;
 
+// str will be input read with heredoc instead of heredoc delimiter
 typedef struct s_redir_detail
 {
 	t_redir_type	type;

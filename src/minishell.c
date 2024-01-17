@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 20:05:41 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/01/17 13:27:09 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/01/17 14:28:08 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int	main(int ac, char **av, char **envp)
 			// lexer: turns input into token_list; stores token_list in msh.tokens
 			// expander: scans through token_list and looks for $-signs to expand
 			// parser: takes list of tokens and turns it (with expansions) into list of one or several commands (=command chain)
-			// executor: takes list of commands command chain and executes them (piping them together); Bonus: executor also has to be able to logically connect commands (&&, ||)
+			// executor: takes list of commands command chain and executes them (piping them together); Bonus: executor also has to be able to logically connect commands (&&, || )
 			if (lexer(&msh, rl_chunk) == SUCCESS)
 				expander(&msh);
 			if (rl_chunk)
