@@ -119,24 +119,3 @@ void	print_tokens(t_tokens **tokens)
 	}
 	printf("\n");
 }
-
-// void	print_tokens(t_tokens **tokens)
-// {
-// 	t_tokens	*cur_list;
-// 	t_token		*cur_token;
-// 	int			i;
-
-// 	if (!tokens)
-// 		return ;
-// 	printf("token_list: ");
-// 	cur_list = *tokens;
-// 	i = 0;
-// 	while (cur_list && cur_list->content)
-// 	{
-// 		cur_token = cur_list->content;
-// 		printf(" {Token %d (%p): Type: %d; Str: %s Next: %p)} --> ",  i, cur_list, cur_token->tk_type, cur_token->word, cur_list->next);
-// 		cur_list = cur_list->next;
-// 		i++;
-// 	}
-// 	printf("\n");
-// }

@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 11:46:05 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/01/12 14:56:29 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/01/18 16:32:47 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,4 @@ void	init(t_msh *msh, char **envp)
 	msh->in_fd = STDIN_FILENO;
 	msh->out_fd = STDOUT_FILENO;
 	msh->err_fd = STDERR_FILENO;
-	// char** a = vars_convert_to_array(minish->env);
-	// while (*a)
-	// {
-	// 	printf("%s\n", *a++);
-	// }
 }
