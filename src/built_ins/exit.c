@@ -12,7 +12,7 @@
 
 #include "built_in.h"
 
-int	built_in_exit(t_msh *msh, char **cmd_with_args, int out_fd)
+int	built_in_exit(t_msh *msh, char **cmd_with_args, int fd_out)
 {
 	ft_printf_fd(STDERR_FILENO, "exit\n");
 	if (cmd_with_args[2])

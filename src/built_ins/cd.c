@@ -13,7 +13,7 @@
 #include "built_in.h"
 
 // TODO '~', '-'
-int	built_in_cd(t_msh *msh, char **cmd_with_args, int out_fd)
+int	built_in_cd(t_msh *msh, char **cmd_with_args, int fd_out)
 {
 	int		return_code;
 	char	*dir;
@@ -32,7 +32,7 @@ int	built_in_cd(t_msh *msh, char **cmd_with_args, int out_fd)
 		dir = cmd_with_args[1]; // implement cd - ?
 	return_code = chdir(dir);
 	if (return_code != 0)	//error_handling...
-		dprintf(out_fd, "cd: error\n");
+		dprintf(fd_out, "cd: error\n");
 	else
 	{
 		// var_set OLD_PWD...

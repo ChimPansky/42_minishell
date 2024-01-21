@@ -110,8 +110,8 @@ typedef struct s_msh
 	char			*prompt;
 	const char		*mult_line_prompt;
 	bool			mult_line_input;
-	int				in_fd;
-	int				out_fd;
+	int				fd_in;
+	int				fd_out;
 	int				last_exit_code;
 	int				pid_to_wait;
 	int				err_number;
@@ -123,7 +123,7 @@ typedef struct s_msh
 	t_variables		*locals;
 }			t_msh;
 
-typedef int (*t_built_in)(t_msh *msh, char **cmd_with_args, int out_fd);
+typedef int (*t_built_in)(t_msh *msh, char **cmd_with_args, int fd_out);
 
 //minishell.c
 // for libft:

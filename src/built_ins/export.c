@@ -13,7 +13,7 @@
 #include "built_in.h"
 
 // TODO export no args print variables
-int	built_in_export(t_msh *msh, char **cmd_with_args, int out_fd)
+int	built_in_export(t_msh *msh, char **cmd_with_args, int fd_out)
 {
 	int	i;
 	char	*var_name;

@@ -37,14 +37,14 @@ int execute(t_msh *msh, t_command_chain *cmds)
     //     if (ft_strncmp(*tokens, ">", 2) == SUCCESS) {
     //         // *tokens = "SKIP";
     //         tokens++;
-    //         // close(msh->out_fd); // in subprocess to not close stdin/out/err
-    //         msh->out_fd = open(*tokens, O_TRUNC | O_CREAT | O_WRONLY, 0644);
+    //         // close(msh->fd_out); // in subprocess to not close stdin/out/err
+    //         msh->fd_out = open(*tokens, O_TRUNC | O_CREAT | O_WRONLY, 0644);
     //         // *tokens = "SKIP";
     //     } else if (ft_strncmp(*tokens, "<", 2) == SUCCESS) {
     //         // *tokens = "SKIP";
     //         tokens++;
-    //         // close(msh->in_fd);
-    //         msh->in_fd = open(*tokens, O_RDONLY);
+    //         // close(msh->fd_in);
+    //         msh->fd_in = open(*tokens, O_RDONLY);
     //         // *tokens = "SKIP";
     //     } else {
     //         cmd_with_args[i++] = ft_strdup(*tokens);
@@ -58,8 +58,8 @@ int execute(t_msh *msh, t_command_chain *cmds)
     //     msh->last_exit_code = f(msh, cmd_with_args);
     // else
     //     msh->last_exit_code = execute_in_subshell(msh, cmd_with_args);
-    // msh->in_fd = STDIN_FILENO;
-    // msh->out_fd = STDOUT_FILENO;
+    // msh->fd_in = STDIN_FILENO;
+    // msh->fd_out = STDOUT_FILENO;
     return 0;
 }
 
@@ -106,8 +106,8 @@ void execute_by_cmd_with_args(t_msh *msh, char **cmd_with_arguments) {
 	char *exec_with_path;
 
 	if (NULL == envp
-			|| STDIN_FILENO != dup2(msh->in_fd, STDIN_FILENO)
-			|| STDOUT_FILENO != dup2(msh->out_fd, STDOUT_FILENO))
+			|| STDIN_FILENO != dup2(msh->fd_in, STDIN_FILENO)
+			|| STDOUT_FILENO != dup2(msh->fd_out, STDOUT_FILENO))
 		perror(NULL), exit(EXIT_FAILURE);
 	exec_with_path = NULL;
 	if (NULL == strchr(exec, '/'))

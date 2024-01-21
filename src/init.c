@@ -24,8 +24,8 @@ void	init(t_msh *msh, char **envp)
 		if (!msh->env)
 			exit(EXIT_FAILURE);
 	}
-	msh->in_fd = STDIN_FILENO;
-	msh->out_fd = STDOUT_FILENO;
+	msh->fd_in = STDIN_FILENO;
+	msh->fd_out = STDOUT_FILENO;
 	// char** a = vars_convert_to_array(minish->env);
 	// while (*a)
 	// {
