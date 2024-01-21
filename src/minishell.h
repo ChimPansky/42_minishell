@@ -112,7 +112,6 @@ typedef struct s_msh
 	bool			mult_line_input;
 	int				in_fd;
 	int				out_fd;
-	int				err_fd;
 	int				last_exit_code;
 	int				pid_to_wait;
 	int				err_number;
@@ -124,7 +123,7 @@ typedef struct s_msh
 	t_variables		*locals;
 }			t_msh;
 
-typedef int (*t_built_in)(t_msh *msh, char **cmd_with_args);
+typedef int (*t_built_in)(t_msh *msh, char **cmd_with_args, int out_fd);
 
 //minishell.c
 // for libft:

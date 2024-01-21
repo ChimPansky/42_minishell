@@ -12,7 +12,7 @@
 
 #include "built_in.h"
 
-int	built_in_unset(t_msh *msh, char **cmd_with_args)
+int	built_in_unset(t_msh *msh, char **cmd_with_args, int out_fd)
 {
 	int	i;
 
@@ -23,7 +23,7 @@ int	built_in_unset(t_msh *msh, char **cmd_with_args)
 		if (1)	// validate var_name...
 			var_delete(&msh->env, cmd_with_args[i]);
 		else
-			printf("unset: invalid variable name"); // error handling...
+			dprintf(out_fd, "unset: invalid variable name"); // stderr or out? error handling...
 		i++;
 	}
 	return (SUCCESS);

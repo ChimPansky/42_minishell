@@ -31,7 +31,7 @@ static bool	has_n_flag(char	**cmd_with_args)
 	return (n_flag);
 }
 
-int	built_in_echo(t_msh *msh, char **cmd_with_args)
+int	built_in_echo(t_msh *msh, char **cmd_with_args, int out_fd)
 {
 	const bool	n_flag = has_n_flag(cmd_with_args);
 	int		i;
@@ -42,13 +42,13 @@ int	built_in_echo(t_msh *msh, char **cmd_with_args)
 	{
 		if (i > 1 || ((i == 1) && !n_flag))
 		{
-			printf("%s", cmd_with_args[i]);
+			dprintf(out_fd, "%s", cmd_with_args[i]);
 			if (cmd_with_args[i + 1])
-				printf(" ");
+				dprintf(out_fd, " ");
 		}
 		i++;
 	}
 	if (!n_flag)
-		printf("\n");
+		dprintf(out_fd, "\n");
 	return (SUCCESS);
 }

@@ -13,7 +13,7 @@
 #include "built_in.h"
 
 // ask peers
-int	built_in_env(t_msh *msh, char **cmd_with_args)
+int	built_in_env(t_msh *msh, char **cmd_with_args, int out_fd)
 {
 	(void)msh;
 	(void)cmd_with_args;
@@ -23,7 +23,7 @@ int	built_in_env(t_msh *msh, char **cmd_with_args)
 	if (!key_value_pairs)	// error_handling...
 		return (1);
 	while (key_value_pairs && *key_value_pairs)
-		printf("%s\n", *key_value_pairs++);
+		dprintf(out_fd, "%s\n", *key_value_pairs++);
 	// free char **key_value_pairs...
 	return (0);
 }

@@ -18,48 +18,38 @@ int execute_in_subshell(t_msh *msh, char **cmd_with_args)
     return 0;
 }
 
-// tokens gonna be linked list
+
+int one_cmd_in_chain_execute(t_msh *msh, t_simple_command *cmd)
+{
+    int res;
+    t_built_in func;
+    if (!cmd || !cmd->cmd_with_args)
+        return (printf("cmd is empty. this should not happen"), 0);
+    int in_fd = -1, out_fd = -1;
+    t_redirections curr;
+    curr = cmd->redirections;
+    while (curr)
+    {
+        process_redirection(&in_fd, &out_fd);    
+        curr = curr->next;
+    }
+    func = get_built_in_by_name(cmd_with_args[0]);    
+	if (func != NULL)
+        res = func(msh, cmd->cmd_with_args, out_fd);
+    else
+        res = execute_external(msh, cbd->cmd_with_args, in_fd, out_fd);
+    ((in_fd > 2 && close(in_fd)), (out_fd > 0 && close(out_fd)));
+
+}
+
 int execute(t_msh *msh, t_command_chain *cmds)
 {
-    (void)msh;
-    (void)cmds;
-    printf("executing command_chain...\n");
-    // char **tokens = ft_split(input, " \t");
-    // // int pipefds[2];
-    // char *cmd_with_args[10] = {};
-    // int i = 0;
-
-    // if (!tokens)
-    //     exit(EXIT_FAILURE);
-    // // char **cur_start_token = tokens;
-    // while (*tokens)
-    // {
-    //     if (ft_strncmp(*tokens, ">", 2) == SUCCESS) {
-    //         // *tokens = "SKIP";
-    //         tokens++;
-    //         // close(msh->out_fd); // in subprocess to not close stdin/out/err
-    //         msh->out_fd = open(*tokens, O_TRUNC | O_CREAT | O_WRONLY, 0644);
-    //         // *tokens = "SKIP";
-    //     } else if (ft_strncmp(*tokens, "<", 2) == SUCCESS) {
-    //         // *tokens = "SKIP";
-    //         tokens++;
-    //         // close(msh->in_fd);
-    //         msh->in_fd = open(*tokens, O_RDONLY);
-    //         // *tokens = "SKIP";
-    //     } else {
-    //         cmd_with_args[i++] = ft_strdup(*tokens);
-    //     }
-    //     tokens++;
-    // }
-    // cmd_with_args[i] = NULL;
-    // print_splitted(cmd_with_args);
-    // t_built_in f = get_built_in_by_name(cmd_with_args[0]);
-    // if (f != NULL)
-    //     msh->last_exit_code = f(msh, cmd_with_args);
-    // else
-    //     msh->last_exit_code = execute_in_subshell(msh, cmd_with_args);
-    // msh->in_fd = STDIN_FILENO;
-    // msh->out_fd = STDOUT_FILENO;
+    if (!cmds)
+        return (printf("cmds is empty. this should not happen"), 0);
+    if (cmds && !cmds->next)
+        return (one_cmd_in_chain_execute(msh, cmds->content));
+    else
+        execute_on_chain(msh, cmds);
     return 0;
 }
 

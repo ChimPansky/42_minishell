@@ -12,13 +12,13 @@
 
 #include "built_in.h"
 
-int	built_in_pwd(t_msh *msh, char **cmd_with_args)
+int	built_in_pwd(t_msh *msh, char **cmd_with_args, int out_fd)
 {
 	(void)cmd_with_args;
 
 	update_pwd(msh);
 	// if (!msh->pwd)
 	// 	return (errno);
-	printf("%s\n", msh->pwd);
+	dprintf(out_fd, "%s\n", msh->pwd);
 	return (SUCCESS);
 }
