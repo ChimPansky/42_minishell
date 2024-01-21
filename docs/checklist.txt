@@ -80,3 +80,15 @@ bash: exit: too many arguments
 chimpansky@chimpanskyubuntu:~$ exit 2 2 > 1.txt
 exit
 bash: exit: too many arguments
+
+./'()'
+() is a filename
+
+jcy@jcy-xps:~/dev/minishell$ ./..
+bash: ./..: Is a directory
+jcy@jcy-xps:~/dev/minishell$ echo $?
+126
+
+// ?
+jcy@jcy-xps:~/dev/minishell$ echo (echo 2)
+bash: syntax error near unexpected token `echo'

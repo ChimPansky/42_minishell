@@ -39,3 +39,10 @@ Tokenizer: convert whole input into tokens (string:redir_in, pipe:NULL, OB, CB, 
 # Malloc Errors:
 find a nice way to handle them, without exiting the whole minishell.
 when a malloc error in a random function occurs while lexing/parsing/executing/... -> reset and give control back to user (show msh prompt)
+
+# Expression in braces:
+lets create another builtin function "execute_in_subshell with usual signature"
+when lexer finds open brace it creates a token and put content in between braces inside
+when parser turns token to cmd with args with a special executable name
+another option is an actual executor on tree, not on chain
+heredoc will be a problem without trees. mb dump to file and replace with file name
