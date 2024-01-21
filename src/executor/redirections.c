@@ -4,7 +4,7 @@
 
 // assume always \n at the end
 // what if write error?
-int process_heredoc(char *str)
+static int process_heredoc(char *str)
 {
 	char *eol_pos;
 
@@ -22,34 +22,45 @@ int process_heredoc(char *str)
 	return pipe_fds[RD_END];
 }
 
-int process_redirection(t_redir_detail *redir, int *fd_in, int *fd_out)
+static int process_redirection(t_redir_detail *redir, t_executor *executor)
 {
 	if (redir->type == FD_HEREDOC)
 	{
-		if (*fd_in > 2)
-			close(*fd_in);
-		*fd_in = process_heredoc(redir->str);
-		if (*fd_in < 0)
+		if (executor->fd_in > 2)
+			close(executor->fd_in);
+		executor->fd_in = process_heredoc(redir->str);
+		if (executor->fd_in < 0)
 			return (EX_FAILURE);
 	}
 	else if (redir->type == FD_IN)
 	{
-		if (*fd_in > 2)
-			close(*fd_in);
-		*fd_in = open(redir->str, O_RDONLY);
-		if (*fd_in < 0)
+		if (executor->fd_in > 2)
+			close(executor->fd_in);
+		executor->fd_in = open(redir->str, O_RDONLY);
+		if (executor->fd_in < 0)
 			return (perror(redir->str), EX_FAILURE);
 	}
 	else
 	{
-		if (*fd_out > 2)
-			close(*fd_out);
+		if (executor->fd_out > 2)
+			close(executor->fd_out);
 		if (redir->type == FD_OUT_TRUNC)
-			*fd_out = open(redir->str, O_TRUNC | O_CREAT | O_WRONLY, 0644);
+			executor->fd_out = open(redir->str, O_TRUNC | O_CREAT | O_WRONLY, 0644);
 		else
-			*fd_out = open(redir->str, O_APPEND | O_CREAT, 0644);
-		if (*fd_out < 0)
+			executor->fd_out = open(redir->str, O_APPEND | O_CREAT, 0644);
+		if (executor->fd_out < 0)
 			return (perror(redir->str), EX_FAILURE);
+	}
+	return SUCCESS;
+}
+
+int process_redirections(t_executor *executor, t_redirections *redirs)
+{
+	while (redirs)
+	{
+		if (process_redirection(redirs->content, executor) == EX_FAILURE)
+			return (EX_FAILURE);
+		redirs = redirs->next;
 	}
 	return SUCCESS;
 }
