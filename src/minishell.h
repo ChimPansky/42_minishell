@@ -130,6 +130,7 @@ typedef int (*t_built_in)(t_msh *msh, char **cmd_with_args);
 // for libft:
 char **strings_append(char **strings, char *appendix);
 void str_print(char **strings);
+char    *add_to_word(char **word, char new_char);
 
 // TODO Vova:
 int execute(t_msh *msh, t_command_chain *cmds);
@@ -160,7 +161,7 @@ t_built_in get_built_in_by_name(char *func_name);
 
 // lexer.c
 int 	lexer(t_msh *msh, char *input);
-char    *add_to_word(char **word, char new_char);
+
 
 // expander.c
 int 	expander(t_msh *msh);

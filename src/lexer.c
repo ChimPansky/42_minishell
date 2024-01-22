@@ -43,28 +43,7 @@ llist of t_redir_descr
 // EXECUTOR
 
 
-// TODO: MS_WHITESPACES AND MS_SPECIAL_CHARS are macros in ms_macros...
-// should we store info somewhere else?
-bool    is_shell_space(char c)
-{
-    if (c && ft_strchr(MS_WHITESPACES, c))
-        return (true);
-    return (false);
-}
 
-bool    is_shell_special(char c)
-{
-    if (c && ft_strchr(MS_SPECIAL_CHARS, c))
-        return (true);
-    return (false);
-}
-
-bool    is_word_sep(char c)
-{
-    if (!c || is_shell_space(c) || is_shell_special(c))
-        return (true);
-    return (false);
-}
 
 size_t read_shell_seps(char **input)
 {
@@ -77,23 +56,6 @@ size_t read_shell_seps(char **input)
         sep_count++;
     }
     return (sep_count);
-}
-
-char    *add_to_word(char **word, char new_char)
-{
-    char    *new_word;
-    char    appendix[2];
-
-    appendix[0] = new_char;
-    appendix[1] = '\0';
-    if (!*word)
-        new_word = ft_strdup(appendix);
-    else
-    {
-        new_word = ft_strjoin(*word, appendix);
-        free_null((void**)word);
-    }
-    return (new_word);
 }
 
 char    *read_word(char **input)

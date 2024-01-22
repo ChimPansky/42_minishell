@@ -6,23 +6,25 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:30:33 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/01/19 12:55:03 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/01/22 11:29:54 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char    *get_var_name(char **word)
+
+
+char    *get_var_name(char *word)
 {
     char    *var_name;
-
-    (*word) += 1;
     while (!is_var_separator(*word))
     {
-        var_name = add_to_word(&var_name, )
-        //!!!!!!!!!!!!!!!!
+        var_name = add_to_word(&var_name, *word);
+        if (!var_name)
+            return (NULL);
+        word++;
     }
-    return
+    return (var_name);
 }
 
 int expand_word(t_msh *msh, char **to_expand)
@@ -44,7 +46,7 @@ int expand_word(t_msh *msh, char **to_expand)
     {
         if (*word == '$')
         {
-            var.name = get_var_name(&word);
+            var.name = get_var_name(word + 1);
             if (ft_strlen(var.name))
                 var.value = var_get_value(msh->env, var.name);
             else
