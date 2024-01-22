@@ -4,8 +4,8 @@
 # include "../minishell.h"
 
 # define EX_FAILURE -2
-# define WR_END 0
-# define RD_END 1
+# define WR_END 1
+# define RD_END 0
 
 typedef struct s_executor
 {

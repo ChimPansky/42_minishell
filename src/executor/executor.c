@@ -3,8 +3,8 @@
 
 void init_executor(t_executor *exec) {
 	exec->fd_in = STDIN_FILENO;
-	exec->fd_in = STDOUT_FILENO;
-	exec->fd_in = EX_FAILURE;
+	exec->fd_out = STDOUT_FILENO;
+	exec->ret_code = EX_FAILURE;
 }
 
 void destroy_executor(t_executor *exec) {
