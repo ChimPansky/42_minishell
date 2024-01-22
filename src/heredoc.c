@@ -1,5 +1,4 @@
-# include "libft.h"
-
+# include "minishell"
 // cmd d and cmd c check
 // if success return SUCCESS
 // + expansionon the expansion step

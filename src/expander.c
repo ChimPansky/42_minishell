@@ -6,18 +6,13 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:30:33 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/01/22 13:55:47 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/01/22 15:54:16 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static bool    is_var_separator(char c)
-{
-    const char  *var_seps = "$;&|><(){}[],.!?=+-*/%\\'\"";
 
-    return (is_word_sep(c) || ft_strchr(var_seps, c));
-}
 
 char    *get_var_name(char *word)
 {
@@ -77,7 +72,7 @@ int expand_word(t_msh *msh, char **to_expand)
         if (!expanded)  // Malloc Error...
             return (ERROR);
         word++;
-        printf("word: %s\n", word);
+        //printf("word: %s\n", word);
     }
     if (expanded)
     {
@@ -127,7 +122,5 @@ int 	expander(t_msh *msh)
         }
         cur_tokens = cur_tokens->next;
     }
-	printf("printing tokens (after expansion)...\n");
-	print_tokens(&msh->tokens);
 	return (0);
 }

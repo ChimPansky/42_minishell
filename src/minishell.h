@@ -169,8 +169,8 @@ char 		**vars_convert_to_array(t_variables *vars);
 
 // strings.c:
 bool    is_shell_space(char c);
-bool    is_shell_seperator(char c);
-bool    is_word_sep(char c);
+bool    is_token_seperator(char c);
+bool    is_var_separator(char c);
 
 
 #endif

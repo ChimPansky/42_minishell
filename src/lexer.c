@@ -49,7 +49,7 @@ char    *read_word(char **input)
     read_shell_spaces(input);
     while (**input)
     {
-        if (quote_type == 0 && is_word_sep(**input))
+        if (quote_type == 0 && is_token_seperator(**input))
             break;
         if (quote_type == 0 && (**input == '\'' || **input == '"')) // found opening quote
             quote_type = **input;
@@ -115,7 +115,7 @@ int lexer(t_msh *msh, char *input)
             {   // TODO: there was a problem reading the redirection...
                 msh->err_number = ER_UNEXPECTED_TOKEN;
                 msh->err_info = "newline";
-                break;
+                return (ERROR);
             }
         }
         else if (*input == '|')
@@ -124,7 +124,7 @@ int lexer(t_msh *msh, char *input)
             {    // TODO throw syntax error: 2 pipes in a row or pipe is first token...
                 msh->err_number = ER_UNEXPECTED_TOKEN;
                 msh->err_info = "|";
-                break;
+                return (ERROR);
             }
              msh->last_token = token_add(&msh->tokens, TK_PIPE, NULL, NULL);
              input++;
@@ -140,11 +140,11 @@ int lexer(t_msh *msh, char *input)
             {   // TODO: there was a problem reading the word...
                 msh->err_number = ER_UNEXPECTED_TOKEN;
                 msh->err_info = "newline";
-                break;
+                return (ERROR);
             }
         }
     }
-    print_tokens(&msh->tokens);
+
     if (msh->last_token && msh->last_token->tk_type == TK_PIPE)
         msh->mult_line_input = true;
     else
