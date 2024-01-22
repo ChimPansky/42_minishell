@@ -6,17 +6,24 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:30:33 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/01/22 11:29:54 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/01/22 13:55:47 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static bool    is_var_separator(char c)
+{
+    const char  *var_seps = "$;&|><(){}[],.!?=+-*/%\\'\"";
 
+    return (is_word_sep(c) || ft_strchr(var_seps, c));
+}
 
 char    *get_var_name(char *word)
 {
     char    *var_name;
+
+    var_name = NULL;
     while (!is_var_separator(*word))
     {
         var_name = add_to_word(&var_name, *word);
@@ -30,35 +37,53 @@ char    *get_var_name(char *word)
 int expand_word(t_msh *msh, char **to_expand)
 {
     char    *word;
+    char    *to_free;
     char    *expanded;
     t_var   var;
-    size_t  i;
 
-    ft_bzero(&var, sizeof(t_var));
     if (!to_expand || !*to_expand)
         return (ERROR);
     if (!ft_strchr(*to_expand, '$'))
         return (SUCCESS);
-    i = 0;
     word = *to_expand;
-    expanded = NULL;
+    expanded = ft_strdup("");
+    if (!expanded)
+        return (ERROR); // Malloc Error...
     while (*word)
     {
         if (*word == '$')
         {
+            ft_bzero(&var, sizeof(t_var));
             var.name = get_var_name(word + 1);
-            if (ft_strlen(var.name))
+            if (var.name)
+            {
                 var.value = var_get_value(msh->env, var.name);
+                if (var.value)
+                {
+                    to_free = expanded;
+                    expanded = ft_strjoin(expanded, var.value);
+                    if (!expanded)
+                        return (ERROR); // Malloc Error...
+                    free(to_free);
+                    word += ft_strlen(var.name);
+                }
+                free(var.name);
+            }
             else
-                expanded = add_to_word(&expanded, '$');
-
+                expanded = add_to_word(&expanded, *word);
         }
-        expanded = add_to_word(&expanded, word[i]);
+        else
+            expanded = add_to_word(&expanded, *word);
         if (!expanded)  // Malloc Error...
             return (ERROR);
         word++;
+        printf("word: %s\n", word);
     }
-
+    if (expanded)
+    {
+        free(*to_expand);
+        *to_expand = expanded;
+    }
     msh->err_number = SUCCESS;
     return (SUCCESS);
 }

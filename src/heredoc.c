@@ -29,7 +29,7 @@ void	process_here_doc(char **document, char *limiter)
             // ^D message and exit
                 return !SUCCESS;
         }
-		if (ft_strncmp(limiter, line, line_sz - 1) == 0)
+		if (ft_strncmp(limiter, line, line_sz - 1) == MATCH)
 			break ;
 		temp = ft_strjoin(*document, line);
         if (!temp)

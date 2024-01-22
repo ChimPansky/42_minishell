@@ -25,6 +25,7 @@ MS_FILENAMES = \
 	parser.c \
 	pipex.c \
 	scratches.c \
+	strings.c \
 	update.c
 
 MS_FILENAMES += \

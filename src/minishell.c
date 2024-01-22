@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 20:05:41 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/01/22 11:18:55 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/01/22 13:03:04 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,19 +54,22 @@ void str_print(char **strings)
 // for libft (add 1 char to a string):
 char    *add_to_word(char **word, char new_char)
 {
-    char    *new_word;
+	char	*to_free;
     char    appendix[2];
 
+	if (!new_char)
+		return (*word);
     appendix[0] = new_char;
     appendix[1] = '\0';
     if (!*word)
-        new_word = ft_strdup(appendix);
+		*word = ft_strdup(appendix);
     else
     {
-        new_word = ft_strjoin(*word, appendix);
-        free_null((void**)word);
+		to_free = *word;
+        *word = ft_strjoin(*word, appendix);
+        free(to_free);
     }
-    return (new_word);
+    return (*word);
 }
 
 int	main(int ac, char **av, char **envp)

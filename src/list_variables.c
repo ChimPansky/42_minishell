@@ -35,7 +35,7 @@ char	*var_get_value(t_variables *vars, const char *name)
 
 	target = var_find(vars, name);
 	if (!target)
-		return (NULL);
+		return ("");
 	return (target->value);
 }
 

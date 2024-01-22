@@ -29,7 +29,6 @@ typedef struct s_redir_detail
 
 typedef t_list t_redirections;
 
-// words: sindle quote, dquote, wildcard
 typedef enum e_token_type
 {
     TK_WORD,
@@ -52,7 +51,6 @@ typedef enum e_ms_error
 
 typedef t_list t_tokens;
 
-// maybe add union
 typedef struct s_token
 {
 	t_token_type	tk_type;
@@ -71,29 +69,6 @@ typedef struct s_simple_command
 	char	**cmd_with_args;
 	t_list	*redirections; // list of t_redir_details...
 }		t_simple_command;
-
-
-
-// struct for isolated command including arguments
-// e.g.: "ls -l"
-// typedef struct s_command
-// {
-// 	char		*cmd_with_args;
-// 	// redirections
-// 	s_command	*next;
-// }			t_command;
-
-// struct for several commands (can we use t_list instead?)
-// e.g.: "ls -l | cat -e"
-// e.g.: "cat | grep test < infile.txt"
-// ...
-// typedef struct s_command_chain
-// {
-// 	t_command	*cmd_list;
-
-
-// }			t_command_chain;
-// PARSER STUFF END
 
 typedef struct s_var
 {
@@ -191,5 +166,11 @@ t_var 		*var_add(t_variables **vars_p, const char *name, const char *value);
 void 		var_delete(t_variables **vars_p, const char *name);
 t_variables *vars_init_from_envp(char **envp);
 char 		**vars_convert_to_array(t_variables *vars);
+
+// strings.c:
+bool    is_shell_space(char c);
+bool    is_shell_seperator(char c);
+bool    is_word_sep(char c);
+
 
 #endif

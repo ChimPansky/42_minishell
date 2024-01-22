@@ -9,25 +9,6 @@
 // work with braces
 
 
-
-// int token_add_redir(t_msh *msh, t_tokens *tokens, char *input, int *i)
-// {
-
-//     //strcmp(input, ">>") == SUCCESS
-// }
-
-/*
-llist of long cmds:
-
-llist to executor:
-long command:
-
-simple command:
-char **words,
-llist of t_redir_descr
-*/
-
-
 // LEXER (input) -> token list
 //
 // CHECK ERRS:
@@ -45,7 +26,7 @@ llist of t_redir_descr
 
 
 
-size_t read_shell_seps(char **input)
+size_t read_shell_spaces(char **input)
 {
     size_t  sep_count;
 
@@ -61,25 +42,25 @@ size_t read_shell_seps(char **input)
 char    *read_word(char **input)
 {
     char    *word;
-    char    in_quotes;
+    char    quote_type;
 
     word = NULL;
-    in_quotes = 0;
-    read_shell_seps(input);
+    quote_type = 0;
+    read_shell_spaces(input);
     while (**input)
     {
-        if (!in_quotes && is_word_sep(**input))
+        if (quote_type == 0 && is_word_sep(**input))
             break;
-        if (!in_quotes && (**input == '\'' || **input == '"')) // found opening quote
-            in_quotes = **input;
-        else if (**input == in_quotes)  // found closing quote
-            in_quotes = 0;
+        if (quote_type == 0 && (**input == '\'' || **input == '"')) // found opening quote
+            quote_type = **input;
+        else if (**input == quote_type)  // found closing quote
+            quote_type = 0;
         word = add_to_word(&word, **input);
         if (!word)
             return (NULL);
         (*input) += 1;
     }
-    if (in_quotes)
+    if (quote_type != 0)
         return (free_null((void**)&word), NULL);
     return (word);
 }
@@ -91,9 +72,9 @@ t_redir_detail  *read_redir(char **input)
     redir_detail = malloc(sizeof(t_redir_detail));
     if (!redir_detail)
         return (NULL);
-    if (ft_strncmp("<<", *input, 2) == SUCCESS)
+    if (ft_strncmp("<<", *input, 2) == MATCH)
         redir_detail->type = FD_HEREDOC;
-    else if (ft_strncmp(">>", *input, 2) == SUCCESS)
+    else if (ft_strncmp(">>", *input, 2) == MATCH)
         redir_detail->type = FD_OUT_APPEND;
     else if (**input == '<')
         redir_detail->type = FD_IN;
@@ -104,7 +85,7 @@ t_redir_detail  *read_redir(char **input)
         (*input) += 2;
     else
         (*input) += 1;
-    read_shell_seps(input);
+    read_shell_spaces(input);
     redir_detail->str = read_word(input);
     if (redir_detail->str)      // TODO syntax error!
         return (redir_detail);
