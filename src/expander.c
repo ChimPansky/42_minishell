@@ -6,18 +6,33 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:30:33 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/01/17 13:25:40 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/01/19 12:55:03 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+char    *get_var_name(char **word)
+{
+    char    *var_name;
+
+    (*word) += 1;
+    while (!is_var_separator(*word))
+    {
+        var_name = add_to_word(&var_name, )
+        //!!!!!!!!!!!!!!!!
+    }
+    return
+}
+
 int expand_word(t_msh *msh, char **to_expand)
 {
     char    *word;
     char    *expanded;
+    t_var   var;
     size_t  i;
 
+    ft_bzero(&var, sizeof(t_var));
     if (!to_expand || !*to_expand)
         return (ERROR);
     if (!ft_strchr(*to_expand, '$'))
@@ -25,15 +40,21 @@ int expand_word(t_msh *msh, char **to_expand)
     i = 0;
     word = *to_expand;
     expanded = NULL;
-    while (word[i])
+    while (*word)
     {
-        if (word[i] == '$')
+        if (*word == '$')
         {
+            var.name = get_var_name(&word);
+            if (ft_strlen(var.name))
+                var.value = var_get_value(msh->env, var.name);
+            else
+                expanded = add_to_word(&expanded, '$');
 
         }
         expanded = add_to_word(&expanded, word[i]);
         if (!expanded)  // Malloc Error...
             return (ERROR);
+        word++;
     }
 
     msh->err_number = SUCCESS;
