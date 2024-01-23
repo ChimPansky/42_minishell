@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 20:05:41 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/01/22 15:54:50 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/01/23 15:56:07 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ int	main(int ac, char **av, char **envp)
 			// parser: takes list of tokens and turns it (with expansions) into list of one or several commands (=command chain)
 			// executor: takes list of commands command chain and executes them (piping them together); Bonus: executor also has to be able to logically connect commands (&&, || )
 			lexer(&msh, rl_chunk);
+			read_heredocs(&msh);
 			print_tokens(&msh.tokens);
 			if (!msh.err_number)
 				expander(&msh);

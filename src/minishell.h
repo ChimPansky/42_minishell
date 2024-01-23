@@ -11,7 +11,6 @@
 #define  EXIT_PERMISSION_DENIED		126
 
 // PARSER STUFF START
-
 typedef enum e_redir_type
 {
     FD_IN,
@@ -137,6 +136,9 @@ t_built_in get_built_in_by_name(char *func_name);
 // lexer.c
 int 	lexer(t_msh *msh, char *input);
 
+// heredoc.c
+int 	read_heredocs(t_msh *msh);
+int		process_here_doc(char **document, char *limiter);
 
 // expander.c
 int 	expander(t_msh *msh);
@@ -171,6 +173,6 @@ char 		**vars_convert_to_array(t_variables *vars);
 bool    is_shell_space(char c);
 bool    is_token_seperator(char c);
 bool    is_var_separator(char c);
-
+char    *remove_quotes(char **str);
 
 #endif

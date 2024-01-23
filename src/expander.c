@@ -6,13 +6,11 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:30:33 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/01/22 15:54:16 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/01/23 16:15:54 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-
 
 char    *get_var_name(char *word)
 {
@@ -90,8 +88,7 @@ char    **get_word_to_expand(t_token *token)
     to_expand = NULL;
     if (token->tk_type == TK_WORD)
         to_expand = &token->word;
-    else if (token->tk_type == TK_REDIR
-        && token->redir && token->redir->type != FD_HEREDOC)
+    else if (token->tk_type == TK_REDIR && token->redir)
         to_expand = &token->redir->str;
     return (to_expand);
 }
@@ -119,6 +116,8 @@ int 	expander(t_msh *msh)
         {
             if (expand_word(msh, to_expand) != SUCCESS) // ambiguous redirect error if expansion results in empty filename for redirections
                 return (ERROR);
+            if (!(token->tk_type == TK_REDIR && token->redir->type == FD_HEREDOC))     // Heredoc contents keep quotes apparently...
+                remove_quotes(to_expand);
         }
         cur_tokens = cur_tokens->next;
     }

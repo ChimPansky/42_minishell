@@ -16,6 +16,7 @@ MS_FILENAMES = \
 	destroy.c \
 	exit_error.c \
 	expander.c \
+	heredoc.c \
 	init.c \
 	lexer.c \
 	list_commands.c \
