@@ -23,7 +23,7 @@ typedef enum e_redir_type
 typedef struct s_redir_detail
 {
 	t_redir_type	type;
-	char			*str;
+	t_ch_buffer		*str;
 }		t_redir_detail;
 
 typedef t_list t_redirections;
@@ -54,7 +54,7 @@ typedef struct s_token
 {
 	t_token_type	tk_type;
 	union {
-		char			*word;
+		t_ch_buffer		*word;
 		t_redir_detail	*redir;
 		t_tokens		*subshell;		//	only for bonus
 		int				sub_exit_code;	//	only for bonus
