@@ -7,7 +7,6 @@ LIBFT = $(LIBFT_DIR)/libft.a
 IFLAGS = -I $(LIBFT_DIR)/include
 LFLAGS = -lreadline -L$(LIBFT_DIR) -lft
 SOURCE_DIR = src
-BUILT_INS_DIR = built_ins
 MS_HEADER = $(SOURCE_DIR)/$(NAME).h
 
 include $(LIBFT_DIR)/colors.mk
@@ -27,14 +26,14 @@ MS_FILENAMES = \
 	update.c
 
 MS_FILENAMES += \
-	$(BUILT_INS_DIR)/built_in.c \
-	$(BUILT_INS_DIR)/cd.c \
-	$(BUILT_INS_DIR)/echo.c \
-	$(BUILT_INS_DIR)/env.c \
-	$(BUILT_INS_DIR)/exit.c \
-	$(BUILT_INS_DIR)/export.c \
-	$(BUILT_INS_DIR)/pwd.c \
-	$(BUILT_INS_DIR)/unset.c
+	built_ins/built_in.c \
+	built_ins/cd.c \
+	built_ins/echo.c \
+	built_ins/env.c \
+	built_ins/exit.c \
+	built_ins/export.c \
+	built_ins/pwd.c \
+	built_ins/unset.c
 
 MS_FILENAMES += \
 	executor/execute_in_child.c \
