@@ -47,7 +47,7 @@ static int process_redirection(t_redir_detail *redir, t_executor *executor)
 		if (redir->type == FD_OUT_TRUNC)
 			executor->fd_out = open(redir->str, O_TRUNC | O_CREAT | O_WRONLY, 0644);
 		else
-			executor->fd_out = open(redir->str, O_APPEND | O_CREAT, 0644);
+			executor->fd_out = open(redir->str, O_APPEND | O_CREAT | O_WRONLY, 0644);
 		if (executor->fd_out < 0)
 			return (perror(redir->str), EX_FAILURE);
 	}

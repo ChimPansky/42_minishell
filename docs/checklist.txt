@@ -4,7 +4,7 @@
 
 echo before > 1.txt after   // before after
 echo 1321 > 1.txt | cat 	// pipe skipped
-echo 1321 > 1.txt > 2.txt	// first trunkated but skipped
+echo 1321 > 1.txt > 2.txt	// first truncated but skipped
 cat 0>1.txt					// error
 cd - | cat					// works like if cd was forked
 exit | exit 42				// forked exits ret_code 42

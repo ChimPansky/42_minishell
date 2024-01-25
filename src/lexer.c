@@ -137,7 +137,6 @@ t_redir_detail  *read_redir(char **input)
         redir_detail->type = FD_IN;
     else if (**input == '>')
         redir_detail->type = FD_OUT_TRUNC;
-     ft_putstr_fd(*input, 1);
     if (redir_detail->type == FD_HEREDOC || redir_detail->type == FD_OUT_APPEND)
         (*input) += 2;
     else
@@ -201,7 +200,7 @@ int lexer(t_msh *msh, char *input)
             }
         }
     }
-    print_tokens(&msh->tokens);
+    //print_tokens(&msh->tokens);
     if (msh->last_token && msh->last_token->tk_type == TK_PIPE)
         msh->mult_line_input = true;
     else
