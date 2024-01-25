@@ -180,6 +180,8 @@ t_var 		*var_add(t_variables **vars_p, const char *name, const char *value);
 void 		var_delete(t_variables **vars_p, const char *name);
 t_variables *vars_init_from_envp(char **envp);
 char 		**vars_convert_to_array(t_variables *vars);
+
+// executor/executor.c
 int 		execute(t_msh *msh, t_command_chain *cmds);
 
 #endif
