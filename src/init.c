@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
+/*   By: vvilensk <vilenskii.v@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 11:46:05 by tkasbari          #+#    #+#             */
+<<<<<<< HEAD
+/*   Updated: 2024/01/25 10:42:13 by vvilensk         ###   ########.fr       */
+=======
 /*   Updated: 2024/01/18 16:32:47 by tkasbari         ###   ########.fr       */
+>>>>>>> main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +28,4 @@ void	init(t_msh *msh, char **envp)
 		if (!msh->env)
 			exit(EXIT_FAILURE);
 	}
-	msh->in_fd = STDIN_FILENO;
-	msh->out_fd = STDOUT_FILENO;
-	msh->err_fd = STDERR_FILENO;
 }

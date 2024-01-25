@@ -12,10 +12,10 @@
 
 #include "../minishell.h"
 
-int		built_in_echo(t_msh *msh, char **cmd_with_args);
-int		built_in_cd(t_msh *msh, char **cmd_with_args);
-int		built_in_pwd(t_msh *msh, char **cmd_with_args);
-int		built_in_export(t_msh *msh, char **cmd_with_args);
-int		built_in_unset(t_msh *msh, char **cmd_with_args);
-int		built_in_env(t_msh *msh, char **cmd_with_args);
-int		built_in_exit(t_msh *msh, char **cmd_with_args);
+int		built_in_echo(t_msh *msh, char **cmd_with_args, int fd_out);
+int		built_in_cd(t_msh *msh, char **cmd_with_args, int fd_out);
+int		built_in_pwd(t_msh *msh, char **cmd_with_args, int fd_out);
+int		built_in_export(t_msh *msh, char **cmd_with_args, int fd_out);
+int		built_in_unset(t_msh *msh, char **cmd_with_args, int fd_out);
+int		built_in_env(t_msh *msh, char **cmd_with_args, int fd_out);
+int		built_in_exit(t_msh *msh, char **cmd_with_args, int fd_out);

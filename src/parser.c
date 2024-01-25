@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
+/*   By: vvilensk <vilenskii.v@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:30:33 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/01/16 09:04:54 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/01/25 11:41:59 by vvilensk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int 	parser(t_msh *msh)
             redir_move(&redirections, token->redir);
         cur_tokens = cur_tokens->next;
     }
-	printf("printing commands...\n");
-	print_commands(&msh->commands);
+	//printf("printing commands...\n");
+	//print_commands(&msh->commands);
 	return (0);
 }

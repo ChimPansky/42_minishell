@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
+/*   By: vvilensk <vilenskii.v@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:30:33 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/01/17 13:25:40 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/01/25 11:46:42 by vvilensk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int 	expander(t_msh *msh)
         }
         cur_tokens = cur_tokens->next;
     }
-	printf("printing tokens (after expansion)...\n");
-	print_tokens(&msh->tokens);
+	//printf("printing tokens (after expansion)...\n");
+	//print_tokens(&msh->tokens);
 	return (0);
 }
