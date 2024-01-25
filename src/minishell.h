@@ -6,6 +6,7 @@
 # include <stdio.h>
 # include "ms_macros.h"
 # include "libft.h"
+# include "ft_string.h"
 
 #define EXIT_COMMAND_NOT_FOUND		127
 #define  EXIT_PERMISSION_DENIED		126
@@ -23,7 +24,7 @@ typedef enum e_redir_type
 typedef struct s_redir_detail
 {
 	t_redir_type	type;
-	t_ch_buffer		*str;
+	t_string		*string;	// pointer or no pointer???
 }		t_redir_detail;
 
 typedef t_list t_redirections;
@@ -54,7 +55,7 @@ typedef struct s_token
 {
 	t_token_type	tk_type;
 	union {
-		t_ch_buffer		*word;
+		t_string		*string;
 		t_redir_detail	*redir;
 		t_tokens		*subshell;		//	only for bonus
 		int				sub_exit_code;	//	only for bonus

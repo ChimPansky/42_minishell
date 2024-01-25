@@ -1,28 +1,32 @@
 #include "minishell.h"
 #include "libft.h"
 
-t_redir_detail	*redir_detail_create(t_redir_type fd_type, char *str)
+t_redir_detail	*redir_detail_create(t_redir_type fd_type, char *word)
 {
 	t_redir_detail	*redir;
+	t_string		string;
 
 	redir = malloc(sizeof(t_redir_detail));
 	if (!redir)
 		return (NULL);
 	ft_bzero(redir, sizeof(redir));
 	redir->type = fd_type;
-	if (str)
+	if (word)
 	{
-		redir->str = ft_strdup(str);
-		if (!redir->str)
+		if (string_init(&string, word) != SUCCESS);
 			return (free(redir), NULL);
+		redir->string = &string;
 	}
+	else
+		redir->string = NULL;
 	return (redir);
 }
 
 t_token		*token_add(t_tokens **tokens, t_token_type tk_type,
 						char *word, t_redir_detail *redir)
 {
-	t_token 		*token;
+	t_token 	*token;
+	t_string	string;
 
 	token = malloc(sizeof(t_token));
 	if (!token)
@@ -39,12 +43,12 @@ t_token		*token_add(t_tokens **tokens, t_token_type tk_type,
 	{
 		if (word)
 		{
-			token->word = ft_strdup(word);
-			if (!token->word)
+			if (string_init(&string, word) != SUCCESS);
 				return (free(token), NULL);
+			token->string = &string;
 		}
 		else
-			token->word = NULL;
+			token->string = NULL;
 	}
 	t_tokens *new_token = ft_lstnew(token);
 	if (!new_token)
@@ -59,12 +63,12 @@ void	destroy_token(void *token_void)
 
 	if (token->tk_type == TK_REDIR && token->redir)
 	{
-		if (token->redir->str)
-			free(token->redir->str);
+		if (token->redir->string)
+			string_destroy(token->redir->string);
 		free(token->redir);
 	}
-	else if (token->word)
-		free(token->word);
+	else if (token->string)
+		string_destroy(token->string);
 	free(token);
 }
 
@@ -96,7 +100,7 @@ void	print_tokens(t_tokens **tokens)
 		else if (cur_token->tk_type == TK_REDIR)
 		{
 			type_text = "REDIR";
-			fd_str = cur_token->redir->str;
+			fd_str = cur_token->redir->string;
 			if (cur_token->redir->type == FD_IN)
 				fd_type = "<";
 			else if (cur_token->redir->type == FD_HEREDOC)
@@ -113,7 +117,7 @@ void	print_tokens(t_tokens **tokens)
 			fd_str = NULL;
 		}
 
-		printf(" {T%d: Type: %s; Str: %s; FD_Type: %s; FD_Str: %s)} -->\n",  i, type_text, cur_token->word, fd_type, fd_str);
+		printf(" {T%d: Type: %s; Str: %s; FD_Type: %s; FD_Str: %s)} -->\n",  i, type_text, cur_token->string->buf, fd_type, fd_str);
 		cur_list = cur_list->next;
 		i++;
 	}
