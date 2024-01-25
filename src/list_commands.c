@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:43:57 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/01/16 09:04:24 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/01/18 16:34:05 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 t_simple_command	*command_add(t_command_chain **commands, char **cmd_with_args, t_list *redirections)
 {
 	t_simple_command *command;
-	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+
 	command = malloc(sizeof(t_simple_command));
 	if (!command)
 		return NULL;
