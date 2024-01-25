@@ -110,10 +110,7 @@ typedef struct s_msh
 	char			*prompt;
 	const char		*mult_line_prompt;
 	bool			mult_line_input;
-	int				fd_in;
-	int				fd_out;
 	int				last_exit_code;
-	int				pid_to_wait;
 	int				err_number;
 	char			*err_info;
 	t_tokens		*tokens;
@@ -129,9 +126,6 @@ typedef int (*t_built_in)(t_msh *msh, char **cmd_with_args, int fd_out);
 // for libft:
 char **strings_append(char **strings, char *appendix);
 void str_print(char **strings);
-
-// TODO Vova:
-int execute(t_msh *msh, t_command_chain *cmds);
 
 // init.c
 void	init(t_msh *msh, char **envp);
@@ -150,9 +144,6 @@ void	ms_error(int error_nr);
 char 	*find_env(t_msh *msh, const char *var_name);
 bool 	is_empty(const char *str);
 void	print_splitted(char **splitted);
-
-// pipex.c
-void 	execute_by_cmd_with_args(t_msh *msh, char **cmd_with_arguments);
 
 // built_ins/built_in.c
 t_built_in get_built_in_by_name(char *func_name);
@@ -189,5 +180,6 @@ t_var 		*var_add(t_variables **vars_p, const char *name, const char *value);
 void 		var_delete(t_variables **vars_p, const char *name);
 t_variables *vars_init_from_envp(char **envp);
 char 		**vars_convert_to_array(t_variables *vars);
+int 		execute(t_msh *msh, t_command_chain *cmds);
 
 #endif

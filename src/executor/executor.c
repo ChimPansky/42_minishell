@@ -10,7 +10,7 @@ void init_executor(t_executor *exec) {
 void destroy_executor(t_executor *exec) {
 	if (exec->fd_in != STDIN_FILENO)
 		close(exec->fd_in);
-	if (exec->fd_out != STDIN_FILENO)
+	if (exec->fd_out != STDOUT_FILENO)
 		close(exec->fd_out);
 }
 
@@ -18,7 +18,6 @@ int execute(t_msh *msh, t_command_chain *cmds)
 {
 	const int cmds_num = ft_lstsize(cmds);
 	t_executor executor;
-	int res;
 
 	if (cmds_num == 0)
 		return (printf("cmds is empty. this should not happen"), 0);

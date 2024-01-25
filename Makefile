@@ -23,7 +23,6 @@ MS_FILENAMES = \
 	list_variables.c \
 	minishell.c \
 	parser.c \
-	pipex.c \
 	scratches.c \
 	update.c
 
@@ -36,6 +35,13 @@ MS_FILENAMES += \
 	$(BUILT_INS_DIR)/export.c \
 	$(BUILT_INS_DIR)/pwd.c \
 	$(BUILT_INS_DIR)/unset.c
+
+MS_FILENAMES += \
+	executor/execute_in_child.c \
+	executor/execute_on_chain.c \
+	executor/execute_no_chain.c \
+	executor/executor.c \
+	executor/redirections.c
 
 SRC = $(addprefix $(SOURCE_DIR)/,$(MS_FILENAMES))
 

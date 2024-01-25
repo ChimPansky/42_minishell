@@ -32,7 +32,9 @@ int execute_cmds_but_last(t_msh *msh, t_executor *executor, t_command_chain **cm
 		}
 		else
 		{
-			close(executor->pipe_fds[WR_END]), close(executor->fd_in);
+			if (executor->fd_in > 2)
+				close(executor->fd_in);
+			close(executor->pipe_fds[WR_END]);
 			executor->fd_in = executor->pipe_fds[RD_END];
 		}
 		idx++;
@@ -72,7 +74,8 @@ int execute_on_chain(t_msh *msh, t_command_chain *cmds, int cmd_num, t_executor 
 
 	}
 	idx = 0;
+	printf ("\nAAAAAAAAAAAAAAAAA_%d_AAAAAAAAAAAAAAAA_%d\n", pids[0], pids[1]);
 	while (idx < cmd_num)
-		waitpid(pids[idx], &executor->ret_code, 0);
+		waitpid(pids[idx++], &executor->ret_code, 0);
 	return SUCCESS;
 }
