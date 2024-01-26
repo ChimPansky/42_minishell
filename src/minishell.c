@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 20:05:41 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/01/23 15:56:07 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/01/26 18:16:02 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,18 +91,13 @@ int	main(int ac, char **av, char **envp)
 		else
 			rl_chunk = readline(msh.prompt);
 		if (!rl_chunk)
-			ms_error(ER_READLINE);
+		{
+			ft_putstr_fd("\n", STDOUT_FILENO);
+			ms_exit(&msh, SUCCESS);
+			//ms_error(ER_READLINE);
+		}
 		else
 		{
-			old_input = msh.rl_input;
-			if (msh.rl_input)
-			{
-				msh.rl_input = ft_strjoin(msh.rl_input, rl_chunk);
-				free(old_input);
-			}
-			else
-				msh.rl_input = ft_strdup(rl_chunk);
-
 			// if (CTRL+D)
 			//		built_in_exit();
 
@@ -111,34 +106,45 @@ int	main(int ac, char **av, char **envp)
 			// parser: takes list of tokens and turns it (with expansions) into list of one or several commands (=command chain)
 			// executor: takes list of commands command chain and executes them (piping them together); Bonus: executor also has to be able to logically connect commands (&&, || )
 			lexer(&msh, rl_chunk);
-			read_heredocs(&msh);
-			print_tokens(&msh.tokens);
-			if (!msh.err_number)
-				expander(&msh);
-			print_tokens(&msh.tokens);
-			if (rl_chunk)
-				free(rl_chunk);
-			if (msh.err_number)
-				ms_error_msg(msh.err_number, msh.err_info);
-			else if (!msh.mult_line_input && msh.tokens)
+			if (ft_lstsize(msh.tokens))
 			{
-				parser(&msh);
-				execute(&msh, msh.commands);
-			}
-			if (msh.err_number || !msh.mult_line_input)
-			{
-				ft_lstclear(&msh.tokens, destroy_token);
-				msh.last_token = NULL;
-				ft_lstclear(&msh.commands, destroy_command);
-				msh.commands = NULL;
+				read_heredocs(&msh, &rl_chunk);
+				//print_tokens(&msh.tokens);
+				if (!msh.err_number)
+					expander(&msh);
+				//print_tokens(&msh.tokens);
+				if (msh.err_number)
+					ms_error_msg(msh.err_number, msh.err_info);
+				else if (!msh.mult_line_input && msh.tokens)
+				{
+					parser(&msh);
+					execute(&msh, msh.commands);
+				}
+				old_input = msh.rl_input;
 				if (msh.rl_input)
 				{
-					add_history(msh.rl_input);
-					free_null((void **)&msh.rl_input);
+					msh.rl_input = ft_strjoin(msh.rl_input, rl_chunk);
+					free(old_input);
 				}
-				msh.mult_line_input = false;
-				msh.err_number = SUCCESS;
-				msh.err_info = NULL;
+				else
+					msh.rl_input = ft_strdup(rl_chunk);
+				if (rl_chunk)
+					free(rl_chunk);
+				if (msh.err_number || !msh.mult_line_input)
+				{
+					ft_lstclear(&msh.tokens, token_destroy);
+					msh.last_token_type = TK_NULL;
+					ft_lstclear(&msh.commands, destroy_command);
+					msh.commands = NULL;
+					if (msh.rl_input)
+					{
+						add_history(msh.rl_input);
+						free_null((void **)&msh.rl_input);
+					}
+					msh.mult_line_input = false;
+					msh.err_number = SUCCESS;
+					msh.err_info = NULL;
+				}
 			}
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:30:33 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/01/16 09:04:54 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/01/26 18:15:36 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,12 @@ int 	parser(t_msh *msh)
                 break;
         }
         else if (token->tk_type == TK_WORD)
-            cmd_with_args = strings_append(cmd_with_args, token->word);
+            cmd_with_args = strings_append(cmd_with_args, token->string->buf);
         else if (token->tk_type == TK_REDIR)
             redir_move(&redirections, token->redir);
         cur_tokens = cur_tokens->next;
     }
-	printf("printing commands...\n");
-	print_commands(&msh->commands);
+	//printf("printing commands...\n");
+	//print_commands(&msh->commands);
 	return (0);
 }

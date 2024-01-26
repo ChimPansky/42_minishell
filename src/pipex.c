@@ -23,7 +23,7 @@ int execute(t_msh *msh, t_command_chain *cmds)
 {
     (void)msh;
     (void)cmds;
-    printf("executing command_chain...\n");
+    //printf("executing command_chain...\n");
     // char **tokens = ft_split(input, " \t");
     // // int pipefds[2];
     // char *cmd_with_args[10] = {};

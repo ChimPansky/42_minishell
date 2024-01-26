@@ -24,8 +24,6 @@
 // EXECUTOR
 
 
-
-
 size_t read_shell_spaces(char **input)
 {
     size_t  sep_count;
@@ -85,8 +83,8 @@ t_redir_detail  *read_redir(char **input)
     else
         (*input) += 1;
     read_shell_spaces(input);
-    redir_detail->str = read_word(input);
-    if (redir_detail->str)      // TODO syntax error!
+    redir_detail->word = read_word(input);
+    if (redir_detail->word)      // TODO syntax error!
         return (redir_detail);
     return (free(redir_detail), NULL);
 }
@@ -99,17 +97,18 @@ int lexer(t_msh *msh, char *input)
 
     // grep NAME < Makefile > out1.txt |
     //only temporary:
-    if (ft_strcmp(input, "exit") == SUCCESS)
+    if (ft_strcmp(input, "exit") == MATCH)
         ms_exit(msh, EXIT_SUCCESS);
-    if (ft_strcmp(input, "pipe") == SUCCESS)
-         msh->last_token = token_add(&msh->tokens, TK_PIPE, 0, NULL);
     while (*input)
     {
         if (*input == '<' || *input == '>')
         {
             redir = read_redir(&input);
             if (redir)
-                msh->last_token = token_add(&msh->tokens, TK_REDIR, NULL, redir);
+            {
+                token_add(&msh->tokens, TK_REDIR, NULL, redir);
+                msh->last_token_type = TK_REDIR;
+            }
             else
             {   // TODO: there was a problem reading the redirection...
                 msh->err_number = ER_UNEXPECTED_TOKEN;
@@ -119,14 +118,15 @@ int lexer(t_msh *msh, char *input)
         }
         else if (*input == '|')
         {
-            if (!msh->last_token || msh->last_token->tk_type == TK_PIPE)
+            if (msh->last_token_type == TK_NULL || msh->last_token_type == TK_PIPE)
             {    // TODO throw syntax error: 2 pipes in a row or pipe is first token...
                 msh->err_number = ER_UNEXPECTED_TOKEN;
                 msh->err_info = "|";
                 return (ERROR);
             }
-             msh->last_token = token_add(&msh->tokens, TK_PIPE, NULL, NULL);
-             input++;
+            token_add(&msh->tokens, TK_PIPE, NULL, NULL);
+            msh->last_token_type = TK_PIPE;
+            input++;
         }
         else if (is_shell_space(*input))
             input++;
@@ -134,7 +134,10 @@ int lexer(t_msh *msh, char *input)
         {
             word = read_word(&input);
             if (word)
-                msh->last_token = token_add(&msh->tokens, TK_WORD, word, NULL);
+            {
+                token_add(&msh->tokens, TK_WORD, word, NULL);
+                msh->last_token_type = TK_WORD;
+            }
             else
             {   // TODO: there was a problem reading the word...
                 msh->err_number = ER_UNEXPECTED_TOKEN;
@@ -144,7 +147,7 @@ int lexer(t_msh *msh, char *input)
         }
     }
 
-    if (msh->last_token && msh->last_token->tk_type == TK_PIPE)
+    if (msh->last_token_type == TK_PIPE)
         msh->mult_line_input = true;
     else
         msh->mult_line_input = false;

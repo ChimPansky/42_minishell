@@ -6,120 +6,139 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:30:33 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/01/23 16:15:54 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/01/26 17:12:12 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char    *get_var_name(char *word)
-{
-    char    *var_name;
+int 	        expander(t_msh *msh);
+static int      token_expand(t_msh *msh, t_token *token);
+static t_string *string_expand(t_msh *msh, char *word);
+static void      token_remove_quotes(t_token *token);
+static t_string *string_remove_quotes(t_string *str);
+static t_string *get_var_name(char *word);
 
-    var_name = NULL;
-    while (!is_var_separator(*word))
-    {
-        var_name = add_to_word(&var_name, *word);
-        if (!var_name)
-            return (NULL);
-        word++;
-    }
-    return (var_name);
-}
-
-int expand_word(t_msh *msh, char **to_expand)
-{
-    char    *word;
-    char    *to_free;
-    char    *expanded;
-    t_var   var;
-
-    if (!to_expand || !*to_expand)
-        return (ERROR);
-    if (!ft_strchr(*to_expand, '$'))
-        return (SUCCESS);
-    word = *to_expand;
-    expanded = ft_strdup("");
-    if (!expanded)
-        return (ERROR); // Malloc Error...
-    while (*word)
-    {
-        if (*word == '$')
-        {
-            ft_bzero(&var, sizeof(t_var));
-            var.name = get_var_name(word + 1);
-            if (var.name)
-            {
-                var.value = var_get_value(msh->env, var.name);
-                if (var.value)
-                {
-                    to_free = expanded;
-                    expanded = ft_strjoin(expanded, var.value);
-                    if (!expanded)
-                        return (ERROR); // Malloc Error...
-                    free(to_free);
-                    word += ft_strlen(var.name);
-                }
-                free(var.name);
-            }
-            else
-                expanded = add_to_word(&expanded, *word);
-        }
-        else
-            expanded = add_to_word(&expanded, *word);
-        if (!expanded)  // Malloc Error...
-            return (ERROR);
-        word++;
-        //printf("word: %s\n", word);
-    }
-    if (expanded)
-    {
-        free(*to_expand);
-        *to_expand = expanded;
-    }
-    msh->err_number = SUCCESS;
-    return (SUCCESS);
-}
-
-char    **get_word_to_expand(t_token *token)
-{
-    char    **to_expand;
-
-    to_expand = NULL;
-    if (token->tk_type == TK_WORD)
-        to_expand = &token->word;
-    else if (token->tk_type == TK_REDIR && token->redir)
-        to_expand = &token->redir->str;
-    return (to_expand);
-}
 //  expander: scans through token_list and looks for $-signs to expand
 int 	expander(t_msh *msh)
 {
     t_tokens    *cur_tokens;
     t_token     *token;
-    char        **to_expand;
+    t_string    *to_expand;
 
     cur_tokens = msh->tokens;
     token = NULL;
+    to_expand = NULL;
     if (!cur_tokens)
     {
-        ft_putendl_fd("tokenlist empty! (this should never happen)", STDERR_FILENO);
+        ft_putendl_fd("expander: tokenlist empty! (this should never happen)", STDERR_FILENO);
         return (1);
     }
     while (cur_tokens)
     {
         token = cur_tokens->content;
         if (!token)
-            ft_putendl_fd("found empty token in tokenlist! (this should never happen)", STDERR_FILENO);
-        to_expand = get_word_to_expand(token);
-        if (to_expand)
-        {
-            if (expand_word(msh, to_expand) != SUCCESS) // ambiguous redirect error if expansion results in empty filename for redirections
-                return (ERROR);
-            if (!(token->tk_type == TK_REDIR && token->redir->type == FD_HEREDOC))     // Heredoc contents keep quotes apparently...
-                remove_quotes(to_expand);
-        }
+            ft_putendl_fd("expander: found empty token in tokenlist! (this should never happen)", STDERR_FILENO);
+        token_expand(msh, token); // ambiguous redirect error if expansion results in empty filename for redirections --> check in executor...
+        token_remove_quotes(token);
         cur_tokens = cur_tokens->next;
     }
 	return (0);
+}
+
+static int token_expand(t_msh *msh, t_token *token)
+{
+    if (token->tk_type == TK_WORD)
+        token->string = string_expand(msh, token->word); // NULL check needed?
+    else if (token->tk_type == TK_REDIR)
+        token->redir->string = string_expand(msh, token->redir->word);   // NULL check needed? set errno?
+    if (!token->string || !token->redir->string)
+        return (!SUCCESS);
+    return (SUCCESS);
+}
+
+static t_string *string_expand(t_msh *msh, char *word)
+{
+    t_string    *expanded;
+    t_string    *var_name;
+    char        *var_value;
+
+    if (!word || !ft_strchr(word, '$'))
+        return (string_create(word));
+    expanded = string_create("");
+    if (!expanded)
+        return (NULL);
+    while (*word)
+    {
+        if (*word == '$')
+        {
+            var_name = get_var_name(word + 1);
+            if (!var_name)
+                return (string_destroy(expanded), NULL);
+            if (ft_strlen(var_name->buf))
+            {
+                var_value = var_get_value(msh->env, var_name->buf);
+                string_add_str(expanded, var_value);
+                word += ft_strlen(var_name->buf);
+                string_destroy(var_name);
+            }
+            else
+                string_add_chr(expanded, '$');
+        }
+        else
+            string_add_chr(expanded, *word);
+        word++;
+    }
+    msh->err_number = SUCCESS;
+    return (expanded);
+}
+
+static void token_remove_quotes(t_token *token)
+{
+    if (token->tk_type == TK_WORD)
+        string_remove_quotes(token->string);
+    else if (token->tk_type == TK_REDIR && token->redir->type != FD_HEREDOC)    // Heredoc contents keep quotes apparently...
+        string_remove_quotes(token->redir->string);
+}
+
+static t_string    *string_remove_quotes(t_string *str)
+{
+    char    *cur_byte;
+    char    *last_byte;
+    char    quote_type;
+
+    cur_byte = str->buf;
+    last_byte = cur_byte + str->len;
+    quote_type = 0;
+    while (*cur_byte)
+    {
+		if ((quote_type == 0 && (*cur_byte == '\'' || *cur_byte == '"'))
+			|| (quote_type == *cur_byte))
+		{
+			if (quote_type == 0)
+				quote_type = *cur_byte;
+			else
+				quote_type = *cur_byte;
+			ft_memmove(cur_byte, cur_byte + 1, last_byte - cur_byte);
+			last_byte--;
+		}
+        cur_byte++;
+    }
+    str->len = ft_strlen(str->buf);
+    return (str);
+}
+
+t_string    *get_var_name(char *word)
+{
+    t_string    *str;
+
+    str = string_create("");
+    if (!str)
+        return (NULL);
+    while (!is_var_separator(*word))
+    {
+        string_add_chr(str, *word);
+        word++;
+    }
+    return (str);
 }

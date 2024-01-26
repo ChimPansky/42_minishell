@@ -23,14 +23,16 @@ typedef enum e_redir_type
 // str will be input read with heredoc instead of heredoc delimiter
 typedef struct s_redir_detail
 {
-	t_redir_type	type;
+	char			*word;
 	t_string		*string;	// pointer or no pointer???
+	t_redir_type	type;
 }		t_redir_detail;
 
 typedef t_list t_redirections;
 
 typedef enum e_token_type
 {
+	TK_NULL,
     TK_WORD,
     TK_REDIR,
 	TK_PIPE,
@@ -53,9 +55,10 @@ typedef t_list t_tokens;
 
 typedef struct s_token
 {
-	t_token_type	tk_type;
+	t_token_type		tk_type;
+	t_string			*string;
 	union {
-		t_string		*string;
+		char			*word;
 		t_redir_detail	*redir;
 		t_tokens		*subshell;		//	only for bonus
 		int				sub_exit_code;	//	only for bonus
@@ -92,8 +95,8 @@ typedef struct s_msh
 	int				pid_to_wait;
 	int				err_number;
 	char			*err_info;
+	int				last_token_type;
 	t_tokens		*tokens;
-	t_token			*last_token;
 	t_command_chain	*commands;
 	t_variables 	*env;
 	t_variables		*locals;
@@ -103,8 +106,8 @@ typedef int (*t_built_in)(t_msh *msh, char **cmd_with_args);
 
 //minishell.c
 // for libft:
-char **strings_append(char **strings, char *appendix);
-void str_print(char **strings);
+char 	**strings_append(char **strings, char *appendix);
+void 	str_print(char **strings);
 char    *add_to_word(char **word, char new_char);
 
 // TODO Vova:
@@ -138,8 +141,8 @@ t_built_in get_built_in_by_name(char *func_name);
 int 	lexer(t_msh *msh, char *input);
 
 // heredoc.c
-int 	read_heredocs(t_msh *msh);
-int		process_here_doc(char **document, char *limiter);
+int 	read_heredocs(t_msh *msh, char **rl_chunk);
+int		process_here_doc(t_msh *msh, char **document, char *limiter);
 
 // expander.c
 int 	expander(t_msh *msh);
@@ -153,13 +156,13 @@ void	destroy(t_msh *msh);
 // list_tokens.c
 t_token		*token_add(t_tokens **tokens, t_token_type tk_type,
 						char *str, t_redir_detail *redir);
-void 		destroy_token(void *token_void);
-void	print_tokens(t_tokens **tokens);
+void 		token_destroy(void *token_void);
+void		print_tokens(t_tokens **tokens);
 
 // list_commands.c
 t_simple_command	*command_add(t_command_chain **commands, char **cmd_with_args, t_list *redirections);
-void 	destroy_command(void *command_void);
-void	print_commands(t_command_chain **commands);
+void 				destroy_command(void *command_void);
+void				print_commands(t_command_chain **commands);
 
 // list_variables.c
 t_var 		*var_find(t_variables *vars, const char *name);
@@ -174,6 +177,5 @@ char 		**vars_convert_to_array(t_variables *vars);
 bool    is_shell_space(char c);
 bool    is_token_seperator(char c);
 bool    is_var_separator(char c);
-char    *remove_quotes(char **str);
 
 #endif

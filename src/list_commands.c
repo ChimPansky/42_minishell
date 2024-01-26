@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:43:57 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/01/18 16:34:05 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/01/26 15:57:47 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ t_simple_command	*command_add(t_command_chain **commands, char **cmd_with_args, 
 	if (!command)
 		return NULL;
 	ft_bzero(command, sizeof(t_simple_command));
-
 	if (cmd_with_args)
 		command->cmd_with_args= cmd_with_args;
 	if (redirections)
@@ -66,7 +65,7 @@ void	print_redirs(t_list **redirections)
 			fd_type = ">>";
 		printf("%d:\n", i);
 		printf("type: %s\n", fd_type);
-		printf("str: %s\n", redir->str);
+		printf("str: %s\n", redir->string->buf);
 		cur_redir = cur_redir->next;
 		i++;
 	}
