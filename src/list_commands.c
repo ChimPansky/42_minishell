@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:43:57 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/01/26 15:57:47 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/01/27 13:30:39 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void	print_commands(t_command_chain **commands)
 		cur_cmd = cmd_list->content;
 		printf("{simple command %d:\n", i);
 		printf("cmd_with_args:\n");
-		str_print(cur_cmd->cmd_with_args);
+		strings_print(cur_cmd->cmd_with_args);
 		printf("redirection_list:\n");
 		print_redirs(&cur_cmd->redirections);
 		printf("}\n");

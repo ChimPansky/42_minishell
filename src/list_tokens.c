@@ -6,42 +6,35 @@ void	redir_detail_destroy(t_redir_detail *redir)
 {
 	if (!redir)
 		return ;
-	if (redir->string)
-		string_destroy(redir->string);
-	free(redir->word);
+	string_destroy(&redir->string);
+	free(redir);
 }
 
-t_redir_detail	*redir_detail_create(t_redir_type fd_type, char *word)
-{
-	t_redir_detail	*redir;
+// t_redir_detail	*redir_detail_create(t_redir_type fd_type, t_string str)
+// {
+// 	t_redir_detail	*redir;
 
-	redir = malloc(sizeof(t_redir_detail));
-	if (!redir)
-		return (NULL);
-	ft_bzero(redir, sizeof(t_redir_detail));
-	redir->type = fd_type;
-	if (word)
-	{
-		redir->word = ft_strdup(word);
-		if (!redir->word)
-			return (redir_detail_destroy(redir), NULL);
-	}
-	return (redir);
-}
+// 	redir = malloc(sizeof(t_redir_detail));
+// 	if (!redir)
+// 		return (NULL);
+// 	ft_bzero(redir, sizeof(t_redir_detail));
+// 	redir->string = str;
+// 	redir->type = fd_type;
+// 	return (redir);
+// }
 void	token_destroy(void *token_void)
 {
 	t_token *token = token_void;
 
 	if (token->tk_type == TK_REDIR && token->redir)
 		redir_detail_destroy(token->redir);
-	if (token->string)
-		string_destroy(token->string);
-	free(token->word);
+	if (token->tk_type == TK_WORD)
+		string_destroy(&token->string);
 	free(token);
 }
 
 t_token		*token_add(t_tokens **tokens, t_token_type tk_type,
-						char *word, t_redir_detail *redir)
+						t_string str, t_redir_detail *redir)
 {
 	t_token 	*token;
 
@@ -55,16 +48,10 @@ t_token		*token_add(t_tokens **tokens, t_token_type tk_type,
 		token->redir = redir;
 		if (!token->redir)
 			return (token_destroy(token), NULL);
+		token->redir->string = str;
 	}
-	else
-	{
-		if (word)
-		{
-			token->word = ft_strdup(word);
-			if (!token->word)
-				return (token_destroy(token), NULL);
-		}
-	}
+	else if (tk_type == TK_WORD)
+		token->string = str;
 	t_tokens *new_token = ft_lstnew(token);
 	if (!new_token)
 		return (token_destroy(token), NULL);
@@ -83,7 +70,6 @@ void	print_tokens(t_tokens **tokens)
 	char		*fd_str;
 	int			i;
 
-
 	if (!tokens)
 		return ;
 	printf("token_list:\n");
@@ -92,8 +78,8 @@ void	print_tokens(t_tokens **tokens)
 	while (cur_list && cur_list->content)
 	{
 		cur_token = cur_list->content;
-		if (cur_token->string)
-			tk_str = cur_token->string->buf;
+		if (cur_token->string.buf)
+			tk_str = cur_token->string.buf;
 		else
 			tk_str = NULL;
 		if (cur_token->tk_type == TK_WORD)
@@ -107,8 +93,8 @@ void	print_tokens(t_tokens **tokens)
 		{
 			type_text = "REDIR";
 			fd_word = cur_token->redir->word;
-			if (cur_token->redir->string)
-				fd_str = cur_token->redir->string->buf;
+			if (cur_token->redir->string.buf)
+				fd_str = cur_token->redir->string.buf;
 			else
 				fd_str = NULL;
 			if (cur_token->redir->type == FD_IN)

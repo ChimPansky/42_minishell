@@ -23,8 +23,7 @@ typedef enum e_redir_type
 // str will be input read with heredoc instead of heredoc delimiter
 typedef struct s_redir_detail
 {
-	char			*word;
-	t_string		*string;	// pointer or no pointer???
+	t_string		string;
 	t_redir_type	type;
 }		t_redir_detail;
 
@@ -56,9 +55,8 @@ typedef t_list t_tokens;
 typedef struct s_token
 {
 	t_token_type		tk_type;
-	t_string			*string;
 	union {
-		char			*word;
+		t_string		string;
 		t_redir_detail	*redir;
 		t_tokens		*subshell;		//	only for bonus
 		int				sub_exit_code;	//	only for bonus
@@ -105,13 +103,10 @@ typedef struct s_msh
 typedef int (*t_built_in)(t_msh *msh, char **cmd_with_args);
 
 //minishell.c
-// for libft:
-char 	**strings_append(char **strings, char *appendix);
-void 	str_print(char **strings);
-char    *add_to_word(char **word, char new_char);
+char    *add_to_word(char **word, char new_char); // try to get rid of this (instead use t_string with strings_add...)
 
 // TODO Vova:
-int execute(t_msh *msh, t_command_chain *cmds);
+int 	execute(t_msh *msh, t_command_chain *cmds);
 
 // init.c
 void	init(t_msh *msh, char **envp);
@@ -155,7 +150,7 @@ void	destroy(t_msh *msh);
 
 // list_tokens.c
 t_token		*token_add(t_tokens **tokens, t_token_type tk_type,
-						char *str, t_redir_detail *redir);
+						t_string str, t_redir_detail *redir);
 void 		token_destroy(void *token_void);
 void		print_tokens(t_tokens **tokens);
 

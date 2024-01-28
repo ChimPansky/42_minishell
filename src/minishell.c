@@ -6,51 +6,12 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 20:05:41 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/01/26 18:16:02 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/01/27 13:34:35 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// for libft (to append char* to char**):
-char **strings_append(char **strings, char *appendix)
-{
-	char	**new_strings;
-	size_t	s_count;
-
-	s_count = 0;
-	if (!appendix)
-		return (strings);
-	while (strings && strings[s_count])
-		s_count++;
-	new_strings = ft_calloc(s_count + 2, sizeof(char *));
-	if (!new_strings)
-		return (strings);
-	s_count = 0;
-	while (strings && strings[s_count])
-	{
-		new_strings[s_count] = strings[s_count];
-		s_count++;
-	}
-	new_strings[s_count] = ft_strdup(appendix);
-	new_strings[s_count + 1] = NULL;
-	return (new_strings);
-}
-// for libft (to print out char**):
-void str_print(char **strings)
-{
-	int i;
-	i = 0;
-
-	if (!strings)
-		printf("{NULL}\n");
-	while (strings && strings[i])
-	{
-		printf("%d: %s\n", i, strings[i]);
-		i++;
-	}
-	printf("%d: %s\n", i, "NULL");
-}
 // for libft (add 1 char to a string):
 char    *add_to_word(char **word, char new_char)
 {
