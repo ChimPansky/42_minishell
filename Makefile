@@ -23,6 +23,7 @@ MS_FILENAMES = \
 	minishell.c \
 	parser.c \
 	scratches.c \
+	signals.c \
 	update.c
 
 MS_FILENAMES += \
@@ -38,7 +39,6 @@ MS_FILENAMES += \
 MS_FILENAMES += \
 	executor/execute_in_child.c \
 	executor/execute_on_chain.c \
-	executor/execute_no_chain.c \
 	executor/executor.c \
 	executor/redirections.c
 

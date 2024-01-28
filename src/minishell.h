@@ -10,8 +10,9 @@
 #define EXIT_COMMAND_NOT_FOUND		127
 #define  EXIT_PERMISSION_DENIED		126
 
-// PARSER STUFF START
+extern bool g_sigint_received;
 
+// PARSER STUFF START
 typedef enum e_redir_type
 {
     FD_IN,
@@ -155,6 +156,9 @@ t_var 		*var_add(t_variables **vars_p, const char *name, const char *value);
 void 		var_delete(t_variables **vars_p, const char *name);
 t_variables *vars_init_from_envp(char **envp);
 char 		**vars_convert_to_array(t_variables *vars);
+
+// signals.c
+void register_signals(void);
 
 // executor/executor.c
 int 		execute(t_msh *msh, t_command_chain *cmds);
