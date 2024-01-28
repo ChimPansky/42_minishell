@@ -11,6 +11,8 @@
 #define EXIT_COMMAND_NOT_FOUND		127
 #define  EXIT_PERMISSION_DENIED		126
 
+extern bool g_sigint_received;
+
 // PARSER STUFF START
 typedef enum e_redir_type
 {
@@ -86,11 +88,7 @@ typedef struct s_msh
 	char			*prompt;
 	const char		*mult_line_prompt;
 	bool			mult_line_input;
-	int				in_fd;
-	int				out_fd;
-	int				err_fd;
 	int				last_exit_code;
-	int				pid_to_wait;
 	int				err_number;
 	char			*err_info;
 	int				last_token_type;
@@ -100,7 +98,7 @@ typedef struct s_msh
 	t_variables		*locals;
 }			t_msh;
 
-typedef int (*t_built_in)(t_msh *msh, char **cmd_with_args);
+typedef int (*t_built_in)(t_msh *msh, char **cmd_with_args, int fd_out);
 
 //minishell.c
 char    *add_to_word(char **word, char new_char); // try to get rid of this (instead use t_string with strings_add...)
@@ -125,9 +123,6 @@ void	ms_error(int error_nr);
 char 	*find_env(t_msh *msh, const char *var_name);
 bool 	is_empty(const char *str);
 void	print_splitted(char **splitted);
-
-// pipex.c
-void 	execute_by_cmd_with_args(t_msh *msh, char **cmd_with_arguments);
 
 // built_ins/built_in.c
 t_built_in get_built_in_by_name(char *func_name);
@@ -172,5 +167,11 @@ char 		**vars_convert_to_array(t_variables *vars);
 bool    is_shell_space(char c);
 bool    is_token_seperator(char c);
 bool    is_var_separator(char c);
+
+// signals.c
+void register_signals(void);
+
+// executor/executor.c
+int 		execute(t_msh *msh, t_command_chain *cmds);
 
 #endif

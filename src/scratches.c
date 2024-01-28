@@ -18,7 +18,7 @@
 // {
 // 	for (int i = 0; cmd_with_args[i] != NULL; i++)
 // 	{
-// 		ft_printf_fd(msh->out_fd, "%s\n", cmd_with_args[i]);
+// 		ft_dprintf(msh->fd_out, "%s\n", cmd_with_args[i]);
 // 	}
 // 	return 0;
 // }

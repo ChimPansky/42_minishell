@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 20:05:41 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/01/27 13:34:35 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/01/28 20:37:57 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ char    *add_to_word(char **word, char new_char)
     return (*word);
 }
 
+bool g_sigint_received;
+
 int	main(int ac, char **av, char **envp)
 {
 	t_msh	msh;
@@ -51,6 +53,11 @@ int	main(int ac, char **av, char **envp)
 			rl_chunk = readline(msh.mult_line_prompt);
 		else
 			rl_chunk = readline(msh.prompt);
+		if (g_sigint_received)
+		{
+			msh.last_exit_code = 130;
+			g_sigint_received = false;
+		}
 		if (!rl_chunk)
 		{
 			ft_putstr_fd("\n", STDOUT_FILENO);

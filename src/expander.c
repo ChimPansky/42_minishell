@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:30:33 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/01/27 19:51:25 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/01/28 20:36:22 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ int 	expander(t_msh *msh)
         token_remove_quotes(token);
         cur_tokens = cur_tokens->next;
     }
+	//printf("printing tokens (after expansion)...\n");
+	//print_tokens(&msh->tokens);
 	return (0);
 }
 
