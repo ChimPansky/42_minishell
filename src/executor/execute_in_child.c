@@ -24,7 +24,7 @@ char *try_find_in_path(t_msh *msh, const char *exec)
 		perror("ft_split"), exit(EXIT_FAILURE);
 	while (*path_entries)
 	{
-		exec_in_path = ft_strnjoin(3, *path_entries++, "/", exec);
+		exec_in_path = ft_strnjoin(3, *path_entries++, "/", exec);  // <-- MALLOC
 		if (!exec_in_path)
 			free(path_entries), perror("ft_strnjoin"), exit(EXIT_FAILURE);
 		if (access(exec_in_path, F_OK) == SUCCESS)
@@ -40,7 +40,7 @@ char *try_find_in_path(t_msh *msh, const char *exec)
 // exit code?
 // after fork
 // is it needed to free and close?
-int execute_in_child_process(t_msh *msh, char **cmd_with_args, t_executor *executor)
+void execute_in_child_process(t_msh *msh, char **cmd_with_args, t_executor *executor)
 {
 	char *const *envp = vars_convert_to_array(msh->env); // <-- MALLOC
 	const char *exec = cmd_with_args[0];
@@ -59,9 +59,9 @@ int execute_in_child_process(t_msh *msh, char **cmd_with_args, t_executor *execu
 	else if (SUCCESS == access(exec, F_OK))
 		exec_with_path = (char *)exec;
 	if (exec_with_path == NULL)
-		ft_printf_fd(STDERR_FILENO, "msh: command not found: %s\n", exec), exit(EXIT_COMMAND_NOT_FOUND);
+		ft_dprintf(STDERR_FILENO, "msh: command not found: %s\n", exec), exit(EXIT_COMMAND_NOT_FOUND);
 	else if (SUCCESS != access(exec_with_path, X_OK))
-		ft_printf_fd(STDERR_FILENO, "msh: permission denied: %s\n", exec_with_path), exit(EXIT_PERMISSION_DENIED);
+		ft_dprintf(STDERR_FILENO, "msh: permission denied: %s\n", exec_with_path), exit(EXIT_PERMISSION_DENIED);
 	execve(exec_with_path, cmd_with_args, envp);
-	perror("execve"), exit(errno);
+	perror("execve"), exit(EXIT_FAILURE);
 }
