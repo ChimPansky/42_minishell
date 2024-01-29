@@ -32,7 +32,7 @@ void destroy_variable(void *var_void)
 char	*var_get_value(t_variables *vars, const char *name)
 {
 	t_var	*target;
-	
+
 	target = var_find(vars, name);
 	if (!target)
 		return ("");

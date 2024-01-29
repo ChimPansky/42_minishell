@@ -59,7 +59,7 @@ typedef struct s_token
 	t_token_type		tk_type;
 	union {
 		t_string		string;
-		t_redir_detail	*redir;
+		t_redir_detail	redir;
 		t_tokens		*subshell;		//	only for bonus
 		int				sub_exit_code;	//	only for bonus
 	};
@@ -134,7 +134,7 @@ int 	lexer(t_msh *msh, char *input);
 int 	read_heredocs(t_msh *msh, char **rl_chunk);
 int		process_here_doc(t_msh *msh, char **document, char *limiter);
 
-// expander.c
+// expander/expander.c
 int 	expander(t_msh *msh);
 
 // parser.c
@@ -145,7 +145,7 @@ void	destroy(t_msh *msh);
 
 // list_tokens.c
 t_token		*token_add(t_tokens **tokens, t_token_type tk_type,
-						t_string str, t_redir_detail *redir);
+						t_string *str, t_redir_detail *redir);
 void 		token_destroy(void *token_void);
 void		print_tokens(t_tokens **tokens);
 

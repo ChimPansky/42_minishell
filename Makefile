@@ -14,7 +14,6 @@ include $(LIBFT_DIR)/colors.mk
 MS_FILENAMES = \
 	destroy.c \
 	exit_error.c \
-	expander.c \
 	heredoc.c \
 	init.c \
 	lexer.c \
@@ -25,6 +24,7 @@ MS_FILENAMES = \
 	parser.c \
 	scratches.c \
 	signals.c \
+	strings.c \
 	update.c
 
 MS_FILENAMES += \
@@ -42,6 +42,9 @@ MS_FILENAMES += \
 	executor/execute_on_chain.c \
 	executor/executor.c \
 	executor/redirections.c
+
+MS_FILENAMES += \
+	expander/expander.c
 
 SRC = $(addprefix $(SOURCE_DIR)/,$(MS_FILENAMES))
 

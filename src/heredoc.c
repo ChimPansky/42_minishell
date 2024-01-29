@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 16:08:11 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/01/26 17:21:49 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/01/29 18:49:26 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,11 @@ int 	read_heredocs(t_msh *msh, char **rl_chunk)
     while (cur_tokens)
     {
         token = cur_tokens->content;
-        if (token && token->tk_type == TK_REDIR && token->redir->type == FD_HEREDOC)
+        if (token && token->tk_type == TK_REDIR && token->redir.type == FD_HEREDOC)
         {
             old_chunk = *rl_chunk;
-            process_here_doc(msh, &token->redir->word, token->redir->word);
-            *rl_chunk = ft_strjoin(*rl_chunk, token->redir->word);
+            process_here_doc(msh, &token->redir.string.buf, token->redir.string.buf);
+            *rl_chunk = ft_strjoin(*rl_chunk, token->redir.string.buf);
             free(old_chunk);
         }
         cur_tokens = cur_tokens->next;

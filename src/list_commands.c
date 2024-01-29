@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:43:57 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/01/27 13:30:39 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/01/29 19:51:20 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	print_redirs(t_list **redirections)
 			fd_type = ">>";
 		printf("%d:\n", i);
 		printf("type: %s\n", fd_type);
-		printf("str: %s\n", redir->string->buf);
+		printf("str: %s\n", redir->string.buf);
 		cur_redir = cur_redir->next;
 		i++;
 	}
@@ -89,7 +89,7 @@ void	print_commands(t_command_chain **commands)
 		strings_print(cur_cmd->cmd_with_args);
 		printf("redirection_list:\n");
 		print_redirs(&cur_cmd->redirections);
-		printf("}\n");
+		printf("}\n\n");
 		cmd_list = cmd_list->next;
 		i++;
 	}

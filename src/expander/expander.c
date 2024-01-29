@@ -6,18 +6,19 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:30:33 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/01/28 20:36:22 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/01/29 20:12:31 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
+#include "expander.h"
 
 int 	        expander(t_msh *msh);
 static int      token_expand(t_msh *msh, t_token *token);
 static int      string_expand(t_msh *msh, t_string *str);
+static int    get_var_name(t_string *var_name_holder, char **to_expand);
 //static void      token_remove_quotes(t_token *token);
 //static int      *string_remove_quotes(t_string *str);
-int    get_var_name(t_string *target, char **buffer);
 
 //  expander: scans through token_list and looks for $-signs to expand
 int 	expander(t_msh *msh)
@@ -38,7 +39,7 @@ int 	expander(t_msh *msh)
         if (!token)
             ft_putendl_fd("expander: found empty token in tokenlist! (this should never happen)", STDERR_FILENO);
         token_expand(msh, token); // ambiguous redirect error if expansion results in empty filename for redirections --> check in executor...
-        token_remove_quotes(token);
+        //token_remove_quotes(token);
         cur_tokens = cur_tokens->next;
     }
 	//printf("printing tokens (after expansion)...\n");
@@ -56,8 +57,8 @@ static int token_expand(t_msh *msh, t_token *token)
     }
     else if (token->tk_type == TK_REDIR)
     {
-        string_expand(msh, &token->redir->string);   // NULL check needed? set errno?
-        if (!token->redir->string.buf)
+        string_expand(msh, &token->redir.string);   // NULL check needed? set errno?
+        if (!token->redir.string.buf)
             return (!SUCCESS);
     }
     return (SUCCESS);
@@ -70,6 +71,7 @@ static int string_expand(t_msh *msh, t_string *str)
     size_t          i;
     char            quote_type;
     t_string        var_name;
+    char            *str_exit_code;
 
     old_buf = old.buf;
     i = 0;
@@ -85,16 +87,32 @@ static int string_expand(t_msh *msh, t_string *str)
         }
         else if (*(old.buf) == '$' && quote_type != '\'')
         {
-            if (get_var_name(&var_name, &(old.buf) != SUCCESS))
+            ft_putendl_fd("in $expansion!", STDOUT_FILENO);
+            if (get_var_name(&var_name, &(old.buf)) != SUCCESS)
                 return (!SUCCESS);  //string_destroy(str)??
+            ft_putendl_fd(var_name.buf, STDOUT_FILENO);
             if (!var_name.len)
+            {
                 string_add_chr(str, '$');
+                (old.buf)++;
+            }
+            else if (ft_strcmp(var_name.buf, "?") == SUCCESS)
+            {
+                str_exit_code = ft_itoa(msh->last_exit_code);
+                if (str_exit_code)
+                {
+                    string_add_str(str, str_exit_code);
+                    free(str_exit_code);
+                }
+            }
             else
                 string_add_str(str, var_get_value(msh->env, var_name.buf));
         }
         else
+        {
              string_add_chr(str, *(old.buf));
-        (old.buf)++;
+            (old.buf)++;
+        }
     }
     old.buf = old_buf;
     string_destroy(&old);
@@ -137,14 +155,21 @@ static int string_expand(t_msh *msh, t_string *str)
 //     return (str);
 // }
 
-int    get_var_name(t_string *target, char **buffer)
+int    get_var_name(t_string *var_name_holder, char **to_expand)
 {
-    if (string_init(target, "") != SUCCESS)
+    if (string_init(var_name_holder, "") != SUCCESS)
         return (!SUCCESS);
-    while (!is_var_separator(**buffer))
+    (*to_expand)++;
+    if (**to_expand == '?')
     {
-        string_add_chr(target, **buffer);
-        (*buffer)++;
+        string_add_chr(var_name_holder, **to_expand);
+        (*to_expand)++;
+        return (SUCCESS);
+    }
+    while (!is_var_separator(**to_expand))
+    {
+        string_add_chr(var_name_holder, **to_expand);
+        (*to_expand)++;
     }
     return (SUCCESS);
 }

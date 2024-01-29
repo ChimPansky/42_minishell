@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:30:33 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/01/28 20:38:09 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/01/29 18:49:50 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,6 @@ int 	parser(t_msh *msh)
             token = cur_tokens->content;
         if (!token)
             ft_putendl_fd("found empty token in tokenlist! (this should never happen)", STDERR_FILENO);
-        // check tokens and add to command_list
-        // at every | or at end of token list, add command_list
         if (!cur_tokens || token->tk_type == TK_PIPE)
         {
             command_add(&msh->commands, cmd_with_args, redirections);
@@ -56,12 +54,12 @@ int 	parser(t_msh *msh)
                 break;
         }
         else if (token->tk_type == TK_WORD)
-            cmd_with_args = strings_append(cmd_with_args, token->string->buf);
+            cmd_with_args = strings_append(cmd_with_args, token->string.buf);
         else if (token->tk_type == TK_REDIR)
-            redir_move(&redirections, token->redir);
+            redir_move(&redirections, &token->redir);
         cur_tokens = cur_tokens->next;
     }
-	//printf("printing commands...\n");
-	//print_commands(&msh->commands);
+	printf("printing commands...\n");
+	print_commands(&msh->commands);
 	return (0);
 }
