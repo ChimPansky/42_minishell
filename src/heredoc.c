@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 16:08:11 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/01/29 18:49:26 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/01/30 13:50:40 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ int	process_here_doc(t_msh *msh, char **document, char *limiter)
 {
     char    *line;
     char    *temp;
-    size_t line_sz;
 
     *document = malloc(sizeof(char));
     if (!*document)
@@ -32,7 +31,6 @@ int	process_here_doc(t_msh *msh, char **document, char *limiter)
         // does it have \n in the end?
         // if no change strjoin to strnjoin with \n
 		line = readline(msh->mult_line_prompt); // addhistory
-        line_sz = ft_strlen(line);
 		if (line == NULL)
         {
             ft_putstr_fd("readline returned NULL...\n", STDOUT_FILENO);
