@@ -27,6 +27,7 @@ typedef struct s_redir_detail
 {
 	t_string		string;
 	t_redir_type	type;
+	bool			whitespace_expansion;
 }		t_redir_detail;
 
 typedef t_list t_redirections;
@@ -102,6 +103,8 @@ typedef int (*t_built_in)(t_msh *msh, char **cmd_with_args, int fd_out);
 
 //minishell.c
 char    *add_to_word(char **word, char new_char); // try to get rid of this (instead use t_string with strings_add...)
+char **strings_append(char **strings, char *appendix);
+void strings_print(char **strings);
 
 // TODO Vova:
 int 	execute(t_msh *msh, t_command_chain *cmds);

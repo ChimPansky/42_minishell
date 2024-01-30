@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 11:29:38 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/01/26 17:11:28 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/01/30 15:19:51 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 bool    is_shell_space(char c)
 {
-    const char  *whitespaces = " \t";
+    const char  *whitespaces = STR_WHITESPACE;
 
     return (c && ft_strchr(whitespaces, c));
 }

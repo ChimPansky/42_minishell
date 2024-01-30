@@ -6,12 +6,11 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:43:57 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/01/29 19:51:20 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/01/30 16:58:54 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "libft.h"
 
 t_simple_command	*command_add(t_command_chain **commands, char **cmd_with_args, t_list *redirections)
 {
@@ -66,6 +65,7 @@ void	print_redirs(t_list **redirections)
 		printf("%d:\n", i);
 		printf("type: %s\n", fd_type);
 		printf("str: %s\n", redir->string.buf);
+		printf("had whitespace in expansion: %d\n", redir->whitespace_expansion);
 		cur_redir = cur_redir->next;
 		i++;
 	}

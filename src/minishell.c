@@ -6,11 +6,13 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 20:05:41 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/01/29 18:54:40 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/01/30 15:48:09 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+
 
 // for libft (add 1 char to a string):
 char    *add_to_word(char **word, char new_char)
