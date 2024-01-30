@@ -15,8 +15,11 @@
 int	built_in_pwd(t_msh *msh, char **cmd_with_args, int fd_out)
 {
 	(void)cmd_with_args;
+	(void)msh;
 	char *cwd;
 
+	if (cmd_with_args[1] != NULL)
+		return (ft_printf_err("pwd: too many arguments\n"), EXIT_FAILURE);
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
 		return (perror("pwd"), !EXIT_FAILURE);

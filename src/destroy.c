@@ -12,12 +12,3 @@
 
 #include "minishell.h"
 
-void	destroy(t_msh *minish)
-{
-	if (minish->rl_input)
-		free_null((void **)&minish->rl_input);
-	if (minish->prompt)
-		free_null((void **)&minish->prompt);
-	// free t_variables env...
-	// free t_variables locals...
-}
