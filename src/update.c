@@ -14,25 +14,32 @@
 
 #include "minishell.h"
 
-void	update_pwd(t_msh *msh)
+char	*get_pwd(t_msh *msh)
 {
-	if (!getcwd(msh->pwd, PATH_MAX))
-	{
-		ft_strlcpy(msh->pwd, "Unknown", ft_strlen("Unknown") + 1);
-		errno = 1;
-		//perror("pwd: error retrieving current working directory: getcwd");
-		ms_error(ER_UNDEFINED);
-	}
+	const t_var*	pwd_v = var_find(msh->env, "PWD");
+	char			*pwd;
+
+	if (pwd_v)
+		pwd = ft_strdup(pwd_v->value);
+	else
+		pwd = getcwd(NULL, 0);
+	if (!pwd)
+		return NULL;
+
 }
 
 void	update_prompt(t_msh *msh)
 {
-	msh->prompt = ft_strnjoin(4, FT_COL_MAGENTA, msh->pwd, FT_COL_DEFAULT, "$ ");
+	const char*		home = var_get_value(msh->env, "HOME");
+
+	const int prompt_cont_max_len = PROMPT_MAX_LEN
+		- ft_strlen(FT_COL_MAGENTA) - ft_strlen(FT_COL_DEFAULT) - 3;
+	ft_strlcpy(msh->prompt, const char *src, size_t size)
+	msh->prompt = ft_strnjoin(4, FT_COL_MAGENTA, pwd, FT_COL_DEFAULT, "$ ");
 	if (!msh->prompt)
-		ms_exit(msh, EXIT_FAILURE);
+		msh->prompt = ft_strnjoin(4, FT_COL_MAGENTA, "unknown pwd", FT_COL_DEFAULT, "$ ");
 }
-// void set_env_var(t_msh *msh, char *var_name);
-// void get_env_var();
+
 void	update(t_msh *msh)
 {
 	(void)msh;

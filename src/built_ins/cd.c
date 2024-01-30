@@ -11,33 +11,52 @@
 /* ************************************************************************** */
 
 #include "built_in.h"
+#include <sys/stat.h>
 
-// TODO '~', '-'
+int check_permissions(const char* dir)
+{
+    struct stat fstat;
+
+	if (SUCCESS != access(dir, F_OK))
+		return (ft_dprintf(STDERR_FILENO,
+				"cd: %s: no such file or directory\n", dir), !SUCCESS);
+    if (SUCCESS != stat(dir, &fstat))
+		return (ft_dprintf(STDERR_FILENO,
+				"cd: %s: ", dir), perror("stat"), !SUCCESS);
+    if (!S_ISDIR(fstat.st_mode))
+		return (ft_dprintf(STDERR_FILENO,
+				"cd: %s: not a directory\n", dir), !SUCCESS);
+	if (SUCCESS != access(dir, X_OK))
+		return (ft_dprintf(STDERR_FILENO,
+				"cd: %s: permission denied\n", dir), !SUCCESS);
+	return (SUCCESS);
+}
+
 int	built_in_cd(t_msh *msh, char **cmd_with_args, int fd_out)
 {
-	int		return_code;
 	char	*dir;
 
-	return_code = 0;
-	dir = NULL;
-	if (cmd_with_args[2]) // too many args; error handling...
-		return (1);
+	if (cmd_with_args[2])
+		return(ft_dprintf(STDERR_FILENO, "cd: too many arguments"), EXIT_FAILURE);
 	if (!cmd_with_args[1])
-	{
 		dir = var_get_value(msh->env, "HOME");
-		if (!dir)
-			dir = "";
-	}
-	else
-		dir = cmd_with_args[1]; // implement cd - ?
-	return_code = chdir(dir);
-	if (return_code != 0)	//error_handling...
-		dprintf(fd_out, "cd: error\n");
-	else
+	else if (strcmp(cmd_with_args[1], "-") == SUCCESS)
 	{
-		// var_set OLD_PWD...
-		update_pwd(msh);
-		update_prompt(msh);
+		dir = var_get_value(msh->env, "OLDPWD");
+		ft_dprintf(fd_out, "%s\n", dir);
 	}
-	return (return_code);
+	else
+		dir = cmd_with_args[1];
+	if (dir[0] == '\0')
+		return EXIT_SUCCESS;
+	if (check_permissions(dir) != SUCCESS)
+		return EXIT_FAILURE;
+	if (chdir(dir) != SUCCESS)
+		return (ft_dprintf(STDERR_FILENO,
+				"cd: %s: ", dir), perror("chdir"), EXIT_FAILURE);
+	var_set(&msh->env, "OLDPWD", var_get_value(msh->env, "PWD"));
+	dir = getcwd(NULL, 0);
+	var_set(&msh->env, "PWD", dir);
+	free(dir);
+	return (EXIT_SUCCESS);
 }

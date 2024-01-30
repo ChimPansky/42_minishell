@@ -68,6 +68,7 @@ int	main(int ac, char **av, char **envp)
 	{
 		// incomplete (multiline) input like: echo hello|
 		// --> stitch input to next input
+		update_prompt(&msh);
 		if (msh.mult_line_input)
 			rl_chunk = readline(msh.mult_line_prompt);
 		else

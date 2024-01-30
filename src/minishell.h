@@ -7,10 +7,15 @@
 # include "ms_macros.h"
 # include "libft.h"
 
-#define EXIT_COMMAND_NOT_FOUND		127
-#define  EXIT_PERMISSION_DENIED		126
+# define PROMPT_MAX_LEN 255
+
+# define EXIT_COMMAND_NOT_FOUND		127
+# define EXIT_PERMISSION_DENIED		126
+# define EXIT_SIG_INT				130
 
 extern bool g_sigint_received;
+
+
 
 // PARSER STUFF START
 typedef enum e_redir_type
@@ -82,8 +87,7 @@ typedef t_list t_variables;
 typedef struct s_msh
 {
 	char			*rl_input;
-	char			pwd[PATH_MAX + 1];
-	char			*prompt;
+	char			prompt[PROMPT_MAX_LEN];
 	const char		*mult_line_prompt;
 	bool			mult_line_input;
 	int				last_exit_code;
@@ -107,7 +111,6 @@ void str_print(char **strings);
 void	init(t_msh *msh, char **envp);
 
 // update.c
-void	update_pwd(t_msh *msh);
 void	update_prompt(t_msh *msh);
 void	update(t_msh *msh);
 

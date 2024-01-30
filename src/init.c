@@ -17,8 +17,6 @@ void	init(t_msh *msh, char **envp)
 	register_signals();
 	ft_bzero(msh, sizeof(t_msh));
 	msh->mult_line_prompt = ">";
-	update_pwd(msh);
-	update_prompt(msh);
 	if (envp && envp[0])
 	{
 		msh->env = vars_init_from_envp(envp);

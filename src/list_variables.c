@@ -35,7 +35,7 @@ char	*var_get_value(t_variables *vars, const char *name)
 
 	target = var_find(vars, name);
 	if (!target)
-		return (NULL);
+		return ("");
 	return (target->value);
 }
 
@@ -49,12 +49,14 @@ t_var *var_find(t_variables *vars, const char *name)
 	}
 	return NULL;
 }
+
 t_var	*var_set(t_variables **vars_p, const char *name, const char *value)
 {
 	t_var	*existing_var;
 	char	*new_value;
 
-	if ((existing_var = var_find(*vars_p, name)) != NULL)
+	existing_var = var_find(*vars_p, name);
+	if (existing_var != NULL)
 	{
 		new_value = ft_strdup(value);
 		if (!new_value)
