@@ -54,75 +54,84 @@ void str_print(char **strings)
 
 bool g_sigint_received;
 
-int	main(int ac, char **av, char **envp)
+
+int main_loop(t_msh *msh)
 {
-	t_msh	msh;
 	char	*rl_chunk;
 	char	*old_input;
-	(void) ac;
-	(void) av;
 
-	// add parameter check? are we allowed to caall for example: ./minishell arg1 arg2...
-	init(&msh, envp);
-	while(1)
+	while(true)
 	{
 		// incomplete (multiline) input like: echo hello|
 		// --> stitch input to next input
-		if (msh.mult_line_input)
-			rl_chunk = readline(msh.mult_line_prompt);
+		update_prompt(msh);
+		if (msh->mult_line_input)
+			rl_chunk = readline(msh->mult_line_prompt);
 		else
-			rl_chunk = readline(msh.prompt);
+			rl_chunk = readline(msh->prompt.buf);
 		if (g_sigint_received)
 		{
-			msh.last_exit_code = 130;
+			msh->last_exit_code = 130;
 			g_sigint_received = false;
 		}
 		if (!rl_chunk)
-			exit(EXIT_SUCCESS);
+			return (free(rl_chunk), SUCCESS);
 		else
 		{
-			old_input = msh.rl_input;
-			if (msh.rl_input)
+			old_input = msh->rl_input;
+			if (msh->rl_input)
 			{
-				msh.rl_input = ft_strjoin(msh.rl_input, rl_chunk);
+				msh->rl_input = ft_strjoin(msh->rl_input, rl_chunk);
 				free(old_input);
 			}
 			else
-				msh.rl_input = ft_strdup(rl_chunk);
+				msh->rl_input = ft_strdup(rl_chunk);
 
 			// if (CTRL+D)
 			//		built_in_exit();
 
-			// lexer: turns input into token_list; stores token_list in msh.tokens
+			// lexer: turns input into token_list; stores token_list in msh->tokens
 			// expander: scans through token_list and looks for $-signs to expand
 			// parser: takes list of tokens and turns it (with expansions) into list of one or several commands (=command chain)
 			// executor: takes list of commands command chain and executes them (piping them together); Bonus: executor also has to be able to logically connect commands (&&, || )
-			if (lexer(&msh, rl_chunk) == SUCCESS)
-				expander(&msh);
+			if (lexer(msh, rl_chunk) == SUCCESS)
+				expander(msh);
 			if (rl_chunk)
 				free(rl_chunk);
-			if (msh.err_number)
-				ms_error_msg(msh.err_number, msh.err_info);
-			else if (!msh.mult_line_input && msh.tokens)
+			if (msh->err_number)
+				ms_error_msg(msh->err_number, msh->err_info);
+			else if (!msh->mult_line_input && msh->tokens)
 			{
-				parser(&msh);
-				execute(&msh, msh.commands);
+				parser(msh);
+				execute(msh, msh->commands);
 			}
-			if (msh.err_number || !msh.mult_line_input)
+			if (msh->err_number || !msh->mult_line_input)
 			{
-				ft_lstclear(&msh.tokens, destroy_token);
-				msh.last_token = NULL;
-				ft_lstclear(&msh.commands, destroy_command);
-				msh.commands = NULL;
-				if (msh.rl_input)
+				ft_lstclear(&msh->tokens, destroy_token);
+				msh->last_token = NULL;
+				ft_lstclear(&msh->commands, destroy_command);
+				msh->commands = NULL;
+				if (msh->rl_input)
 				{
-					add_history(msh.rl_input);
-					free_null((void **)&msh.rl_input);
+					add_history(msh->rl_input);
+					free_null((void **)&msh->rl_input);
 				}
-				msh.mult_line_input = false;
-				msh.err_number = SUCCESS;
-				msh.err_info = NULL;
+				msh->mult_line_input = false;
+				msh->err_number = SUCCESS;
+				msh->err_info = NULL;
 			}
 		}
 	}
+}
+
+// add parameter check? are we allowed to caall for example: ./minishell arg1 arg2...
+int	main(int ac, char **av, char **envp)
+{
+	t_msh	msh;
+	(void) ac;
+	(void) av;
+
+	init(&msh, envp);
+	main_loop(&msh);
+	destroy(&msh);
 }

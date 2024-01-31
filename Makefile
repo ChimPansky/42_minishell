@@ -12,19 +12,17 @@ MS_HEADER = $(SOURCE_DIR)/$(NAME).h
 include $(LIBFT_DIR)/colors.mk
 
 MS_FILENAMES = \
-	destroy.c \
+	app.c \
 	exit_error.c \
 	expander.c \
-	init.c \
 	lexer.c \
 	list_commands.c \
 	list_tokens.c \
-	list_variables.c \
 	minishell.c \
 	parser.c \
+	prompt.c \
 	scratches.c \
-	signals.c \
-	update.c
+	signals.c
 
 MS_FILENAMES += \
 	built_ins/built_in.c \
@@ -42,6 +40,10 @@ MS_FILENAMES += \
 	executor/executor.c \
 	executor/redirections.c
 
+MS_FILENAMES += \
+	structures/list_variables.c
+
+	
 SRC = $(addprefix $(SOURCE_DIR)/,$(MS_FILENAMES))
 
 OBJ = $(SRC:.c=.o)

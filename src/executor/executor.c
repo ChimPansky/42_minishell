@@ -44,7 +44,7 @@ bool try_execute_built_in(t_msh *msh, t_simple_command *cmd, t_executor *executo
 	t_built_in func;
 
 	if (!cmd || !cmd->cmd_with_args)
-		ft_dprintf(STDERR_FILENO, "cmd is empty. this should not happen\n"), exit(EXIT_FAILURE);
+		ft_printf_err("cmd is empty. this should not happen\n"), exit(EXIT_FAILURE);
 	func = get_built_in_by_name(cmd->cmd_with_args[0]);
 	if (func == NULL)
 		return false;

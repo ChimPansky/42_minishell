@@ -6,11 +6,19 @@
 # include <stdio.h>
 # include "ms_macros.h"
 # include "libft.h"
+# include "ft_string.h"
+# include "structures/list_variables.h"
 
-#define EXIT_COMMAND_NOT_FOUND		127
-#define  EXIT_PERMISSION_DENIED		126
+# define PROMPT_MAX_LEN  99 //255
+# define PROMPT_INVITATION "$ "
+
+# define EXIT_COMMAND_NOT_FOUND		127
+# define EXIT_PERMISSION_DENIED		126
+# define EXIT_SIG_INT				130
 
 extern bool g_sigint_received;
+
+
 
 // PARSER STUFF START
 typedef enum e_redir_type
@@ -71,19 +79,10 @@ typedef struct s_simple_command
 	t_list	*redirections; // list of t_redir_details...
 }		t_simple_command;
 
-typedef struct s_var
-{
-	char *name;
-	char *value;
-}	t_var;
-
-typedef t_list t_variables;
-
 typedef struct s_msh
 {
 	char			*rl_input;
-	char			pwd[PATH_MAX + 1];
-	char			*prompt;
+	t_string		prompt;
 	const char		*mult_line_prompt;
 	bool			mult_line_input;
 	int				last_exit_code;
@@ -93,7 +92,6 @@ typedef struct s_msh
 	t_token			*last_token;
 	t_command_chain	*commands;
 	t_variables 	*env;
-	t_variables		*locals;
 }			t_msh;
 
 typedef int (*t_built_in)(t_msh *msh, char **cmd_with_args, int fd_out);
@@ -107,7 +105,6 @@ void str_print(char **strings);
 void	init(t_msh *msh, char **envp);
 
 // update.c
-void	update_pwd(t_msh *msh);
 void	update_prompt(t_msh *msh);
 void	update(t_msh *msh);
 
@@ -147,15 +144,6 @@ void	print_tokens(t_tokens **tokens);
 t_simple_command	*command_add(t_command_chain **commands, char **cmd_with_args, t_list *redirections);
 void 	destroy_command(void *command_void);
 void	print_commands(t_command_chain **commands);
-
-// list_variables.c
-t_var 		*var_find(t_variables *vars, const char *name);
-char		*var_get_value(t_variables *vars, const char *name);
-t_var		*var_set(t_variables **vars_p, const char *name, const char *value);
-t_var 		*var_add(t_variables **vars_p, const char *name, const char *value);
-void 		var_delete(t_variables **vars_p, const char *name);
-t_variables *vars_init_from_envp(char **envp);
-char 		**vars_convert_to_array(t_variables *vars);
 
 // signals.c
 void register_signals(void);
