@@ -15,10 +15,10 @@
 int	built_in_exit(t_msh *msh, char **cmd_with_args, int fd_out)
 {
 	(void) fd_out;
-	ft_dprintf(STDERR_FILENO, "exit\n");
+	ft_printf_err("exit\n");
 	if (cmd_with_args[2])
 	{
-		ft_dprintf(STDERR_FILENO, "too many args\n");
+		ft_printf_err("too many args\n");
 		errno = 1;
 		return (errno);
 	}
@@ -28,7 +28,7 @@ int	built_in_exit(t_msh *msh, char **cmd_with_args, int fd_out)
 			ms_exit(msh, ft_atoi(cmd_with_args[1]) % 256);
 		else
 		{
-			ft_dprintf(STDERR_FILENO, "numeric argument required\n");
+			ft_printf_err("numeric argument required\n");
 			errno = 2;
 			ms_exit(msh, SUCCESS);
 		}

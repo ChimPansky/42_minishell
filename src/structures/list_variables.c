@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "../minishell.h"
 #include "libft.h"
 
 t_var *variable(const char *name, const char *value)
@@ -29,6 +29,7 @@ void destroy_variable(void *var_void)
 	free(var);
 }
 
+// TODO change var to vars for each function
 char	*var_get_value(t_variables *vars, const char *name)
 {
 	t_var	*target;
@@ -49,12 +50,14 @@ t_var *var_find(t_variables *vars, const char *name)
 	}
 	return NULL;
 }
+
 t_var	*var_set(t_variables **vars_p, const char *name, const char *value)
 {
 	t_var	*existing_var;
 	char	*new_value;
 
-	if ((existing_var = var_find(*vars_p, name)) != NULL)
+	existing_var = var_find(*vars_p, name);
+	if (existing_var != NULL)
 	{
 		new_value = ft_strdup(value);
 		if (!new_value)
@@ -93,6 +96,11 @@ void var_delete(t_variables **vars_p, const char *name)
 		}
 		vars = vars->next;
 	}
+}
+
+void vars_destoy(t_variables **vars_p)
+{
+	ft_lstclear(vars_p, destroy_variable);
 }
 
 t_variables *vars_init_from_envp(char **envp)

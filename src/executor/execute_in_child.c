@@ -59,9 +59,9 @@ void execute_in_child_process(t_msh *msh, char **cmd_with_args, t_executor *exec
 	else if (SUCCESS == access(exec, F_OK))
 		exec_with_path = (char *)exec;
 	if (exec_with_path == NULL)
-		ft_dprintf(STDERR_FILENO, "msh: command not found: %s\n", exec), exit(EXIT_COMMAND_NOT_FOUND);
+		ft_printf_err("msh: command not found: %s\n", exec), exit(EXIT_COMMAND_NOT_FOUND);
 	else if (SUCCESS != access(exec_with_path, X_OK))
-		ft_dprintf(STDERR_FILENO, "msh: permission denied: %s\n", exec_with_path), exit(EXIT_PERMISSION_DENIED);
+		ft_printf_err("msh: permission denied: %s\n", exec_with_path), exit(EXIT_PERMISSION_DENIED);
 	execve(exec_with_path, cmd_with_args, envp);
 	perror("execve"), exit(EXIT_FAILURE);
 }
