@@ -126,17 +126,17 @@ void	print_splitted(char **splitted);
 t_built_in get_built_in_by_name(char *func_name);
 
 // lexer.c
-int 	lexer(t_msh *msh, char *input);
+int 	lex(t_msh *msh, char *input);
 
 // heredoc.c
 int 	read_heredocs(t_msh *msh, char **rl_chunk);
 int		process_here_doc(t_msh *msh, char **document, char *limiter);
 
 // expander/expander.c
-int 	expander(t_msh *msh);
+int 	expand(t_msh *msh);
 
 // parser.c
-int 	parser(t_msh *msh);
+int 	parse(t_msh *msh);
 
 // destroy.c
 void	destroy(t_msh *msh);

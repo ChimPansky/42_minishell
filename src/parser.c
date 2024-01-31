@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:30:33 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/01/29 18:49:50 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/01/31 19:59:37 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_redir_detail	*redir_move(t_redirections **redirections, t_redir_detail *redir)
 	return (redir);
 }
 // takes list of tokens and turns it into list of one or several commands (command chain); Also: perform variable expansions...
-int 	parser(t_msh *msh)
+int 	parse(t_msh *msh)
 {
     t_tokens    *cur_tokens;
     t_token     *token;
@@ -59,7 +59,7 @@ int 	parser(t_msh *msh)
             redir_move(&redirections, &token->redir);
         cur_tokens = cur_tokens->next;
     }
-	printf("printing commands...\n");
-	print_commands(&msh->commands);
+	// printf("printing commands...\n");
+	// print_commands(&msh->commands);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 20:05:41 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/01/31 13:08:24 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/01/31 20:05:23 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,14 +72,14 @@ int main_loop(t_msh *msh)
 			}
 			else
 				msh->rl_input = ft_strdup(rl_chunk);
-			if (lexer(msh, rl_chunk) == SUCCESS && msh->tokens)
-				expander(msh);
+			if (lex(msh, rl_chunk) == SUCCESS && msh->tokens)
+				expand(msh);
 			free(rl_chunk);
 			if (msh->err_number)
 				ms_error_msg(msh->err_number, msh->err_info);
 			else if (!msh->mult_line_input && msh->tokens)
 			{
-				parser(msh);
+				parse(msh);
 				execute(msh, msh->commands);
 			}
 			if (msh->err_number || !msh->mult_line_input)
