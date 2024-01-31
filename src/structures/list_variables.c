@@ -13,8 +13,9 @@ t_var *variable(const char *name, const char *value)
 	if (!var->name)
 		return (free(var), NULL);
 	if (!value)
-		value = default_value;
-	var->value = ft_strdup(value);
+		value = ft_strdup(default_value);
+	else
+		var->value = ft_strdup(value);
 	if (!var->value)
 		return (free(var->name), free(var), NULL);
 	return var;
@@ -51,26 +52,7 @@ t_var *var_find(t_variables *vars, const char *name)
 	return NULL;
 }
 
-t_var	*var_set(t_variables **vars_p, const char *name, const char *value)
-{
-	t_var	*existing_var;
-	char	*new_value;
-
-	existing_var = var_find(*vars_p, name);
-	if (existing_var != NULL)
-	{
-		new_value = ft_strdup(value);
-		if (!new_value)
-			return (NULL);
-		free(existing_var->value);
-		existing_var->value = new_value;
-		return (existing_var);
-	}
-	else
-		return (var_add(vars_p, name, value));
-}
-
-t_var *var_add(t_variables **vars_p, const char *name, const char *value)
+t_var *var_set(t_variables **vars_p, const char *name, const char *value)
 {
 	t_var *var = variable(name, value);
 	if (!var)
@@ -103,6 +85,7 @@ void vars_destoy(t_variables **vars_p)
 	ft_lstclear(vars_p, destroy_variable);
 }
 
+// on fail returns NULL
 t_variables *vars_init_from_envp(char **envp)
 {
 	t_variables	*env;
@@ -115,14 +98,14 @@ t_variables *vars_init_from_envp(char **envp)
 	{
 		sep = ft_strchr(*envp, '=');
 		*sep = 0;
-		if (NULL == var_add(&env, *envp, sep + 1))
+		if (NULL == var_set(&env, *envp, sep + 1))
 			return (ft_lstclear(&env, destroy_variable), NULL);
 		envp++;
 	}
 	return env;
 }
 
-// on fail returns null
+// on fail returns NULL
 char **vars_convert_to_array(t_variables *vars)
 {
 	char	**vars_array;

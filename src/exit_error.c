@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 15:04:32 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/01/31 12:44:07 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/01/31 20:17:11 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,17 +56,4 @@ void	ms_error(int error_nr)
 		ms_error_msg(error_nr, NULL);
 	else
 		ft_putstr_fd("\n", STDERR_FILENO);
-}
-
-void	ms_exit(t_msh *msh, int error_nr)
-{
-	// set done-flag
-	if (error_nr)
-		ms_error(error_nr);
-	destroy(msh);
-	if (error_nr)
-		exit(error_nr);
-	if (errno)
-		exit(errno);
-	exit(EXIT_SUCCESS);
 }

@@ -82,16 +82,13 @@ static int  read_redir(t_redir_detail *redir, char **input)
 }
 
 // turns input into token_list; stores token_list in msh.tokens
-int lexer(t_msh *msh, char *input)
+int lex(t_msh *msh, char *input)
 {
 	t_redir_detail  redir;
 	t_string        str;
 	//char            *word;
 
 	// grep NAME < Makefile > out1.txt |
-	//only temporary:
-	if (ft_strcmp(input, "exit") == MATCH)
-		ms_exit(msh, EXIT_SUCCESS);
 	while (*input)
 	{
 		if (*input == '<' || *input == '>')

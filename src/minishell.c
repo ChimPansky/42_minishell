@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 20:05:41 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/01/31 20:05:23 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/01/31 20:17:57 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int main_loop(t_msh *msh)
 			g_sigint_received = false;
 		}
 		if (!rl_chunk)
-			ms_exit(msh, ER_UNDEFINED);
+			ms_stop(msh);
 		else
 		{
 			old_input = msh->rl_input;
@@ -99,7 +99,7 @@ int main_loop(t_msh *msh)
 			}
 		}
 	}
-	return (SUCCESS);
+	return SUCCESS;
 }
 
 // add parameter check? are we allowed to caall for example: ./minishell arg1 arg2...
@@ -109,7 +109,7 @@ int	main(int ac, char **av, char **envp)
 	(void) ac;
 	(void) av;
 
-	init(&msh, envp);
+	ms_init(&msh, envp);
 	main_loop(&msh);
-	destroy(&msh);
+	ms_destroy_and_exit(&msh);
 }

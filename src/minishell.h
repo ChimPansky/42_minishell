@@ -105,16 +105,16 @@ void strings_print(char **strings);
 // TODO Vova:
 int 	execute(t_msh *msh, t_command_chain *cmds);
 
-// init.c
-void	init(t_msh *msh, char **envp);
+// app.c
+void	ms_init(t_msh *msh, char **envp);
+void	ms_destroy_and_exit(t_msh *msh);
+void	ms_stop(t_msh *msh);
 
-// update.c
+// prompt.c
 void	update_prompt(t_msh *msh);
-void	update(t_msh *msh);
 
 //exit_error.c
 void	ms_error_msg(int error_nr, char *err_info);
-void	ms_exit(t_msh *msh, int error_nr);
 void	ms_error(int error_nr);
 
 // scratches.c
@@ -137,9 +137,6 @@ int 	expand(t_msh *msh);
 
 // parser.c
 int 	parse(t_msh *msh);
-
-// destroy.c
-void	destroy(t_msh *msh);
 
 // list_tokens.c
 t_token		*token_add(t_tokens **tokens, t_token_type tk_type,
