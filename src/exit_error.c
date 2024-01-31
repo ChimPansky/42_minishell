@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_error.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vvilensk <vilenskii.v@gmail.com>           +#+  +:+       +#+        */
+/*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 15:04:32 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/01/27 22:13:03 by vvilensk         ###   ########.fr       */
+/*   Updated: 2024/01/31 20:17:11 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,3 @@ void	ms_error(int error_nr)
 	else
 		ft_putstr_fd("\n", STDERR_FILENO);
 }
-

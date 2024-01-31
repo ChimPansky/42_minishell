@@ -13,6 +13,9 @@ minishell
 *.a
 test.c
 test_list.c
+test_buffer.c
+test_free.c
+test_quotes.c
 
 # Prerequisites
 *.d

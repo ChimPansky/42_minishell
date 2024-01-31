@@ -1,5 +1,12 @@
 #include "minishell.h"
 
+
+// t_ch_buffer	buf;
+
+// ft_bzero(&buf, sizeof(t_ch_buffer));
+// buffer_add(&buf, "abc");
+// buffer_add(&buf, "def");
+
 // void	handle_input(t_msh *minish, char *input)
 // {
 // 	if (ft_strncmp(input, "pwd", ft_strlen("pwd")) == 0)

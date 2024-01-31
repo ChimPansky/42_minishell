@@ -30,26 +30,26 @@ static int process_redirection(t_redir_detail *redir, t_executor *executor)
 	{
 		if (executor->fd_in > 2)
 			close(executor->fd_in);
-		if (process_heredoc(redir->str, executor) != SUCCESS)
+		if (process_heredoc(redir->string.buf, executor) != SUCCESS)
 			return !SUCCESS;
 	}
 	else if (redir->type == FD_IN)
 	{
 		if (executor->fd_in > 2)
 			close(executor->fd_in);
-		executor->fd_in = open(redir->str, O_RDONLY);
+		executor->fd_in = open(redir->string.buf, O_RDONLY);
 	}
 	else
 	{
 		if (executor->fd_out > 2)
 			close(executor->fd_out);
 		if (redir->type == FD_OUT_TRUNC)
-			executor->fd_out = open(redir->str, O_TRUNC | O_CREAT | O_WRONLY, 0644);
+			executor->fd_out = open(redir->string.buf, O_TRUNC | O_CREAT | O_WRONLY, 0644);
 		else if (redir->type == FD_OUT_APPEND)
-			executor->fd_out = open(redir->str, O_APPEND | O_CREAT | O_WRONLY, 0644);
+			executor->fd_out = open(redir->string.buf, O_APPEND | O_CREAT | O_WRONLY, 0644);
 	}
 	if (executor->fd_in < 0 || executor->fd_out < 0)
-			return (perror(redir->str), !SUCCESS);
+			return (perror(redir->string.buf), !SUCCESS);
 	return SUCCESS;
 }
 

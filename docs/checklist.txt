@@ -92,3 +92,16 @@ jcy@jcy-xps:~/dev/minishell$ echo $?
 // ?
 jcy@jcy-xps:~/dev/minishell$ echo (echo 2)
 bash: syntax error near unexpected token `echo'
+
+/nfs/homes/tkasbari/projects/common_core/3_circle/42_minishell$ ''
+token_list:
+ {T1: Type: WORD; t_string: ''; FD_Type: (null); FD_t_string: (null))} -->
+
+printing commands...
+{simple command 1:
+cmd_with_args:
+0:
+1: NULL
+redirection_list:
+}
+execve: Permission denied
