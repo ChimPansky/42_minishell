@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 16:08:11 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/01/30 13:50:40 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/01/31 15:00:20 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int	process_here_doc(t_msh *msh, char **document, char *limiter)
     char    *line;
     char    *temp;
 
+    ft_putstr_fd("HEY\n",STDOUT_FILENO);
     *document = malloc(sizeof(char));
     if (!*document)
     {

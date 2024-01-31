@@ -14,7 +14,7 @@ include $(LIBFT_DIR)/colors.mk
 MS_FILENAMES = \
 	app.c \
 	exit_error.c \
-	expander.c \
+	heredoc.c \
 	lexer.c \
 	list_commands.c \
 	list_tokens.c \
@@ -40,6 +40,10 @@ MS_FILENAMES += \
 	executor/execute_on_chain.c \
 	executor/executor.c \
 	executor/redirections.c
+
+MS_FILENAMES += \
+	expander/expander.c \
+	expander/expander_utils.c
 
 MS_FILENAMES += \
 	structures/list_variables.c

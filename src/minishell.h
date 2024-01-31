@@ -18,8 +18,6 @@
 
 extern bool g_sigint_received;
 
-
-
 // PARSER STUFF START
 typedef enum e_redir_type
 {
@@ -94,6 +92,7 @@ typedef struct s_msh
 	t_tokens		*tokens;
 	t_command_chain	*commands;
 	t_variables 	*env;
+	bool		 	done;
 }			t_msh;
 
 typedef int (*t_built_in)(t_msh *msh, char **cmd_with_args, int fd_out);

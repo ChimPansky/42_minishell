@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_error.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vvilensk <vilenskii.v@gmail.com>           +#+  +:+       +#+        */
+/*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 15:04:32 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/01/27 22:13:03 by vvilensk         ###   ########.fr       */
+/*   Updated: 2024/01/31 12:44:07 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ void	ms_error(int error_nr)
 
 void	ms_exit(t_msh *msh, int error_nr)
 {
+	// set done-flag
 	if (error_nr)
 		ms_error(error_nr);
 	destroy(msh);

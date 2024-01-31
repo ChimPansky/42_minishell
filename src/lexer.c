@@ -63,6 +63,7 @@ int read_word(char **input, t_string *str)
 
 static int  read_redir(t_redir_detail *redir, char **input)
 {
+	redir->whitespace_expansion = false;
 	if (ft_strncmp("<<", *input, 2) == MATCH)
 		redir->type = FD_HEREDOC;
 	else if (ft_strncmp(">>", *input, 2) == MATCH)

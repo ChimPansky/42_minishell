@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 20:05:41 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/01/31 11:27:38 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/01/31 13:08:24 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,11 @@ int main_loop(t_msh *msh)
 	char	*rl_chunk;
 	char	*old_input;
 
-	while(true)
+	while(!msh->done)
 	{
+		// todo: remove as much as possible from t_msh
+		//		free rl_chunk and rl_input (if not multiline) after each loop iteration
+		// mb just have 2 variables here: rl_input and rl_input_multi...
 		// incomplete (multiline) input like: echo hello|
 		// --> stitch input to next input
 		update_prompt(msh);
@@ -58,7 +61,7 @@ int main_loop(t_msh *msh)
 			g_sigint_received = false;
 		}
 		if (!rl_chunk)
-			return (free(rl_chunk), SUCCESS);
+			ms_exit(msh, ER_UNDEFINED);
 		else
 		{
 			old_input = msh->rl_input;
@@ -69,10 +72,9 @@ int main_loop(t_msh *msh)
 			}
 			else
 				msh->rl_input = ft_strdup(rl_chunk);
-			if (lexer(msh, rl_chunk) == SUCCESS)
+			if (lexer(msh, rl_chunk) == SUCCESS && msh->tokens)
 				expander(msh);
-			if (rl_chunk)
-				free(rl_chunk);
+			free(rl_chunk);
 			if (msh->err_number)
 				ms_error_msg(msh->err_number, msh->err_info);
 			else if (!msh->mult_line_input && msh->tokens)
@@ -97,6 +99,7 @@ int main_loop(t_msh *msh)
 			}
 		}
 	}
+	return (SUCCESS);
 }
 
 // add parameter check? are we allowed to caall for example: ./minishell arg1 arg2...
