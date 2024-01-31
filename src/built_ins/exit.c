@@ -14,26 +14,22 @@
 
 int	built_in_exit(t_msh *msh, char **cmd_with_args, int fd_out)
 {
-	(void) fd_out;
+	(void)		fd_out;
+	int			exit_code;
+	char		*exit_arg;
+
 	ft_printf_err("exit\n");
-	if (cmd_with_args[2])
+	exit_arg = cmd_with_args[1];
+	if (exit_arg && cmd_with_args[2])
 	{
-		ft_printf_err("too many args\n");
-		errno = 1;
-		return (errno);
+		ft_printf_err("exit: too many arguments\n");
+		return (EXIT_FAILURE);
 	}
-	if (cmd_with_args[1])
-	{
-		if (1) // check if argument is numeric and not too large (> long??)
-			ms_exit(msh, ft_atoi(cmd_with_args[1]) % 256);
-		else
-		{
-			ft_printf_err("numeric argument required\n");
-			errno = 2;
-			ms_exit(msh, SUCCESS);
-		}
-	}
-	errno = msh->last_exit_code;
-	ms_exit(msh, SUCCESS);
-	return (SUCCESS);
+	msh->done = true;
+	if (!exit_arg)
+		return (msh->last_exit_code);
+	exit_code = ft_atol_shift(&exit_arg);
+	if (*exit_arg)
+		return (ft_printf_err("exit: %s numeric argument required\n", cmd_with_args[1]), EXIT_FAILURE);
+	return (((exit_code % 256) + 256) % 256);
 }

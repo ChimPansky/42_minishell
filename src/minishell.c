@@ -60,7 +60,7 @@ int main_loop(t_msh *msh)
 	char	*rl_chunk;
 	char	*old_input;
 
-	while(true)
+	while(!msh->done)
 	{
 		// incomplete (multiline) input like: echo hello|
 		// --> stitch input to next input
@@ -75,7 +75,7 @@ int main_loop(t_msh *msh)
 			g_sigint_received = false;
 		}
 		if (!rl_chunk)
-			return (free(rl_chunk), SUCCESS);
+			ms_stop(msh);
 		else
 		{
 			old_input = msh->rl_input;
@@ -122,6 +122,7 @@ int main_loop(t_msh *msh)
 			}
 		}
 	}
+	return SUCCESS;
 }
 
 // add parameter check? are we allowed to caall for example: ./minishell arg1 arg2...
@@ -131,7 +132,7 @@ int	main(int ac, char **av, char **envp)
 	(void) ac;
 	(void) av;
 
-	init(&msh, envp);
+	ms_init(&msh, envp);
 	main_loop(&msh);
-	destroy(&msh);
+	ms_destroy_and_exit(&msh);
 }

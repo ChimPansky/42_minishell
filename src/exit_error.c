@@ -58,14 +58,3 @@ void	ms_error(int error_nr)
 		ft_putstr_fd("\n", STDERR_FILENO);
 }
 
-void	ms_exit(t_msh *msh, int error_nr)
-{
-	if (error_nr)
-		ms_error(error_nr);
-	destroy(msh);
-	if (error_nr)
-		exit(error_nr);
-	if (errno)
-		exit(errno);
-	exit(EXIT_SUCCESS);
-}

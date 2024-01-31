@@ -137,10 +137,6 @@ int lexer(t_msh *msh, char *input)
     t_redir_detail  *redir;
     char            *word;
 
-    // grep NAME < Makefile > out1.txt |
-    //only temporary:
-    if (ft_strcmp(input, "exit") == SUCCESS)
-        ms_exit(msh, EXIT_SUCCESS);
     if (ft_strcmp(input, "pipe") == SUCCESS)
          msh->last_token = token_add(&msh->tokens, TK_PIPE, 0, NULL);
     while (*input)

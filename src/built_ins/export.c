@@ -12,15 +12,20 @@
 
 #include "built_in.h"
 
-// TODO
-static int	print_env(t_msh *msh, int fd_out)
+static int is_valid_var_name(char *name)
 {
-	(void) msh;
-	(void) fd_out;
+	if (!(ft_isalpha(*name) || *name == '_'))
+		return !SUCCESS;
+	while (++name)
+	{
+		if (!(ft_isalpha(*name) || *name == '_'))
+			return !SUCCESS;
+	}
 	return SUCCESS;
+
 }
 
-static int add_var(t_msh *msh, char* var_descr)
+static int export_add_var(t_msh *msh, char* var_descr)
 {
 	char	*pos_equals;
 	char	*var_value;
@@ -30,25 +35,39 @@ static int add_var(t_msh *msh, char* var_descr)
 	{
 		*pos_equals = '\0';
 		var_value = pos_equals + 1;
-		if (!var_set(&msh->env, var_descr, var_value))
-			return (!SUCCESS);
 	}
 	else
-	{
-		//find local variable with name == var_name and copy (export) it to env or if not exist, export with empty value
 		var_value = "";
-	}
+	if (!is_valid_var_name(var_descr))
+		return (ft_printf_err("export: \'%s\': not a valid identifier",
+			var_descr), !SUCCESS);
+	if (!var_set(&msh->env, var_descr, var_value))
+		return (perror("export"), !SUCCESS);
 	return SUCCESS;
+}
+
+static int	export_output_args(t_msh *msh, int fd_out)
+{
+	t_variables	*env;
+	t_var		*var;
+
+	env = msh->env;
+	while (env)
+	{
+		var = env->content;
+		ft_dprintf(fd_out, "export %s=\"%s\"\n", var->name, var->value);
+		env = env->next;
+	}
+	return EXIT_SUCCESS;
 }
 
 int	built_in_export(t_msh *msh, char **cmd_with_args, int fd_out)
 {
-	if (!cmd_with_args || !*cmd_with_args++)
-		return(ft_printf("this shouldnt happen"), !SUCCESS); // todo
+	cmd_with_args++;
 	if (!*cmd_with_args)
-		return (print_env(msh, fd_out));
+		return (export_output_args(msh, fd_out));
 	while (*cmd_with_args)
-		if (add_var(msh, *cmd_with_args++) != SUCCESS)
-			return (!SUCCESS);
-	return (SUCCESS);
+		if (export_add_var(msh, *cmd_with_args++) != SUCCESS)
+			return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }
