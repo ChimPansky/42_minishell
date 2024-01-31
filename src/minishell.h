@@ -92,7 +92,8 @@ typedef struct s_msh
 	t_token			*last_token;
 	t_command_chain	*commands;
 	t_variables 	*env;
-}			t_msh;
+	bool		 	done;
+}		t_msh;
 
 typedef int (*t_built_in)(t_msh *msh, char **cmd_with_args, int fd_out);
 
@@ -101,16 +102,16 @@ typedef int (*t_built_in)(t_msh *msh, char **cmd_with_args, int fd_out);
 char **strings_append(char **strings, char *appendix);
 void str_print(char **strings);
 
-// init.c
-void	init(t_msh *msh, char **envp);
+// app.c
+void	ms_init(t_msh *msh, char **envp);
+void	ms_destroy_and_exit(t_msh *msh);
+void	ms_stop(t_msh *msh);
 
-// update.c
+// prompt.c
 void	update_prompt(t_msh *msh);
-void	update(t_msh *msh);
 
 //exit_error.c
 void	ms_error_msg(int error_nr, char *err_info);
-void	ms_exit(t_msh *msh, int error_nr);
 void	ms_error(int error_nr);
 
 // scratches.c
@@ -130,9 +131,6 @@ int 	expander(t_msh *msh);
 
 // parser.c
 int 	parser(t_msh *msh);
-
-// destroy.c
-void	destroy(t_msh *msh);
 
 // list_tokens.c
 t_token		*token_add(t_tokens **tokens, t_token_type tk_type,

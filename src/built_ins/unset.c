@@ -14,17 +14,9 @@
 
 int	built_in_unset(t_msh *msh, char **cmd_with_args, int fd_out)
 {
-	int	i;
-
-	i = 1;
-	// problem with unsetting several variables at the same time...
-	while (cmd_with_args[i])
-	{
-		if (1)	// validate var_name...
-			var_delete(&msh->env, cmd_with_args[i]);
-		else
-			dprintf(fd_out, "unset: invalid variable name"); // stderr or out? error handling...
-		i++;
-	}
-	return (SUCCESS);
+	(void) fd_out;
+	
+	while (*(++cmd_with_args))
+		var_delete(&msh->env, *cmd_with_args);
+	return (EXIT_SUCCESS);
 }

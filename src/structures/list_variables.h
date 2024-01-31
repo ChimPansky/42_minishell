@@ -14,7 +14,6 @@ typedef t_list t_variables;
 char		*var_get_value(t_variables *vars, const char *name);
 t_var		*var_find(t_variables *vars, const char *name);
 t_var		*var_set(t_variables **vars_p, const char *name, const char *value);
-t_var		*var_add(t_variables **vars_p, const char *name, const char *value);
 void		var_delete(t_variables **vars_p, const char *name);
 void		vars_destoy(t_variables **vars_p);
 

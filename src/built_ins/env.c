@@ -12,18 +12,19 @@
 
 #include "built_in.h"
 
-// ask peers
 int	built_in_env(t_msh *msh, char **cmd_with_args, int fd_out)
 {
-	(void)msh;
-	(void)cmd_with_args;
+	t_variables	*env;
+	t_var		*var;
 
-	char** key_value_pairs;
-	key_value_pairs = vars_convert_to_array(msh->env);
-	if (!key_value_pairs)	// error_handling...
-		return (1);
-	while (key_value_pairs && *key_value_pairs)
-		dprintf(fd_out, "%s\n", *key_value_pairs++);
-	// free char **key_value_pairs...
-	return (0);
+	if (cmd_with_args[1])
+		return (ft_printf_err("env only works with no args"), EXIT_FAILURE);
+	env = msh->env;
+	while (env)
+	{
+		var = env->content;
+		ft_dprintf(fd_out, "%s=%s\n", var->name, var->value);
+		env = env->next;
+	}
+	return (EXIT_SUCCESS);
 }
