@@ -37,6 +37,6 @@ void	ms_destroy_and_exit(t_msh *msh)
 
 void	ms_stop(t_msh *msh)
 {
-	ft_printf_err("exit\n");
+	ft_printf_err("\nexit\n");
 	msh->done = true;
 }
