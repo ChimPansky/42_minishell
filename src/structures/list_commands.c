@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:43:57 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/01 15:36:18 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/01 18:40:57 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void commandlist_destroy(t_commandlist **commands)
 
 void	print_redirs(t_list **redirections)
 {
-	t_redirections	*cur_redir;
+	t_redirlist	*cur_redir;
 	t_redir_detail	*redir;
 	char			*fd_type;
 	int			i;

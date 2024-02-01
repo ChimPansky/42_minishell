@@ -6,23 +6,22 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:30:33 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/01 15:32:45 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/01 19:34:20 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_redir_detail	*redir_move(t_redirections **redirections, t_redir_detail *redir)
+t_redir_detail	*redir_move(t_redirlist **redirections, t_redir_detail *redir)
 {
 	if (!redir)
 		return NULL;
-	t_redirections *new_redir = ft_lstnew(redir);
+	t_redirlist *new_redir = ft_lstnew(redir);
 	if (!new_redir)
 		return (NULL);
 	ft_lstadd_back(redirections, new_redir);
 	return (redir);
 }
-
 
 // takes list of tokens and turns it into list of one or several commands (command chain); Also: perform variable expansions...
 int 	parse(t_msh *msh, t_tokenlist *tokens, t_commandlist **commands_p)

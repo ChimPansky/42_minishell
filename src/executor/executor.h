@@ -15,7 +15,7 @@ typedef struct s_executor
 	int num_of_cmds;
 }		t_executor;
 
-int		process_redirections(t_executor *executor, t_redirections *redirs);
+int		process_redirections(t_executor *executor, t_redirlist *redirs);
 int		execute_no_chain(t_msh *msh, t_simple_command *cmd, t_executor *executor);
 int		execute_on_chain(t_msh *msh, t_commandlist *cmds, t_executor *executor);
 void	wait_with_check(pid_t* pids, t_executor *executor);

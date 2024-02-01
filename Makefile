@@ -45,6 +45,7 @@ MS_FILENAMES += \
 
 MS_FILENAMES += \
 	structures/list_commands.c \
+	structures/list_redirs.c \
 	structures/list_tokens.c \
 	structures/list_variables.c
 

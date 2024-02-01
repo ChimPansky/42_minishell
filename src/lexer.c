@@ -80,7 +80,6 @@ static int  read_redir(t_redir_detail *redir, char **input)
 		return (!SUCCESS);
 	return (SUCCESS);
 }
-
 // turns input into token_list; stores token_list in msh.tokens
 int lex(t_msh *msh, t_tokenlist **tokens_p, char *input)
 {

@@ -73,7 +73,7 @@ t_built_in get_built_in_by_name(char *func_name);
 int lex(t_msh *msh, t_tokenlist **tokens_p, char *input);
 
 // heredoc.c
-int 	read_heredocs(t_tokenlist *tokens, t_string *rl_input);
+int 	read_heredocs(t_msh *msh, t_tokenlist *tokens, t_string *rl_input);
 
 // expander/expander.c
 int	expand(t_msh *msh, t_tokenlist *tokens);

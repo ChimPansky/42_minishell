@@ -53,7 +53,7 @@ static int process_redirection(t_redir_detail *redir, t_executor *executor)
 	return SUCCESS;
 }
 
-int process_redirections(t_executor *executor, t_redirections *redirs)
+int process_redirections(t_executor *executor, t_redirlist *redirs)
 {
 	while (redirs)
 	{

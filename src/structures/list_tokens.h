@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 15:34:33 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/01 15:34:34 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/01 18:23:07 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 #include "libft.h"
 #include "ft_string.h"
-#include "redirs.h"
+#include "list_redirs.h"
 
 typedef t_list t_tokenlist;
 

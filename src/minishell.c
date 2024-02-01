@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 20:05:41 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/01 15:32:30 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/01 18:15:19 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int main_loop(t_msh *msh)
 			add_history(rl_input.buf), string_destroy(&rl_input);
 			continue;
 		}
-		if (SUCCESS != read_heredocs(tokens, &rl_input))
+		if (SUCCESS != read_heredocs(msh, tokens, &rl_input))
 		{
 			(add_history(rl_input.buf), string_destroy(&rl_input), tokenlist_destroy(&tokens));
 			continue;
@@ -88,7 +88,7 @@ int main_loop(t_msh *msh)
 	return (SUCCESS);
 }
 
-// add parameter check? are we allowed to caall for example: ./minishell arg1 arg2...
+// add parameter check? are we allowed to call for example: ./minishell arg1 arg2...
 int	main(int ac, char **av, char **envp)
 {
 	t_msh	msh;
