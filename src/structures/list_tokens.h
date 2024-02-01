@@ -6,16 +6,16 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 15:34:33 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/01 18:23:07 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/01 19:52:02 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIST_TOKENS_H
-#define LIST_TOKENS_H
+# define LIST_TOKENS_H
 
-#include "libft.h"
-#include "ft_string.h"
-#include "list_redirs.h"
+# include "libft.h"
+# include "ft_string.h"
+# include "list_redirs.h"
 
 typedef t_list t_tokenlist;
 

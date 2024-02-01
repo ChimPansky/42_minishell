@@ -1,8 +1,20 @@
-#ifndef LIST_COMMANDS_H
-#define LIST_COMMANDS_H
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   list_commands.h                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/01 19:52:14 by tkasbari          #+#    #+#             */
+/*   Updated: 2024/02/01 19:52:15 by tkasbari         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#include "libft.h"
-#include "redirs.h"
+#ifndef LIST_COMMANDS_H
+# define LIST_COMMANDS_H
+
+# include "libft.h"
+# include "redirs.h"
 
 
 typedef t_list t_commandlist;
