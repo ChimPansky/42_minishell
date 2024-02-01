@@ -48,7 +48,6 @@ int 	parse(t_msh *msh, t_tokenlist *tokens, t_commandlist **commands_p)
         {
             if (!command_add(commands_p, cmd_with_args, redirections))
 				return (perror("parse"), commandlist_destroy(commands_p),  !SUCCESS);
-            command_add(commands_p, cmd_with_args, redirections);
             cmd_with_args = NULL;
             redirections = NULL;
             if (!cur_token)
