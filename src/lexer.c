@@ -17,7 +17,7 @@
 //  quotes check
 //  pipe, end, or, ; at eol
 //
-// PARSER (token list) -> command_chain
+// PARSER (token list) -> commandlist
 //      expander is part of parser
 //      check for correct doc names as well and expand (heredoc delim not expandable)
 //
@@ -42,7 +42,7 @@ int read_word(char **input, t_string *str)
 	char    quote_type;
 
 	if (string_init(str, "") != SUCCESS)
-		return (!SUCCESS);
+		return (perror("lex: read word"), !SUCCESS);
 	quote_type = 0;
 	read_shell_spaces(input);
 	while (**input)
@@ -82,61 +82,70 @@ static int  read_redir(t_redir_detail *redir, char **input)
 }
 
 // turns input into token_list; stores token_list in msh.tokens
-int lex(t_msh *msh, char *input)
+int lex(t_msh *msh, t_tokenlist **tokens_p, char *input)
 {
 	t_redir_detail  redir;
 	t_string        str;
+	t_token_type	last_token_type;
 	//char            *word;
 
 	// grep NAME < Makefile > out1.txt |
+	last_token_type = TK_NULL;
+	*tokens_p = NULL;
 	while (*input)
 	{
 		if (*input == '<' || *input == '>')
 		{
+			//handle_redir()...
 			if (read_redir(&redir, &input) != SUCCESS)
-			{   // TODO: there was a problem reading the word...
-				msh->err_number = ER_UNEXPECTED_TOKEN;
-				msh->err_info = "newline";
-				return (!SUCCESS);
+			{
+				msh->last_exit_code = ER_UNEXPECTED_TOKEN;
+				error_unexpected_token("newline");
+				return (tokenlist_destroy(tokens_p), !SUCCESS);
 			}
-			if (!token_add(&msh->tokens, TK_REDIR, &str, &redir))
-				ms_error(ER_MALLOC);
+			if (!token_add(tokens_p, TK_REDIR, &str, &redir))
+				return (perror("lex"), tokenlist_destroy(tokens_p),  !SUCCESS);
 			else
-				msh->last_token_type = TK_REDIR;
-			ft_putendl_fd(redir.string.buf, STDOUT_FILENO);
+				last_token_type = TK_REDIR;
 		}
 		else if (*input == '|')
 		{
-			if (msh->last_token_type == TK_NULL || msh->last_token_type == TK_PIPE)
-			{    // TODO throw syntax error: 2 pipes in a row or pipe is first token...
-				msh->err_number = ER_UNEXPECTED_TOKEN;
-				msh->err_info = "|";
-				return (ERROR);
+			//handle_pipe()...
+			if (last_token_type == TK_NULL || last_token_type == TK_PIPE)
+			{
+				msh->last_exit_code = ER_UNEXPECTED_TOKEN;
+				error_unexpected_token("|");
+				return (tokenlist_destroy(tokens_p),  !SUCCESS);
 			}
-			token_add(&msh->tokens, TK_PIPE, &str, NULL);
-			msh->last_token_type = TK_PIPE;
+			if (!token_add(tokens_p, TK_PIPE, &str, NULL))
+				return (perror("lex"), tokenlist_destroy(tokens_p),  !SUCCESS);
+			last_token_type = TK_PIPE;
 			input++;
 		}
 		else if (is_shell_space(*input))
 			input++;
 		else
 		{
+			//handle_word()...
 			if (read_word(&input, &str) != SUCCESS)
 			{   // TODO: there was a problem reading the word...
-				msh->err_number = ER_UNEXPECTED_TOKEN;
-				msh->err_info = "newline";
-				return (ERROR);
+				msh->last_exit_code = ER_UNEXPECTED_TOKEN;
+				error_unexpected_token("newline");
+				return (tokenlist_destroy(tokens_p),  !SUCCESS);
 			}
 			else
 			{
-				token_add(&msh->tokens, TK_WORD, &str, NULL);
-				msh->last_token_type = TK_WORD;
+				if (!token_add(tokens_p, TK_WORD, &str, NULL))
+					return (perror("lex"), tokenlist_destroy(tokens_p),  !SUCCESS);
+				last_token_type = TK_WORD;
 			}
 		}
 	}
-	if (msh->last_token_type == TK_PIPE)
-		msh->mult_line_input = true;
-	else
-		msh->mult_line_input = false;
+	if (last_token_type != TK_WORD)
+	{
+		msh->last_exit_code = ER_UNEXPECTED_TOKEN;
+		error_unexpected_token("newline");
+		return (tokenlist_destroy(tokens_p),  !SUCCESS);
+	}
 	return (SUCCESS);
 }

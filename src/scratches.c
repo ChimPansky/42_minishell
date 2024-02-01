@@ -30,11 +30,11 @@
 // 	}
 // 	return NULL;
 // }
-// char	*var_get_value(t_variables *vars, const char *name)
+// char	*varlist_get_value(t_varlist *vars, const char *name)
 // {
 // 	t_var	*target;
 
-// 	target = var_find(vars, name);
+// 	target = varlist_find(vars, name);
 // 	if (!target)
 // 		return (NULL);
 // 	return (target->value);

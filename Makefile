@@ -16,8 +16,6 @@ MS_FILENAMES = \
 	exit_error.c \
 	heredoc.c \
 	lexer.c \
-	list_commands.c \
-	list_tokens.c \
 	minishell.c \
 	parser.c \
 	prompt.c \
@@ -46,6 +44,8 @@ MS_FILENAMES += \
 	expander/expander_utils.c
 
 MS_FILENAMES += \
+	structures/list_commands.c \
+	structures/list_tokens.c \
 	structures/list_variables.c
 
 SRC = $(addprefix $(SOURCE_DIR)/,$(MS_FILENAMES))

@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:30:33 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/01/31 19:50:47 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/01 14:42:51 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ static int	handle_dollar(t_msh *msh, bool *ws_expansion,
 		return (string_add_chr(expanded, '$'));
 	if (read_var_name(to_expand, &var_name) != SUCCESS)
 		return (!SUCCESS);
-	var_value = var_get_value(msh->env, var_name.buf);
+	var_value = varlist_get_value(msh->env, var_name.buf);
 	string_destroy(&var_name);
 	if (ws_expansion && ft_string_has_chars(var_value, STR_WHITESPACE))
 		*ws_expansion = true;
@@ -98,7 +98,7 @@ static int	handle_tilde(t_msh *msh, char **to_expand, t_string *expanded)
 	(*to_expand)++;
 	if (**to_expand == '\0' || **to_expand == '/'
 		|| is_shell_space(**to_expand))
-		return (string_add_str(expanded, var_get_value(msh->env, "HOME")));
+		return (string_add_str(expanded, varlist_get_value(msh->env, "HOME")));
 	return (string_add_chr(expanded, '~'));
 }
 

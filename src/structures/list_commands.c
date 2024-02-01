@@ -6,13 +6,13 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:43:57 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/01/30 16:58:54 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/01 15:36:18 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "list_commands.h"
 
-t_simple_command	*command_add(t_command_chain **commands, char **cmd_with_args, t_list *redirections)
+t_simple_command	*command_add(t_commandlist **commands, char **cmd_with_args, t_list *redirections)
 {
 	t_simple_command *command;
 
@@ -24,15 +24,14 @@ t_simple_command	*command_add(t_command_chain **commands, char **cmd_with_args, 
 		command->cmd_with_args= cmd_with_args;
 	if (redirections)
 		command->redirections = redirections;
-	t_command_chain *new_command = ft_lstnew(command);
+	t_commandlist *new_command = ft_lstnew(command);
 	if (!new_command)
-		return (destroy_command(command), NULL);
+		return (command_destroy(command), NULL);
 	ft_lstadd_back(commands, new_command);
 	return (command);
 }
 
-
-void	destroy_command(void *command_void)
+void	command_destroy(void *command_void)
 {
 	t_simple_command *command = command_void;
 
@@ -40,6 +39,11 @@ void	destroy_command(void *command_void)
 
 	//free(commands)...;
 	//free(redirections)...;
+}
+
+void commandlist_destroy(t_commandlist **commands)
+{
+	ft_lstclear(commands, command_destroy);
 }
 
 void	print_redirs(t_list **redirections)
@@ -71,9 +75,9 @@ void	print_redirs(t_list **redirections)
 	}
 }
 
-void	print_commands(t_command_chain **commands)
+void	print_commands(t_commandlist **commands)
 {
-	t_command_chain		*cmd_list;
+	t_commandlist		*cmd_list;
 	t_simple_command	*cur_cmd;
 	int			i;
 

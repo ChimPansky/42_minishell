@@ -1,4 +1,16 @@
-#include "minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   list_tokens.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/01 15:34:18 by tkasbari          #+#    #+#             */
+/*   Updated: 2024/02/01 15:34:52 by tkasbari         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "list_tokens.h"
 #include "libft.h"
 
 
@@ -25,7 +37,12 @@ void	token_destroy(void *token_void)
 	free(token);
 }
 
-t_token		*token_add(t_tokens **tokens, t_token_type tk_type,
+void tokenlist_destroy(t_tokenlist **tokens)
+{
+	ft_lstclear(tokens, token_destroy);
+}
+
+t_token		*token_add(t_tokenlist **tokens, t_token_type tk_type,
 						t_string *str, t_redir_detail *redir)
 {
 	t_token 	*token;
@@ -39,16 +56,16 @@ t_token		*token_add(t_tokens **tokens, t_token_type tk_type,
 		token->redir = *redir;
 	else if (tk_type == TK_WORD)
 		token->string = *str;
-	t_tokens *new_token = ft_lstnew(token);
+	t_tokenlist *new_token = ft_lstnew(token);
 	if (!new_token)
 		return (token_destroy(token), NULL);
 	ft_lstadd_back(tokens, new_token);
 	return (token);
 }
 
-void	print_tokens(t_tokens **tokens)
+void	print_tokens(t_tokenlist **tokens)
 {
-	t_tokens	*cur_list;
+	t_tokenlist	*cur_list;
 	t_token		*cur_token;
 	char		*type_text;
 	char		*tk_str;

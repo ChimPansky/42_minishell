@@ -6,100 +6,86 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 20:05:41 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/01/31 20:17:57 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/01 15:32:30 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
-
-// for libft (add 1 char to a string):
-char    *add_to_word(char **word, char new_char)
-{
-	char	*to_free;
-    char    appendix[2];
-
-	if (!new_char)
-		return (*word);
-    appendix[0] = new_char;
-    appendix[1] = '\0';
-    if (!*word)
-		*word = ft_strdup(appendix);
-    else
-    {
-		to_free = *word;
-        *word = ft_strjoin(*word, appendix);
-        free(to_free);
-    }
-    return (*word);
-}
-
 bool g_sigint_received;
 
+int try_read_with_readline(t_msh *msh, t_string *rl_input)
+{
+	char	*rl_raw;
+
+	rl_raw = readline(msh->prompt.buf);
+	if (!rl_raw)
+	{
+		if (errno) // check for type of err, sometimes ms_stop
+			perror("readline");
+		else
+			ms_stop(msh);
+		return (!SUCCESS);
+	}
+	string_init_with_allocated(rl_input, rl_raw);
+	return (SUCCESS);
+}
+
+int	check_for_sigint(t_msh *msh)
+{
+	if (g_sigint_received)
+	{
+		msh->last_exit_code = 130;
+		g_sigint_received = false;
+		return (!SUCCESS);
+	}
+	return (SUCCESS);
+}
 
 int main_loop(t_msh *msh)
 {
-	char	*rl_chunk;
-	char	*old_input;
+	t_string 		rl_input;
+	t_tokenlist		*tokens;
+	t_commandlist	*commands;
 
 	while(!msh->done)
 	{
-		// todo: remove as much as possible from t_msh
-		//		free rl_chunk and rl_input (if not multiline) after each loop iteration
-		// mb just have 2 variables here: rl_input and rl_input_multi...
-		// incomplete (multiline) input like: echo hello|
-		// --> stitch input to next input
+		errno = 0;
 		update_prompt(msh);
-		if (msh->mult_line_input)
-			rl_chunk = readline(msh->mult_line_prompt);
-		else
-			rl_chunk = readline(msh->prompt.buf);
-		if (g_sigint_received)
+		if (SUCCESS != try_read_with_readline(msh, &rl_input))
+			continue;
+		if (SUCCESS != check_for_sigint(msh))
 		{
-			msh->last_exit_code = 130;
-			g_sigint_received = false;
+			string_destroy(&rl_input);
+			continue;
 		}
-		if (!rl_chunk)
-			ms_stop(msh);
-		else
+		if (SUCCESS != lex(msh, &tokens, rl_input.buf) || !tokens)
 		{
-			old_input = msh->rl_input;
-			if (msh->rl_input)
-			{
-				msh->rl_input = ft_strjoin(msh->rl_input, rl_chunk);
-				free(old_input);
-			}
-			else
-				msh->rl_input = ft_strdup(rl_chunk);
-			if (lex(msh, rl_chunk) == SUCCESS && msh->tokens)
-				expand(msh);
-			free(rl_chunk);
-			if (msh->err_number)
-				ms_error_msg(msh->err_number, msh->err_info);
-			else if (!msh->mult_line_input && msh->tokens)
-			{
-				parse(msh);
-				execute(msh, msh->commands);
-			}
-			if (msh->err_number || !msh->mult_line_input)
-			{
-				ft_lstclear(&msh->tokens, token_destroy);
-				msh->last_token_type = TK_NULL;
-				ft_lstclear(&msh->commands, destroy_command);
-				msh->commands = NULL;
-				if (msh->rl_input)
-				{
-					add_history(msh->rl_input);
-					free_null((void **)&msh->rl_input);
-				}
-				msh->mult_line_input = false;
-				msh->err_number = SUCCESS;
-				msh->err_info = NULL;
-			}
+			add_history(rl_input.buf), string_destroy(&rl_input);
+			continue;
 		}
+		if (SUCCESS != read_heredocs(tokens, &rl_input))
+		{
+			(add_history(rl_input.buf), string_destroy(&rl_input), tokenlist_destroy(&tokens));
+			continue;
+		}
+		add_history(rl_input.buf);
+		if (SUCCESS != expand(msh, tokens))
+		{
+			(string_destroy(&rl_input), tokenlist_destroy(&tokens));
+			continue;
+		}
+		if (SUCCESS != parse(msh, tokens, &commands))
+		{
+			(string_destroy(&rl_input), tokenlist_destroy(&tokens));
+			continue;
+		}
+		execute(msh, commands);
+		string_destroy(&rl_input);
+		tokenlist_destroy(&tokens);
+		commandlist_destroy(&commands);
 	}
-	return SUCCESS;
+	return (SUCCESS);
 }
 
 // add parameter check? are we allowed to caall for example: ./minishell arg1 arg2...

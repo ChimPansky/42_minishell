@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 17:33:15 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/01/09 19:36:49 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/01 13:21:20 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	built_in_env(t_msh *msh, char **cmd_with_args, int fd_out)
 {
-	t_variables	*env;
+	t_varlist	*env;
 	t_var		*var;
 
 	if (cmd_with_args[1])
