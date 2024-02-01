@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 16:08:11 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/01/31 15:00:20 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/01 15:27:34 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,13 @@
 // if success return SUCCESS
 // + expansionon the expansion step
 // + empty delimeter case
-int	process_here_doc(t_msh *msh, char **document, char *limiter)
+static int	process_here_doc(char **document, char *limiter, t_string *rl_input)
 {
     char    *line;
     char    *temp;
+    //t_string    doc;
+    (void)rl_input;
 
-    ft_putstr_fd("HEY\n",STDOUT_FILENO);
     *document = malloc(sizeof(char));
     if (!*document)
     {
@@ -31,7 +32,7 @@ int	process_here_doc(t_msh *msh, char **document, char *limiter)
 	{
         // does it have \n in the end?
         // if no change strjoin to strnjoin with \n
-		line = readline(msh->mult_line_prompt); // addhistory
+		line = readline(">"); // addhistory
 		if (line == NULL)
         {
             ft_putstr_fd("readline returned NULL...\n", STDOUT_FILENO);
@@ -53,23 +54,22 @@ int	process_here_doc(t_msh *msh, char **document, char *limiter)
         return (SUCCESS);
 }
 
-int 	read_heredocs(t_msh *msh, char **rl_chunk)
+int 	read_heredocs(t_tokenlist *tokens, t_string *rl_input)
 {
-    t_tokens    *cur_tokens;
+    t_tokenlist *cur_tokens;
     t_token     *token;
-    char        *old_chunk;
 
-    cur_tokens = msh->tokens;
+    cur_tokens = tokens;
     token = NULL;
     while (cur_tokens)
     {
         token = cur_tokens->content;
         if (token && token->tk_type == TK_REDIR && token->redir.type == FD_HEREDOC)
         {
-            old_chunk = *rl_chunk;
-            process_here_doc(msh, &token->redir.string.buf, token->redir.string.buf);
-            *rl_chunk = ft_strjoin(*rl_chunk, token->redir.string.buf);
-            free(old_chunk);
+            process_here_doc(&token->redir.string.buf, token->redir.string.buf, rl_input);
+            //string_add_str(rl_input, token->redir.)
+            //*rl_input = ft_strjoin(*rl_input, token->redir.string.buf);
+            // free(old_input);
         }
         cur_tokens = cur_tokens->next;
     }

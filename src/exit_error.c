@@ -6,11 +6,16 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 15:04:32 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/01/31 20:17:11 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/01 15:28:15 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	error_unexpected_token(char *str)
+{
+	ft_printf_err("syntax error near unexpected token `%s'", str);
+}
 
 void	ms_error_msg(int error_nr, char *err_info)
 {

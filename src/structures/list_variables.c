@@ -1,4 +1,16 @@
-#include "../minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   list_variables.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/01 15:35:04 by tkasbari          #+#    #+#             */
+/*   Updated: 2024/02/01 15:35:17 by tkasbari         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "list_variables.h"
 #include "libft.h"
 
 t_var *variable(const char *name, const char *value)
@@ -31,17 +43,17 @@ void destroy_variable(void *var_void)
 }
 
 // TODO change var to vars for each function
-char	*var_get_value(t_variables *vars, const char *name)
+char	*varlist_get_value(t_varlist *vars, const char *name)
 {
 	t_var	*target;
 
-	target = var_find(vars, name);
+	target = varlist_find(vars, name);
 	if (!target)
 		return ("");
 	return (target->value);
 }
 
-t_var *var_find(t_variables *vars, const char *name)
+t_var *varlist_find(t_varlist *vars, const char *name)
 {
 	while (vars)
 	{
@@ -52,21 +64,21 @@ t_var *var_find(t_variables *vars, const char *name)
 	return NULL;
 }
 
-t_var *var_set(t_variables **vars_p, const char *name, const char *value)
+t_var *varlist_set(t_varlist **vars_p, const char *name, const char *value)
 {
 	t_var *var = variable(name, value);
 	if (!var)
 		return NULL;
-	t_variables *new_var = ft_lstnew(var);
+	t_varlist *new_var = ft_lstnew(var);
 	if (!new_var)
 		return (destroy_variable(var), NULL);
 	ft_lstadd_front(vars_p, new_var);
 	return var;
 }
 
-void var_delete(t_variables **vars_p, const char *name)
+void varlist_delete_one(t_varlist **vars_p, const char *name)
 {
-	t_variables *vars;
+	t_varlist *vars;
 
 	vars = *vars_p;
 	while (vars)
@@ -80,15 +92,15 @@ void var_delete(t_variables **vars_p, const char *name)
 	}
 }
 
-void vars_destoy(t_variables **vars_p)
+void varlist_destoy(t_varlist **vars_p)
 {
 	ft_lstclear(vars_p, destroy_variable);
 }
 
 // on fail returns NULL
-t_variables *vars_init_from_envp(char **envp)
+t_varlist *varlist_init_from_envp(char **envp)
 {
-	t_variables	*env;
+	t_varlist	*env;
 	char	*sep;
 
 	env = NULL;
@@ -98,7 +110,7 @@ t_variables *vars_init_from_envp(char **envp)
 	{
 		sep = ft_strchr(*envp, '=');
 		*sep = 0;
-		if (NULL == var_set(&env, *envp, sep + 1))
+		if (NULL == varlist_set(&env, *envp, sep + 1))
 			return (ft_lstclear(&env, destroy_variable), NULL);
 		envp++;
 	}
@@ -106,7 +118,7 @@ t_variables *vars_init_from_envp(char **envp)
 }
 
 // on fail returns NULL
-char **vars_convert_to_array(t_variables *vars)
+char **varlist_convert_to_array(t_varlist *vars)
 {
 	char	**vars_array;
 	size_t	i;

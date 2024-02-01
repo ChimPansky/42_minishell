@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   update.c                                           :+:      :+:    :+:   */
+/*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 11:49:31 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/01/14 14:11:32 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/01 13:22:35 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ void	add_relative_dir(t_string *prompt, char *cwd, const char *home)
 
 void	update_prompt(t_msh *msh)
 {
-	const char*		home = var_get_value(msh->env, "HOME");
-	const t_var*	pwd_v = var_find(msh->env, "PWD");
+	const char*		home = varlist_get_value(msh->env, "HOME");
+	const t_var*	pwd_v = varlist_find(msh->env, "PWD");
 	char 			*cwd;
 
 	msh->prompt.buf[0] = '\0';

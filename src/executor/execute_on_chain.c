@@ -9,7 +9,7 @@ static void execute_one_on_chain(t_msh *msh, t_simple_command *cmd, t_executor *
 	execute_in_child_process(msh, cmd->cmd_with_args, executor);
 }
 
-static int execute_cmds(t_msh *msh, t_executor *executor, t_command_chain **cmds, pid_t* pids)
+static int execute_cmds(t_msh *msh, t_executor *executor, t_commandlist **cmds, pid_t* pids)
 {
 	int idx;
 	int pipe_fds[2];
@@ -49,7 +49,7 @@ static int execute_cmds(t_msh *msh, t_executor *executor, t_command_chain **cmds
 
 // is it 0 in waitpid options?
 // waitpid errors seems to be okay to ignore
-int execute_on_chain(t_msh *msh, t_command_chain *cmds, t_executor *executor)
+int execute_on_chain(t_msh *msh, t_commandlist *cmds, t_executor *executor)
 {
 	int				i;
 	pid_t *const	pids = malloc(executor->num_of_cmds * sizeof(pid_t));

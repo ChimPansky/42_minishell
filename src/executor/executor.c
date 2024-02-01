@@ -58,7 +58,7 @@ bool try_execute_built_in(t_msh *msh, t_simple_command *cmd, t_executor *executo
 }
 
 // if no success frome execute_??_chain, exit code in executor ain't changed
-int execute(t_msh *msh, t_command_chain *cmds)
+int execute(t_msh *msh, t_commandlist *cmds)
 {
 	t_executor executor;
 

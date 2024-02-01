@@ -42,7 +42,7 @@ char *try_find_in_path(t_msh *msh, const char *exec)
 // is it needed to free and close?
 void execute_in_child_process(t_msh *msh, char **cmd_with_args, t_executor *executor)
 {
-	char *const *envp = vars_convert_to_array(msh->env); // <-- MALLOC
+	char *const *envp = varlist_convert_to_array(msh->env); // <-- MALLOC
 	const char *exec = cmd_with_args[0];
 	char *exec_with_path;
 

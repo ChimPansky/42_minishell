@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vvilensk <vilenskii.v@gmail.com>           +#+  +:+       +#+        */
+/*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 17:33:15 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/01/25 10:55:13 by vvilensk         ###   ########.fr       */
+/*   Updated: 2024/02/01 13:22:49 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,14 @@ static int export_add_var(t_msh *msh, char* var_descr)
 	if (!is_valid_var_name(var_descr))
 		return (ft_printf_err("export: \'%s\': not a valid identifier",
 			var_descr), !SUCCESS);
-	if (!var_set(&msh->env, var_descr, var_value))
+	if (!varlist_set(&msh->env, var_descr, var_value))
 		return (perror("export"), !SUCCESS);
 	return SUCCESS;
 }
 
 static int	export_output_args(t_msh *msh, int fd_out)
 {
-	t_variables	*env;
+	t_varlist	*env;
 	t_var		*var;
 
 	env = msh->env;

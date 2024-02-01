@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 14:18:59 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/01/31 19:59:07 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/01 15:33:12 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "../minishell.h"
 
-int	expand(t_msh *msh);
+int	expand(t_msh *msh, t_tokenlist *tokens);
 int	string_expand(t_msh *msh, t_string *str, bool *ws_expansion);
 int	read_var_name(char **to_expand, t_string *var_name);
 
