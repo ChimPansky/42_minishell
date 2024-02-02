@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 19:52:14 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/01 19:52:15 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/02 14:47:17 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define LIST_COMMANDS_H
 
 # include "libft.h"
-# include "redirs.h"
+# include "list_redirs.h"
 
 
 typedef t_list t_commandlist;

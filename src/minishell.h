@@ -41,13 +41,6 @@ typedef struct s_msh
 
 typedef int (*t_built_in)(t_msh *msh, char **cmd_with_args, int fd_out);
 
-//minishell.c
-char **strings_append(char **strings, char *appendix);
-void strings_print(char **strings);
-
-// TODO Vova:
-int 	execute(t_msh *msh, t_commandlist *cmds);
-
 // app.c
 void	ms_init(t_msh *msh, char **envp);
 void	ms_destroy_and_exit(t_msh *msh);
@@ -69,27 +62,28 @@ void	print_splitted(char **splitted);
 // built_ins/built_in.c
 t_built_in get_built_in_by_name(char *func_name);
 
-// lexer.c
-int lex(t_msh *msh, t_tokenlist **tokens_p, char *input);
+// lexer/lexer.c
+int 	lex(t_msh *msh, t_tokenlist **tokens_p, char *input);
 
 // heredoc.c
 int 	read_heredocs(t_msh *msh, t_tokenlist *tokens, t_string *rl_input);
 
 // expander/expander.c
-int	expand(t_msh *msh, t_tokenlist *tokens);
+int		expand(t_msh *msh, t_tokenlist *tokens);
 
 // parser.c
 int 	parse(t_msh *msh, t_tokenlist *tokens, t_commandlist **commands_p);
 
+// executor/executor.c
+int 	execute(t_msh *msh, t_commandlist *cmds);
+
 // signals.c
-void register_signals(void);
+void 	register_signals(void);
 
 // strings.c
 bool    is_shell_space(char c);
 bool    is_token_seperator(char c);
 bool    is_var_separator(char c);
 
-// executor/executor.c
-int 		execute(t_msh *msh, t_commandlist *cmds);
 
 #endif

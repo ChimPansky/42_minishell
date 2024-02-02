@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 16:08:11 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/01 18:16:36 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/02 14:54:19 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,16 @@
 // if success return SUCCESS
 // + expansionon the expansion step
 // + empty delimeter case
-static int	process_here_doc(t_msh *msh, char **document, char *limiter, t_string *rl_input)
+static int	process_here_doc(t_msh *msh, t_string *document, char *limiter, t_string *rl_input)
 {
     char    *line;
     char    *temp;
     //t_string    doc;
     (void)rl_input;
 
-    *document = malloc(sizeof(char));
-    if (!*document)
-    {
-        return (!SUCCESS);
-    }
-    **document = '\0';
+    if (string_init(document, "") != SUCCESS)
+		return (!SUCCESS);
+
 	while (1)
 	{
         // does it have \n in the end?
@@ -64,12 +61,14 @@ int 	read_heredocs(t_msh *msh, t_tokenlist *tokens, t_string *rl_input)
         token = cur_tokens->content;
         if (token && token->tk_type == TK_REDIR && token->redir.type == FD_HEREDOC)
         {
-            process_here_doc(msh, &token->redir.string.buf, token->redir.string.buf, rl_input);
+            if (process_here_doc(msh, &token->redir.content.buf, token->redir.delimiter.buf, rl_input) != SUCCESS)
+				return (!SUCCESS);
+
             //string_add_str(rl_input, token->redir.)
             //*rl_input = ft_strjoin(*rl_input, token->redir.string.buf);
             // free(old_input);
         }
         cur_tokens = cur_tokens->next;
     }
-	return (0);
+	return (SUCCESS);
 }

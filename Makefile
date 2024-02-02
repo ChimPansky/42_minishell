@@ -44,6 +44,10 @@ MS_FILENAMES += \
 	expander/expander_utils.c
 
 MS_FILENAMES += \
+	lexer/lexer.c \
+	lexer/lexer_utils.c
+
+MS_FILENAMES += \
 	structures/list_commands.c \
 	structures/list_redirs.c \
 	structures/list_tokens.c \

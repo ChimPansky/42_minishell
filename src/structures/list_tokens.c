@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 15:34:18 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/01 19:18:56 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/02 11:16:34 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,7 @@ void	token_destroy(void *token_void)
 	t_token *token = token_void;
 
 	if (token->tk_type == TK_REDIR)
-	{
 		redir_destroy(&token->redir);
-		string_destroy(&token->redir.content);
-	}
 	if (token->tk_type == TK_WORD)
 		string_destroy(&token->string);
 	free(token);
