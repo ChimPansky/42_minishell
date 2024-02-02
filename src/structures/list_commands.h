@@ -3,20 +3,31 @@
 
 #include "libft.h"
 #include "redirs.h"
+#include "ft_charptr_array.h"
 
+typedef t_list t_cmdlist;
 
-typedef t_list t_commandlist;
+typedef enum e_cmd_type
+{
+	CMD_NULL,
+	CMD_EXEC,
+	CMD_SUBSHELL
+}		t_cmd_type;
 
 typedef struct s_simple_command
 {
-	char	**cmd_with_args;
-	t_list	*redirections; // list of t_redir_details...
+	t_cmd_type	cmd_type;
+	union
+	{
+		t_charptr_array	cmd_with_args;
+		t_cmdlist	*subcommand;
+	};
+	t_list	*redirections;
 }		t_simple_command;
 
 // list_commands.c
-t_simple_command	*command_add(t_commandlist **commands, char **cmd_with_args, t_list *redirections);
-void 				command_destroy(void *command_void);
-void commandlist_destroy(t_commandlist **commands);
-void				print_commands(t_commandlist **commands);
+void cmdlist_destroy(t_cmdlist **commands);
+t_simple_command *cmdlist_add_cmd(t_cmdlist **cmdlist, t_cmd_type type);
+// void				cmdlist_print(t_cmdlist **commands);
 
 #endif  // LIST_COMMANDS_H

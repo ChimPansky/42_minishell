@@ -20,6 +20,7 @@ void	ms_init(t_msh *msh, char **envp)
 	if (string_init_fixed_cap(&msh->prompt, PROMPT_MAX_LEN + 1) != SUCCESS)
 		perror("init prompt"), exit(EXIT_FAILURE);
 	msh->done = false;
+	msh->last_exit_code = EXIT_SUCCESS;
 	if (envp && envp[0])
 	{
 		msh->env = varlist_init_from_envp(envp);

@@ -17,7 +17,7 @@
 //  quotes check
 //  pipe, end, or, ; at eol
 //
-// PARSER (token list) -> commandlist
+// PARSER (token list) -> cmdlist
 //      expander is part of parser
 //      check for correct doc names as well and expand (heredoc delim not expandable)
 //
@@ -63,7 +63,6 @@ int read_word(char **input, t_string *str)
 
 static int  read_redir(t_redir_detail *redir, char **input)
 {
-	redir->whitespace_expansion = false;
 	if (ft_strncmp("<<", *input, 2) == MATCH)
 		redir->type = FD_HEREDOC;
 	else if (ft_strncmp(">>", *input, 2) == MATCH)

@@ -17,7 +17,6 @@ MS_FILENAMES = \
 	heredoc.c \
 	lexer.c \
 	minishell.c \
-	parser.c \
 	prompt.c \
 	scratches.c \
 	signals.c \
@@ -40,8 +39,11 @@ MS_FILENAMES += \
 	executor/redirections.c
 
 MS_FILENAMES += \
-	expander/expander.c \
-	expander/expander_utils.c
+	parser/expander_utils.c \
+	parser/expander.c \
+	parser/heredoc_expander.c \
+	parser/parser.c \
+	parser/special_variables.c
 
 MS_FILENAMES += \
 	structures/list_commands.c \

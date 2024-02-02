@@ -3,7 +3,10 @@
 
 #include "libft.h"
 #include "ft_string.h"
+#include "ft_charptr_array.h"
 
+// redirlist doesn't own redir_details!
+// details should be free through tokens!
 typedef t_list t_redirections;
 
 typedef enum e_redir_type
@@ -16,9 +19,9 @@ typedef enum e_redir_type
 
 typedef struct s_redir_detail
 {
-	t_string		string;
 	t_redir_type	type;
-	bool			whitespace_expansion;
+	t_string		string;
+	t_charptr_array content;
 }		t_redir_detail;
 
 #endif  // REDIRS_H

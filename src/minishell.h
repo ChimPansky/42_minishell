@@ -46,7 +46,7 @@ char **strings_append(char **strings, char *appendix);
 void strings_print(char **strings);
 
 // TODO Vova:
-int 	execute(t_msh *msh, t_commandlist *cmds);
+int 	execute(t_msh *msh, t_cmdlist *cmds);
 
 // app.c
 void	ms_init(t_msh *msh, char **envp);
@@ -79,7 +79,7 @@ int 	read_heredocs(t_tokenlist *tokens, t_string *rl_input);
 int	expand(t_msh *msh, t_tokenlist *tokens);
 
 // parser.c
-int 	parse(t_msh *msh, t_tokenlist *tokens, t_commandlist **commands_p);
+int 	parse_and_ecexute(t_msh *msh, t_tokenlist *tokens);
 
 // signals.c
 void register_signals(void);
@@ -90,6 +90,6 @@ bool    is_token_seperator(char c);
 bool    is_var_separator(char c);
 
 // executor/executor.c
-int 		execute(t_msh *msh, t_commandlist *cmds);
+int 		execute(t_msh *msh, t_cmdlist *cmds);
 
 #endif

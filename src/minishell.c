@@ -46,7 +46,6 @@ int main_loop(t_msh *msh)
 {
 	t_string 		rl_input;
 	t_tokenlist		*tokens;
-	t_commandlist	*commands;
 
 	while(!msh->done)
 	{
@@ -70,20 +69,7 @@ int main_loop(t_msh *msh)
 			continue;
 		}
 		add_history(rl_input.buf);
-		if (SUCCESS != expand(msh, tokens))
-		{
-			(string_destroy(&rl_input), tokenlist_destroy(&tokens));
-			continue;
-		}
-		if (SUCCESS != parse(msh, tokens, &commands))
-		{
-			(string_destroy(&rl_input), tokenlist_destroy(&tokens));
-			continue;
-		}
-		execute(msh, commands);
-		string_destroy(&rl_input);
-		tokenlist_destroy(&tokens);
-		commandlist_destroy(&commands);
+		parse_and_ecexute(msh, tokens);
 	}
 	return (SUCCESS);
 }

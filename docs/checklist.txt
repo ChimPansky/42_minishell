@@ -84,6 +84,12 @@ bash: exit: too many arguments
 ./'()'
 () is a filename
 
+echo $"?"
+> ?
+
+unset a
+$a | $a
+
 jcy@jcy-xps:~/dev/minishell$ ./..
 bash: ./..: Is a directory
 jcy@jcy-xps:~/dev/minishell$ echo $?
