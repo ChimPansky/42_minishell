@@ -1,7 +1,7 @@
 NAME = minishell
 CC = cc
 CFLAGS = -Wall -Werror -Wextra
-CFLAGS += -g
+CFLAGS += -g -Og -fsanitize=address,undefined,leak
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
 IFLAGS = -I $(LIBFT_DIR)/include
@@ -79,5 +79,8 @@ re: fclean all
 
 test: $(NAME)
 	bash tests/test_runner.sh
+
+valgrind:
+	valgrind --track-origins=yes --leak-check=full --show-leak-kinds=all $(NAME)
 
 .PHONY: all bonus clean fclean re test
