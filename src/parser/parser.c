@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:30:33 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/01 15:32:45 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/03 12:06:14 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int deal_with_redir(t_msh *msh, t_redirections **redirlist, t_redir_detail *redi
 }
 
 // takes list of tokens and turns it into list of one or several commands (command chain); Also: perform variable expansions...
-int 	parse_and_ecexute(t_msh *msh, t_tokenlist *tokens)
+int 	parse_and_execute(t_msh *msh, t_tokenlist *tokens)
 {
 	t_cmdlist			*cmdlist;
 	t_simple_command	*cmd;

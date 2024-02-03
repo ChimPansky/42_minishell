@@ -79,7 +79,7 @@ int 	read_heredocs(t_tokenlist *tokens, t_string *rl_input);
 int	expand(t_msh *msh, t_tokenlist *tokens);
 
 // parser.c
-int 	parse_and_ecexute(t_msh *msh, t_tokenlist *tokens);
+int 	parse_and_execute(t_msh *msh, t_tokenlist *tokens);
 
 // signals.c
 void register_signals(void);

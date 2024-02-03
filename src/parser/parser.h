@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expander.h                                         :+:      :+:    :+:   */
+/*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 14:18:59 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/01 15:33:12 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/03 12:05:43 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSER_PARSER__H
-# define PARSER_PARSER__H
+#ifndef PARSER_H
+# define PARSER_H
 
 # include "../minishell.h"
 
@@ -23,4 +23,4 @@ char	*get_var_content(t_msh *msh, char **pos_in_str);
 
 
 
-#endif  // PARSER_PARSER__H
+#endif  // PARSER__H

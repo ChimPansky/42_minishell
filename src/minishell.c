@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 20:05:41 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/01 15:32:30 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/03 12:05:58 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int main_loop(t_msh *msh)
 			continue;
 		}
 		add_history(rl_input.buf);
-		parse_and_ecexute(msh, tokens);
+		parse_and_execute(msh, tokens);
 	}
 	return (SUCCESS);
 }
