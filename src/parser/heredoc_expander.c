@@ -13,9 +13,9 @@
 #include "../minishell.h"
 #include "parser.h"
 
-int expand_heredoc(t_msh *msh, t_charptr_array *heredoc_lines)
+int	expand_heredoc(t_msh *msh, t_charptr_array *heredoc_lines)
 {
 	(void) msh;
 	(void) heredoc_lines;
-	return 0;
+	return (0);
 }

@@ -42,8 +42,10 @@ MS_FILENAMES += \
 
 MS_FILENAMES += \
 	parser/expander_utils.c \
+	parser/expander_specialisations.c \
 	parser/expander.c \
 	parser/heredoc_expander.c \
+	parser/parser_specialisations.c \
 	parser/parser.c
 
 MS_FILENAMES += \
