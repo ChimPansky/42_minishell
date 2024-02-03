@@ -18,7 +18,6 @@ MS_FILENAMES = \
 	lexer.c \
 	minishell.c \
 	prompt.c \
-	scratches.c \
 	signals.c \
 	strings.c
 
@@ -37,6 +36,9 @@ MS_FILENAMES += \
 	executor/execute_on_chain.c \
 	executor/executor.c \
 	executor/redirections.c
+
+MS_FILENAMES += \
+	helpers/rl_wrapper.c
 
 MS_FILENAMES += \
 	parser/expander_utils.c \
@@ -73,5 +75,8 @@ fclean: clean
 	rm -f $(NAME)
 
 re: fclean all
+
+test: $(NAME)
+	bash tests/test_runner.sh
 
 .PHONY: all bonus clean fclean re test

@@ -31,13 +31,14 @@ void	ms_init(t_msh *msh, char **envp)
 
 void	ms_destroy_and_exit(t_msh *msh)
 {
+	rl_clear_history();
 	string_destroy(&msh->prompt);
 	varlist_destoy(&msh->env);
-	exit(msh->last_exit_code);
 }
 
 void	ms_stop(t_msh *msh)
 {
-	ft_printf_err("\nexit\n");
+	if (isatty(STDIN_FILENO))
+		ft_printf_err("\nexit\n");
 	msh->done = true;
 }

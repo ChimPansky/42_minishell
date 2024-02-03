@@ -21,7 +21,7 @@ static int	try_find_in_path(t_msh *msh, const char *exec, char **exec_in_path)
 	size_t 		i;
 
 	*exec_in_path = NULL;
-	if (path == NULL || is_empty(path))
+	if (path == NULL || !*path)
 		return SUCCESS;
 	path_entries = ft_split(path, ":");
 	if (path_entries == NULL)

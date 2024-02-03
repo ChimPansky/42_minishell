@@ -18,11 +18,11 @@ int try_read_with_readline(t_msh *msh, t_string *rl_input)
 {
 	char	*rl_raw;
 
-	rl_raw = readline(msh->prompt.buf);
+	rl_raw = readline_wrapper(msh->prompt.buf);
 	if (!rl_raw)
 	{
 		if (errno) // check for type of err, sometimes ms_stop
-			perror("readline");
+			perror("readline"), ms_stop(msh);
 		else
 			ms_stop(msh);
 		return (!SUCCESS);
@@ -74,14 +74,20 @@ int main_loop(t_msh *msh)
 	return (SUCCESS);
 }
 
-// add parameter check? are we allowed to caall for example: ./minishell arg1 arg2...
+// add parameter check? are we allowed to call for example: ./minishell arg1 arg2...
 int	main(int ac, char **av, char **envp)
 {
 	t_msh	msh;
+	int		exit_code;
+
 	(void) ac;
 	(void) av;
-
 	ms_init(&msh, envp);
 	main_loop(&msh);
+	exit_code = msh.last_exit_code;
 	ms_destroy_and_exit(&msh);
+	// return (exit_code);
+	printf("intended stdout err\n");
+	dprintf(STDERR_FILENO, "intended stderr err\n");
+	return (100);
 }
