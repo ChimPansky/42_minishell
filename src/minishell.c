@@ -86,8 +86,5 @@ int	main(int ac, char **av, char **envp)
 	main_loop(&msh);
 	exit_code = msh.last_exit_code;
 	ms_destroy_and_exit(&msh);
-	// return (exit_code);
-	printf("intended stdout err\n");
-	dprintf(STDERR_FILENO, "intended stderr err\n");
-	return (100);
+	return (exit_code);
 }
