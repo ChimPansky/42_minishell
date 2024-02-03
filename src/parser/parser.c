@@ -6,16 +6,16 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:30:33 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/03 12:06:14 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/03 15:57:28 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 #include "parser.h"
 
-int deal_with_redir(t_msh *msh, t_redirections **redirlist, t_redir_detail *redir)
+int deal_with_redir(t_msh *msh, t_redirlist **redirlist, t_redir_detail *redir)
 {
-	t_redirections *new_redir;
+	t_redirlist *new_redir;
 
 	new_redir = ft_lstnew(redir); // add to redirlist func instead, redirlist will be destroyed if !SUCCESS
 	if (!new_redir)
@@ -76,7 +76,7 @@ int 	parse_and_execute(t_msh *msh, t_tokenlist *tokens)
 		}
 		else if (token->tk_type == TK_REDIR)
 		{
-			if (deal_with_redir(msh, &cmd->redirections, &token->redir) != SUCCESS)
+			if (deal_with_redir(msh, &cmd->redirections, token->redir) != SUCCESS)
 				return (cmdlist_destroy(&cmdlist), !SUCCESS);
 		}
 		else if (token->tk_type == TK_SUBSHELL)

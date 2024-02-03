@@ -7,10 +7,11 @@
 
 // redirlist doesn't own redir_details!
 // details should be free through tokens!
-typedef t_list t_redirections;
+typedef t_list t_redirlist;
 
 typedef enum e_redir_type
 {
+	FD_NULL,
     FD_IN,
     FD_HEREDOC,
     FD_OUT_TRUNC,
@@ -23,5 +24,9 @@ typedef struct s_redir_detail
 	t_string		string;
 	t_charptr_array content;
 }		t_redir_detail;
+
+int		redir_init(t_redir_detail **redir, t_redir_type rd_type);
+void	redir_destroy(void *redir_void);
+void	redirlist_destroy(t_redirlist **redirs);
 
 #endif  // REDIRS_H
