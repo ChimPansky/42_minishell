@@ -1,6 +1,6 @@
 #include "parser.h"
 
-// TODO change ft_list to redirlist + error descr
+// TODO change ft_list to redirlist
 int	parse_redirection(t_msh *msh, t_parser *parser)
 {
 	t_redirections	*new_redir;
@@ -11,20 +11,11 @@ int	parse_redirection(t_msh *msh, t_parser *parser)
 	redirlist = &parser->cmd->redirections;
 	new_redir = ft_lstnew(redir);
 	if (!new_redir)
-		return (perror("parse: "), !SUCCESS);
-	if (redir->type == FD_HEREDOC)
-	{
-		if (expand_heredoc(msh, &redir->content) != SUCCESS)
-			return (perror("parse: "), !SUCCESS);
-	}
-	else
-	{
-		if (SUCCESS
-			!= expand_string_to_arr(msh, redir->string.buf, &redir->content))
-			return (perror("parse: "), !SUCCESS);
-	}
+		return (perror("parse_redirection: ft_lstnew"), !SUCCESS);
 	ft_lstadd_back(redirlist, new_redir);
-	return (SUCCESS);
+	if (redir->type == FD_HEREDOC)
+		return (expand_heredoc(msh, &redir->content) != SUCCESS);
+	return (expand_string_to_arr(msh, redir->string.buf, &redir->content));
 }
 
 int	parse_word(t_msh *msh, t_parser *parser)
