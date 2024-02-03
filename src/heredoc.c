@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 16:08:11 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/01 15:27:34 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/03 18:45:59 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,43 +15,34 @@
 // if success return SUCCESS
 // + expansionon the expansion step
 // + empty delimeter case
-static int	process_here_doc(char **document, char *limiter, t_string *rl_input)
+static int	process_heredoc(t_charptr_array *lines, char *limiter, t_string *rl_input)
 {
     char    *line;
-    char    *temp;
-    //t_string    doc;
-    (void)rl_input;
 
-    *document = malloc(sizeof(char));
-    if (!*document)
-    {
-        return (!SUCCESS);
-    }
-    **document = '\0';
+	line = NULL;
 	while (1)
 	{
-        // does it have \n in the end?
-        // if no change strjoin to strnjoin with \n
-		line = readline(">"); // addhistory
+		line = readline(">");
 		if (line == NULL)
         {
             ft_putstr_fd("readline returned NULL...\n", STDOUT_FILENO);
             if (errno)
                 //errno...
-                return !SUCCESS;
+                return (!SUCCESS);
             else
             // ^D message and exit
-                return !SUCCESS;
+                return (!SUCCESS);
         }
+		if (string_add_chr(rl_input, '\n') != SUCCESS
+			|| string_add_str(rl_input, line) != SUCCESS)
+			return (!SUCCESS);
 		if (ft_strcmp(limiter, line) == MATCH)
 			break ;
-		temp = ft_strnjoin(3, *document, line, "\n");
-        if (!temp)
-            return(free(line), free(*document), !SUCCESS);
-        (free(*document), free(line));
-        *document = temp;
+		if (charptr_array_add_allocated_str(lines, &line) != SUCCESS)
+			return (free(line), !SUCCESS);
 	}
-        return (SUCCESS);
+	free(line);
+    return (SUCCESS);
 }
 
 int 	read_heredocs(t_tokenlist *tokens, t_string *rl_input)
@@ -64,14 +55,14 @@ int 	read_heredocs(t_tokenlist *tokens, t_string *rl_input)
     while (cur_tokens)
     {
         token = cur_tokens->content;
-        if (token && token->tk_type == TK_REDIR && token->redir.type == FD_HEREDOC)
-        {
-            process_here_doc(&token->redir.string.buf, token->redir.string.buf, rl_input);
-            //string_add_str(rl_input, token->redir.)
-            //*rl_input = ft_strjoin(*rl_input, token->redir.string.buf);
-            // free(old_input);
-        }
+        if (token && token->tk_type == TK_REDIR
+			&& token->redir->type == FD_HEREDOC)
+		{
+			if (process_heredoc(&token->redir->content,
+				token->redir->string.buf, rl_input) != SUCCESS)
+				return (!SUCCESS);
+		}
         cur_tokens = cur_tokens->next;
     }
-	return (0);
+	return (SUCCESS);
 }

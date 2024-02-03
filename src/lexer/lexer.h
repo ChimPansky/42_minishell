@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 14:18:59 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/03 15:55:14 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/03 20:22:17 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 
 int  read_tk_redir(t_msh *msh, t_tokenlist **tokens_p, char **pos_in_input);
 int  read_tk_word(t_msh *msh, t_tokenlist **tokens_p, char **pos_in_input);
+int	read_and_or_pipe(t_msh *msh, t_tokenlist **tokens_p, char **pos_in_input,
+t_token_type *last_tk_type);
 int read_word(t_msh *msh, char **pos_in_input, t_string *str);
 size_t read_shell_spaces(char **input);
 

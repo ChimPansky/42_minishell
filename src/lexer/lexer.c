@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 12:15:28 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/03 16:11:53 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/03 21:22:52 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,47 +39,35 @@
 // turns input into token_list; stores token_list in msh.tokens
 int lex(t_msh *msh, t_tokenlist **tokens_p, char *input)
 {
-	t_token_type	last_token_type;
+	t_token_type	last_tk_type;
 	char			*pos_in_input;
 
 	pos_in_input = input;
-	last_token_type = TK_NULL;
+	last_tk_type = TK_NULL;
 	*tokens_p = NULL;
 	while (*pos_in_input)
 	{
-		if (*pos_in_input == '<' || *pos_in_input == '>')
+		if (is_shell_space(*pos_in_input))
+			pos_in_input++;
+		else if (*pos_in_input == '<' || *pos_in_input == '>')
 		{
 			if (read_tk_redir(msh, tokens_p, &pos_in_input) != SUCCESS)
 				return (tokenlist_destroy(tokens_p), !SUCCESS);
-			last_token_type = TK_REDIR;
+			last_tk_type = TK_REDIR;
 		}
-		else if (*pos_in_input == '|')
+		else if (*pos_in_input == '&' || *pos_in_input == '|')
 		{
-			if (last_token_type == TK_NULL || last_token_type == TK_PIPE)
-			{
-				msh->last_exit_code = ER_UNEXPECTED_TOKEN;
-				error_unexpected_token("|");
+			if (read_and_or_pipe(msh, tokens_p, &pos_in_input, &last_tk_type)
+				!= SUCCESS)
 				return (tokenlist_destroy(tokens_p), !SUCCESS);
-			}
-			//if (!token_add(tokens_p, TK_PIPE, &str, NULL))
-			//	return (perror("lex"), tokenlist_destroy(tokens_p),  !SUCCESS);
-			last_token_type = TK_PIPE;
-			pos_in_input++;
 		}
-		else if (is_shell_space(*pos_in_input))
-			pos_in_input++;
-		else
+		else if (read_tk_word(msh, tokens_p, &pos_in_input) != SUCCESS)
 		{
-			if (read_tk_word(msh, tokens_p, &pos_in_input) != SUCCESS)
-				return (tokenlist_destroy(tokens_p), !SUCCESS);
-			last_token_type = TK_WORD;
+			return (tokenlist_destroy(tokens_p), !SUCCESS);
+			last_tk_type = TK_WORD;
 		}
+		// TODO: read TK_SUBSHELL... '('
 	}
-	if (last_token_type == TK_PIPE)
-	{
-		msh->last_exit_code = ER_UNEXPECTED_TOKEN;
-		error_unexpected_token("newline");
-		return (tokenlist_destroy(tokens_p),  !SUCCESS);
-	}
+	//print_tokens(*tokens_p);
 	return (SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 15:34:18 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/03 16:01:46 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/03 21:13:26 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,60 +105,72 @@ void tokenlist_destroy(t_tokenlist **tokens)
 // 	return (token);
 // }
 
-// void	print_tokens(t_tokenlist **tokens)
-// {
-// 	t_tokenlist	*cur_list;
-// 	t_token		*cur_token;
-// 	char		*type_text;
-// 	char		*tk_str;
-// 	char		*fd_type;
-// 	char		*fd_str;
-// 	int			i;
+void	print_tokens(t_tokenlist *tokens)
+{
+	t_token		*token;
 
-// 	if (!tokens)
-// 		return ;
-// 	printf("token_list:\n");
-// 	cur_list = *tokens;
-// 	i = 1;
-// 	while (cur_list && cur_list->content)
-// 	{
-// 		cur_token = cur_list->content;
-// 		if (cur_token->string.buf)
-// 			tk_str = cur_token->string.buf;
-// 		else
-// 			tk_str = NULL;
-// 		if (cur_token->tk_type == TK_WORD)
-// 		{
-// 			type_text = "WORD";
-// 			fd_type = NULL;
-// 			fd_str = NULL;
-// 		}
-// 		else if (cur_token->tk_type == TK_REDIR)
-// 		{
-// 			type_text = "REDIR";
-// 			if (cur_token->redir.string.buf)
-// 				fd_str = cur_token->redir.string.buf;
-// 			else
-// 				fd_str = NULL;
-// 			if (cur_token->redir.type == FD_IN)
-// 				fd_type = "<";
-// 			else if (cur_token->redir.type == FD_HEREDOC)
-// 				fd_type = "<<";
-// 			else if (cur_token->redir.type == FD_OUT_TRUNC)
-// 				fd_type = ">";
-// 			else if (cur_token->redir.type == FD_OUT_APPEND)
-// 				fd_type = ">>";
-// 		}
-// 		else if (cur_token->tk_type == TK_PIPE)
-// 		{
-// 			type_text = "PIPE";
-// 			fd_type = NULL;
-// 			fd_str = NULL;
-// 		}
+	char		*type_text;
+	char		*fd_type;
+	char		*fd_str;
 
-// 		printf(" {T%d: Type: %s; t_string: %s; FD_Type: %s; FD_t_string: %s)} -->\n",  i, type_text, tk_str, fd_type, fd_str);
-// 		cur_list = cur_list->next;
-// 		i++;
-// 	}
-// 	printf("\n");
-// }
+
+	int			i = 1;
+
+	printf("token_list:\n");
+	while (tokens)
+	{
+		token = tokens->content;
+		if (token->tk_type == TK_WORD)
+		{
+			type_text = "WORD";
+			fd_type = NULL;
+			fd_str = NULL;
+		}
+		else if (token->tk_type == TK_REDIR)
+		{
+			type_text = "REDIR";
+			if (token->redir->string.buf)
+				fd_str = token->redir->string.buf;
+			else
+				fd_str = NULL;
+			if (token->redir->type == FD_IN)
+				fd_type = "<";
+			else if (token->redir->type == FD_HEREDOC)
+				fd_type = "<<";
+			else if (token->redir->type == FD_OUT_TRUNC)
+				fd_type = ">";
+			else if (token->redir->type == FD_OUT_APPEND)
+				fd_type = ">>";
+		}
+		else if (token->tk_type == TK_PIPE)
+		{
+			type_text = "PIPE";
+			fd_type = NULL;
+			fd_str = NULL;
+		}
+		else if (token->tk_type == TK_LOGIC_AND)
+		{
+			type_text = "LOGIC_AND";
+			fd_type = NULL;
+			fd_str = NULL;
+		}
+		else if (token->tk_type == TK_LOGIC_OR)
+		{
+			type_text = "LOGIC_OR";
+			fd_type = NULL;
+			fd_str = NULL;
+		}
+		else if (token->tk_type == TK_SUBSHELL)
+		{
+			type_text = "SUBSHELL";
+			fd_type = NULL;
+			fd_str = NULL;
+		}
+		printf(" {T%d: Type: %s; t_string: %s; FD_Type: %s; FD_t_string: %s)} -->\n",  i, type_text, token->string.buf, fd_type, fd_str);
+		if (token->redir->type == FD_HEREDOC && token->redir->content.buf)
+			charptr_array_print(&token->redir->content);
+		tokens = tokens->next;
+		i++;
+	}
+	printf("\n");
+}

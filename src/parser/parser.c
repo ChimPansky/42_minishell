@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:30:33 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/03 15:57:28 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/03 21:28:43 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ int deal_with_redir(t_msh *msh, t_redirlist **redirlist, t_redir_detail *redir)
 	{
 		if (expand_heredoc(msh, &redir->content) != SUCCESS)
 			return perror("parse: "), !SUCCESS;
+		//printf("expanded heredoc:\n");
+		//charptr_array_print(&redir->content);
 	}
 	else
 	{
@@ -40,9 +42,11 @@ int 	parse_and_execute(t_msh *msh, t_tokenlist *tokens)
 	t_cmdlist			*cmdlist;
 	t_simple_command	*cmd;
 	t_token				*token;
+	t_redirlist			*redirs; // TODO: deal_with_redir() will add redir_detail to this list instead of cmd->redirlist. (its possible to have redirections without cmd...) everytime before a cmd should be executed: cmd->redirections = redirs...
 
 	cmdlist = NULL;
 	cmd = NULL;
+	redirs = NULL;
 	while (1)
 	{
 		if (tokens)
@@ -91,6 +95,12 @@ int 	parse_and_execute(t_msh *msh, t_tokenlist *tokens)
 			token->subshell = NULL;
 		}
 		tokens = tokens->next;
+	}
+	if (redirs)
+	{
+		(void)redirs;
+		// redirections without commands...
+		// iterate through redirlist and create files for > and >>...
 	}
 	// printf("printing cmdlist...\n");
 	// print_commands(&msh->cmdlist);

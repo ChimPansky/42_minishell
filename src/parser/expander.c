@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:30:33 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/01 14:32:15 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/03 19:13:10 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int expand_string_to_arr(t_msh *msh, char *string, t_charptr_array *arr)
 			glob = !glob;
 			pos_in_string++;
 		}
-		else if (*pos_in_string == '$' && !ft_isspace(pos_in_string[1]))
+		else if (*pos_in_string == '$' && pos_in_string[1] && !ft_isspace(pos_in_string[1]))
 		{
 			pos_in_string++;
 			char *var_content = get_var_content(msh, &pos_in_string);

@@ -49,7 +49,7 @@ void		ms_stop(t_msh *msh);
 void		update_prompt(t_msh *msh);
 
 //exit_error.c
-void		error_unexpected_token(char *str);
+void		error_unexpected_token(char symbol);
 void		ms_error_msg(int error_nr, char *err_info);
 void		ms_error(int error_nr);
 

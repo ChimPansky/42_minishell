@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 15:34:33 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/03 16:01:08 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/03 17:15:17 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ t_token		*tokenlist_add_token(t_tokenlist **tokenlist, t_token_type type);
 void 		token_destroy(void *token_void);
 void		tokenlist_destroy(t_tokenlist **tokens);
 
-void		print_tokens(t_tokenlist **tokens);
+void	print_tokens(t_tokenlist *tokens);
 
 
 #endif  // LIST_TOKENS_H

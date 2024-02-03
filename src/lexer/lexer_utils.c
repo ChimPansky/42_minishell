@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 12:15:28 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/03 15:54:23 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/03 21:21:39 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,9 @@ int read_word(t_msh *msh, char **pos_in_input, t_string *str)
 		string_add_chr(str, **pos_in_input);
 		(*pos_in_input) += 1;
 	}
-	read_shell_spaces(pos_in_input);
 	if (quote_type != 0 || string_is_empty(str))
 	{
-		if (**pos_in_input == '\0')
-			error_unexpected_token("newline");
-		else
-			error_unexpected_token(*pos_in_input);
+		error_unexpected_token(**pos_in_input);
 		msh->last_exit_code = ER_UNEXPECTED_TOKEN;
 		return (!SUCCESS);
 	}
@@ -77,7 +73,7 @@ static	t_redir_type	read_redir_type(char **pos_in_input)
 	else if (**pos_in_input == '>')
 	{
 		*pos_in_input += 1;
-		return (FD_OUT_APPEND);
+		return (FD_OUT_TRUNC);
 	}
 	return (FD_NULL);
 }
@@ -95,11 +91,53 @@ int  read_tk_redir(t_msh *msh, t_tokenlist **tokens_p, char **pos_in_input)
 	if (read_word(msh, pos_in_input, &new_redir->string) != SUCCESS)
 		return (redir_destroy(&new_redir), !SUCCESS);
 	new_token->redir = new_redir;
-
 	return (SUCCESS);
 }
 
-int  read_tk_word(t_msh *msh, t_tokenlist **tokens_p, char **pos_in_input)
+static	t_token_type	read_tk_type(char **pos_in_input)
+{
+	if (ft_strncmp("&&", *pos_in_input, 2) == MATCH)
+	{
+		*pos_in_input += 2;
+		return (TK_LOGIC_AND);
+	}
+	else if (ft_strncmp("||", *pos_in_input, 2) == MATCH)
+	{
+		*pos_in_input += 2;
+		return (TK_LOGIC_OR);
+	}
+	else if (**pos_in_input == '|')
+	{
+		*pos_in_input += 1;
+		return (TK_PIPE);
+	}
+	return (TK_NULL);
+}
+
+int	read_and_or_pipe(t_msh *msh, t_tokenlist **tokens_p, char **pos_in_input,
+t_token_type *last_tk_type)
+{
+	t_token_type	tk_type;
+
+	if (*last_tk_type == TK_NULL)
+	{
+		msh->last_exit_code = ER_UNEXPECTED_TOKEN;
+		return (error_unexpected_token(**pos_in_input), !SUCCESS);
+	}
+	tk_type = read_tk_type(pos_in_input);
+	if (!tokenlist_add_token(tokens_p, tk_type))
+		return (!SUCCESS);
+	*last_tk_type = tk_type;
+	read_shell_spaces(pos_in_input);
+	if (!**pos_in_input || **pos_in_input == '&' || **pos_in_input == '|')
+	{
+		msh->last_exit_code = ER_UNEXPECTED_TOKEN;
+		return (error_unexpected_token(**pos_in_input), !SUCCESS);
+	}
+	return (SUCCESS);
+}
+
+int	read_tk_word(t_msh *msh, t_tokenlist **tokens_p, char **pos_in_input)
 {
 	t_token			*new_token;
 
