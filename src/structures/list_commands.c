@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "list_commands.h"
+#include "libft.h"
 
 static int command_init(t_simple_command **cmd, t_cmd_type type)
 {

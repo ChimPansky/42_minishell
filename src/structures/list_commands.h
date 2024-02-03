@@ -1,9 +1,8 @@
 #ifndef LIST_COMMANDS_H
 #define LIST_COMMANDS_H
 
-#include "libft.h"
 #include "redirs.h"
-#include "ft_charptr_array.h"
+#include "ft_list.h"
 
 typedef t_list t_cmdlist;
 
@@ -22,7 +21,7 @@ typedef struct s_simple_command
 		t_charptr_array	cmd_with_args;
 		t_cmdlist	*subcommand;
 	};
-	t_list	*redirections;
+	t_redirections	*redirections;
 }		t_simple_command;
 
 // list_commands.c

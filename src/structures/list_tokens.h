@@ -13,8 +13,8 @@
 #ifndef LIST_TOKENS_H
 #define LIST_TOKENS_H
 
-#include "libft.h"
 #include "ft_string.h"
+#include "ft_list.h"
 #include "redirs.h"
 
 typedef t_list t_tokenlist;

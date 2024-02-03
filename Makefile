@@ -44,8 +44,7 @@ MS_FILENAMES += \
 	parser/expander_utils.c \
 	parser/expander.c \
 	parser/heredoc_expander.c \
-	parser/parser.c \
-	parser/special_variables.c
+	parser/parser.c
 
 MS_FILENAMES += \
 	structures/list_commands.c \

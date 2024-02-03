@@ -1,9 +1,9 @@
 #ifndef REDIRS_H
 #define REDIRS_H
 
-#include "libft.h"
 #include "ft_string.h"
 #include "ft_charptr_array.h"
+#include "ft_list.h"
 
 // redirlist doesn't own redir_details!
 // details should be free through tokens!

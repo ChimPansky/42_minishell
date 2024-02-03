@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "list_variables.h"
 #include "libft.h"
+#include "list_variables.h"
 #include "ft_charptr_array.h"
 
 t_var *variable(const char *name, const char *value)
