@@ -25,7 +25,7 @@ typedef enum e_token_type
     TK_WORD,
     TK_REDIR,
 	TK_PIPE,
-	TK_BRACKET,
+	TK_SUBSHELL,
 	TK_LOGIC_AND,
     TK_LOGIC_OR
 }		t_token_type;
@@ -37,13 +37,12 @@ typedef struct s_token
 		t_string		string;
 		t_redir_detail	redir;
 		t_tokenlist		*subshell;		//	only for bonus
-		int				sub_exit_code;	//	only for bonus
 	};
-}	t_token;
+}		t_token;
 
 t_token		*token_add(t_tokenlist **tokens, t_token_type tk_type,
 						t_string *str, t_redir_detail *redir);
-void tokenlist_destroy(t_tokenlist **tokens);
+void		tokenlist_destroy(t_tokenlist **tokens);
 void 		token_destroy(void *token_void);
 void		print_tokens(t_tokenlist **tokens);
 

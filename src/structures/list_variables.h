@@ -2,6 +2,7 @@
 #define VARIABLES_H
 
 #include "libft.h"
+#include "ft_charptr_array.h"
 
 typedef struct s_var
 {
@@ -11,6 +12,7 @@ typedef struct s_var
 
 typedef t_list t_varlist;
 
+char		*varlist_get_value_by_substr(t_varlist *vars, const char *str, size_t sz);
 char		*varlist_get_value(t_varlist *vars, const char *name);
 t_var		*varlist_find(t_varlist *vars, const char *name);
 t_var		*varlist_set(t_varlist **vars_p, const char *name, const char *value);
@@ -19,6 +21,7 @@ void		varlist_destoy(t_varlist **vars_p);
 
 t_varlist	*varlist_init_from_envp(char **envp);
 // on fail returns null
-char		**varlist_convert_to_array(t_varlist *vars);
+int			varlist_convert_to_array(t_varlist *vars, t_charptr_array *arr);
+
 
 #endif  // VARIABLES_H

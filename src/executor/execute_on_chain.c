@@ -6,10 +6,25 @@ static void execute_one_on_chain(t_msh *msh, t_simple_command *cmd, t_executor *
 {
 	if (process_redirections(executor, cmd->redirections) != SUCCESS)
 		exit(EXIT_FAILURE);
-	execute_in_child_process(msh, cmd->cmd_with_args, executor);
+	if (STDIN_FILENO != dup2(executor->fd_in, STDIN_FILENO))
+		perror("msh: executor: dup2"), exit(EXIT_FAILURE);
+	if (STDOUT_FILENO != dup2(executor->fd_out, STDOUT_FILENO))
+		perror("msh: executor: dup2"), close(STDIN_FILENO), exit(EXIT_FAILURE);
+	if (cmd->cmd_type == CMD_SUBSHELL)
+	{
+		if (parse_and_ecexute(msh, cmd->subcommand) != SUCCESS)
+			close(STDIN_FILENO), close(STDOUT_FILENO), exit(EXIT_FAILURE);
+		close(STDIN_FILENO), close(STDOUT_FILENO), exit(msh->last_exit_code);
+	}
+	else if (cmd->cmd_type == CMD_EXEC)
+	{
+		execute_in_child_process(msh, cmd->cmd_with_args.buf);
+		close(STDIN_FILENO), close(STDOUT_FILENO), exit(msh->last_exit_code);
+	}
+	close(STDIN_FILENO), close(STDOUT_FILENO), exit(EXIT_SUCCESS);
 }
 
-static int execute_cmds(t_msh *msh, t_executor *executor, t_commandlist **cmds, pid_t* pids)
+static int execute_cmds(t_msh *msh, t_executor *executor, t_cmdlist **cmds, pid_t* pids)
 {
 	int idx;
 	int pipe_fds[2];
@@ -49,7 +64,7 @@ static int execute_cmds(t_msh *msh, t_executor *executor, t_commandlist **cmds, 
 
 // is it 0 in waitpid options?
 // waitpid errors seems to be okay to ignore
-int execute_on_chain(t_msh *msh, t_commandlist *cmds, t_executor *executor)
+int execute_on_chain(t_msh *msh, t_cmdlist *cmds, t_executor *executor)
 {
 	int				i;
 	pid_t *const	pids = malloc(executor->num_of_cmds * sizeof(pid_t));

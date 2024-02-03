@@ -43,9 +43,9 @@ bool try_execute_built_in(t_msh *msh, t_simple_command *cmd, t_executor *executo
 {
 	t_built_in func;
 
-	if (!cmd || !cmd->cmd_with_args)
-		ft_printf_err("cmd is empty. this should not happen\n"), exit(EXIT_FAILURE);
-	func = get_built_in_by_name(cmd->cmd_with_args[0]);
+	if (cmd->cmd_type != CMD_EXEC)
+		return false;
+	func = get_built_in_by_name(cmd->cmd_with_args.buf[0]);
 	if (func == NULL)
 		return false;
 	if (process_redirections(executor, cmd->redirections) != SUCCESS)
@@ -53,12 +53,13 @@ bool try_execute_built_in(t_msh *msh, t_simple_command *cmd, t_executor *executo
 		executor->exit_code = EXIT_FAILURE;
 		return true;
 	}
-	executor->exit_code = func(msh, cmd->cmd_with_args, executor->fd_out);
+	executor->exit_code = func(msh, cmd->cmd_with_args.buf, executor->fd_out);
 	return true;
 }
 
+// todo special case cmdwitargs=NULL, redirections != null
 // if no success frome execute_??_chain, exit code in executor ain't changed
-int execute(t_msh *msh, t_commandlist *cmds)
+int execute(t_msh *msh, t_cmdlist *cmds)
 {
 	t_executor executor;
 

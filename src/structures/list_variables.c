@@ -12,6 +12,7 @@
 
 #include "list_variables.h"
 #include "libft.h"
+#include "ft_charptr_array.h"
 
 t_var *variable(const char *name, const char *value)
 {
@@ -42,7 +43,21 @@ void destroy_variable(void *var_void)
 	free(var);
 }
 
-// TODO change var to vars for each function
+char	*varlist_get_value_by_substr(t_varlist *vars, const char *str, size_t sz)
+{
+	t_var	*target;
+
+	while (vars)
+	{
+		target = vars->content;
+		if (ft_strncmp(target->name, str, sz) == SUCCESS
+				&& !target->name[sz])
+			return target->value;
+		vars = vars->next;
+	}
+	return ("");
+}
+
 char	*varlist_get_value(t_varlist *vars, const char *name)
 {
 	t_var	*target;
@@ -118,26 +133,17 @@ t_varlist *varlist_init_from_envp(char **envp)
 }
 
 // on fail returns NULL
-char **varlist_convert_to_array(t_varlist *vars)
+int varlist_convert_to_array(t_varlist *vars, t_charptr_array *arr)
 {
-	char	**vars_array;
-	size_t	i;
-
-	vars_array = ft_calloc(ft_lstsize(vars) + 1, sizeof(char *));
-	if (!vars_array)
-		return NULL;
-	i = 0;
+	char	*allocated;
+	if (charptr_array_init(arr) != SUCCESS)
+		return !SUCCESS;
 	while (vars)
 	{
-		vars_array[i] = ft_strnjoin(3, ((t_var*)vars->content)->name, "=", ((t_var*)vars->content)->value);
-		if (!vars_array[i])
-		{
-			while (i--)
-				free(vars_array[i]);
-			return (free(vars_array), NULL);
-		}
+		allocated = ft_strnjoin(3, ((t_var*)vars->content)->name, "=", ((t_var*)vars->content)->value);
+		if (!allocated || charptr_array_add_allocated_str(arr, &allocated) != SUCCESS)
+			return free(allocated), charptr_array_destroy(arr), !SUCCESS;
 		vars = vars->next;
-		i++;
 	}
-	return vars_array;
+	return SUCCESS;
 }
