@@ -1,7 +1,7 @@
 NAME = minishell
 CC = cc
 CFLAGS = -Wall -Werror -Wextra
-CFLAGS += -g
+CFLAGS += -g -Og -fsanitize=address,undefined,leak
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
 IFLAGS = -I $(LIBFT_DIR)/include
@@ -17,9 +17,7 @@ MS_FILENAMES = \
 	heredoc.c \
 	minishell.c \
 	prompt.c \
-	scratches.c \
-	signals.c \
-	strings.c
+	signals.c
 
 MS_FILENAMES += \
 	built_ins/built_in.c \
@@ -38,15 +36,20 @@ MS_FILENAMES += \
 	executor/redirections.c
 
 MS_FILENAMES += \
+	helpers/rl_wrapper.c \
+	helpers/string_utils.c
+
+MS_FILENAMES += \
 	lexer/lexer_utils.c \
 	lexer/lexer.c
 
 MS_FILENAMES += \
 	parser/expander_utils.c \
+	parser/expander_specialisations.c \
 	parser/expander.c \
 	parser/heredoc_expander.c \
-	parser/parser.c \
-	parser/special_variables.c
+	parser/parser_specialisations.c \
+	parser/parser.c
 
 MS_FILENAMES += \
 	structures/list_commands.c \
@@ -77,5 +80,11 @@ fclean: clean
 	rm -f $(NAME)
 
 re: fclean all
+
+test: $(NAME)
+	bash tests/test_runner.sh
+
+valgrind:
+	valgrind --track-origins=yes --leak-check=full --show-leak-kinds=all $(NAME)
 
 .PHONY: all bonus clean fclean re test

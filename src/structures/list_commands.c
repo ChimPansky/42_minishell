@@ -6,23 +6,19 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:43:57 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/03 13:03:12 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/04 17:35:17 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "list_commands.h"
+#include "libft.h"
 
-static int command_init(t_simple_command **cmd, t_cmd_type type)
+static int command_init(t_simple_command **cmd)
 {
 	*cmd = malloc(sizeof(t_simple_command));
 	if (!*cmd)
 		return !SUCCESS;
-	if (type == CMD_EXEC)
-	{
-		if (charptr_array_init(&(*cmd)->cmd_with_args) != SUCCESS)
-			return (free(*cmd), !SUCCESS);
-	}
-	(*cmd)->cmd_type = type;
+	(*cmd)->cmd_type = CMD_NULL;
 	(*cmd)->redirections = NULL;
 	return SUCCESS;
 }
@@ -39,16 +35,31 @@ static void command_destroy(void *cmd_p)
 	free(cmd);
 }
 
+int	command_specialise(t_simple_command *cmd, t_cmd_type type)
+{
+	if (!cmd)
+		return !SUCCESS;
+	if (cmd->cmd_type != CMD_NULL)
+		return !SUCCESS;
+	if (type == CMD_EXEC)
+	{
+		if (charptr_array_init(&cmd->cmd_with_args) != SUCCESS)
+			return (!SUCCESS);
+	}
+	cmd->cmd_type = type;
+	return SUCCESS;
+}
+
 void cmdlist_destroy(t_cmdlist **commands)
 {
 	ft_lstclear(commands, command_destroy);
 }
 
-t_simple_command *cmdlist_add_cmd(t_cmdlist **cmdlist, t_cmd_type type)
+t_simple_command *cmdlist_add_cmd(t_cmdlist **cmdlist)
 {
 	t_simple_command *cmd;
 
-	if (SUCCESS != command_init(&cmd, type))
+	if (SUCCESS != command_init(&cmd))
 		return NULL;
 	t_cmdlist *new_node = ft_lstnew(cmd);
 	if (!new_node)
@@ -80,7 +91,7 @@ t_simple_command *cmdlist_add_cmd(t_cmdlist **cmdlist, t_cmd_type type)
 
 // void	print_redirs(t_list **redirections)
 // {
-// 	t_redirections	*cur_redir;
+// 	t_redirlist	*cur_redir;
 // 	t_redir_detail	*redir;
 // 	char			*fd_type;
 // 	int			i;

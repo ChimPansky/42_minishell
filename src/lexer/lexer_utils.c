@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 12:15:28 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/04 11:15:09 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/04 17:34:32 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ size_t read_shell_spaces(char **input)
 	size_t  sep_count;
 
 	sep_count = 0;
-	while (is_shell_space(**input))
+	while (ft_isspace(**input))
 	{
 		*(input) += 1;
 		sep_count++;

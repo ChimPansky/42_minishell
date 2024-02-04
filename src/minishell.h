@@ -53,11 +53,6 @@ void		error_unexpected_token(char symbol);
 void		ms_error_msg(int error_nr, char *err_info);
 void		ms_error(int error_nr);
 
-// scratches.c
-char 		*find_env(t_msh *msh, const char *var_name);
-bool 		is_empty(const char *str);
-void		print_splitted(char **splitted);
-
 // built_ins/built_in.c
 t_built_in	get_built_in_by_name(char *func_name);
 
@@ -71,15 +66,19 @@ int 		read_heredocs(t_tokenlist *tokens, t_string *rl_input);
 int			expand(t_msh *msh, t_tokenlist *tokens);
 
 // parser.c
-int 		parse_and_execute(t_msh *msh, t_tokenlist *tokens);
+int 	parse_and_execute(t_msh *msh, t_tokenlist *tokens);
+
+// helpers
+char	*readline_wrapper(char *prompt);
 
 // signals.c
 void 		register_signals(void);
 
-// strings.c
-bool    	is_shell_space(char c);
-bool    	is_token_seperator(char c);
-bool    	is_var_separator(char c);
+// helpers/string_utils.c
+bool    is_token_seperator(char c);
+bool	is_special_var_name(char c);
+bool	is_var_name_start(char c);
+bool    is_var_separator(char c);
 
 // executor/executor.c
 int 		execute(t_msh *msh, t_cmdlist *cmds);

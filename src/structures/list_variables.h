@@ -1,9 +1,8 @@
 #ifndef VARIABLES_H
 #define VARIABLES_H
 
-#include "libft.h"
-#include "ft_list.h"
 #include "ft_charptr_array.h"
+#include "ft_list.h"
 
 typedef struct s_var
 {

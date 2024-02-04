@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 20:05:41 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/04 13:08:15 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/04 17:29:10 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@ int try_read_with_readline(t_msh *msh, t_string *rl_input)
 {
 	char	*rl_raw;
 
-	rl_raw = readline(msh->prompt.buf);
+	rl_raw = readline_wrapper(msh->prompt.buf);
 	if (!rl_raw)
 	{
 		if (errno) // check for type of err, sometimes ms_stop
-			perror("readline");
+			perror("readline"), ms_stop(msh);
 		else
 			ms_stop(msh);
 		return (!SUCCESS);
@@ -31,11 +31,13 @@ int try_read_with_readline(t_msh *msh, t_string *rl_input)
 	return (SUCCESS);
 }
 
+// todo: find all the places where to check for sigint:
+// 	minimum main readline, heredoc readline, executor
 int	check_for_sigint(t_msh *msh)
 {
 	if (g_sigint_received)
 	{
-		msh->last_exit_code = 130;
+		msh->last_exit_code = EXIT_SIG_INT;
 		g_sigint_received = false;
 		return (!SUCCESS);
 	}
@@ -74,14 +76,17 @@ int main_loop(t_msh *msh)
 	return (SUCCESS);
 }
 
-// add parameter check? are we allowed to caall for example: ./minishell arg1 arg2...
+// add parameter check? are we allowed to call for example: ./minishell arg1 arg2...
 int	main(int ac, char **av, char **envp)
 {
 	t_msh	msh;
+	int		exit_code;
+
 	(void) ac;
 	(void) av;
-
 	ms_init(&msh, envp);
 	main_loop(&msh);
+	exit_code = msh.last_exit_code;
 	ms_destroy_and_exit(&msh);
+	return (exit_code);
 }

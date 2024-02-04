@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 12:15:28 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/04 10:37:42 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/04 17:34:36 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int lex(t_msh *msh, t_tokenlist **tokens_p, char *input)
 	*tokens_p = NULL;
 	while (*pos_in_input)
 	{
-		if (is_shell_space(*pos_in_input))
+		if (ft_isspace(*pos_in_input))
 			pos_in_input++;
 		else if (*pos_in_input == '<' || *pos_in_input == '>')
 		{

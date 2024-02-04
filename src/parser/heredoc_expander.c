@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:30:33 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/03 19:28:22 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/04 17:34:41 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int	expand_line(t_msh *msh, char **line)
 		return (!SUCCESS);
 	while (*pos_in_line)
 	{
-		if (*pos_in_line == '$' && !is_shell_space(pos_in_line[1]))
+		if (*pos_in_line == '$' && !ft_isspace(pos_in_line[1]))
 		{
 			pos_in_line++;
 			var_content = get_var_content(msh, &pos_in_line);

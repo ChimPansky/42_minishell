@@ -6,17 +6,16 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:25:17 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/04 10:25:18 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/04 17:34:21 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef REDIRS_H
 # define REDIRS_H
 
-# include "libft.h"
-# include "ft_string.h"
-# include "ft_charptr_array.h"
-# include "ft_list.h"
+#include "ft_string.h"
+#include "ft_charptr_array.h"
+#include "ft_list.h"
 
 // redirlist doesn't own redir_details!
 // details should be free through tokens!

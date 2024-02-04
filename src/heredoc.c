@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 16:08:11 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/04 13:02:05 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/04 17:40:58 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int	process_heredoc(t_charptr_array *heredoc_content, char *limiter)
 	line = NULL;
 	while (1)
 	{
-		line = readline("> ");
+		line = readline_wrapper("> ");
 		if (line == NULL)
         {
             ft_putstr_fd("readline returned NULL...\n", STDOUT_FILENO);
