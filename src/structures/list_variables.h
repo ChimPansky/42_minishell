@@ -2,6 +2,7 @@
 #define VARIABLES_H
 
 #include "libft.h"
+#include "ft_list.h"
 #include "ft_charptr_array.h"
 
 typedef struct s_var

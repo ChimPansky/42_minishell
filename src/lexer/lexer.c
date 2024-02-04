@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 12:15:28 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/03 21:22:52 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/04 10:37:42 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,21 +51,17 @@ int lex(t_msh *msh, t_tokenlist **tokens_p, char *input)
 			pos_in_input++;
 		else if (*pos_in_input == '<' || *pos_in_input == '>')
 		{
-			if (read_tk_redir(msh, tokens_p, &pos_in_input) != SUCCESS)
+			if (read_tk_redir(msh, tokens_p, &pos_in_input, &last_tk_type) != SUCCESS)
 				return (tokenlist_destroy(tokens_p), !SUCCESS);
-			last_tk_type = TK_REDIR;
 		}
 		else if (*pos_in_input == '&' || *pos_in_input == '|')
 		{
-			if (read_and_or_pipe(msh, tokens_p, &pos_in_input, &last_tk_type)
+			if (read_tk_and_or_pipe(msh, tokens_p, &pos_in_input, &last_tk_type)
 				!= SUCCESS)
 				return (tokenlist_destroy(tokens_p), !SUCCESS);
 		}
-		else if (read_tk_word(msh, tokens_p, &pos_in_input) != SUCCESS)
-		{
+		else if (read_tk_word(msh, tokens_p, &pos_in_input, &last_tk_type)!= SUCCESS)
 			return (tokenlist_destroy(tokens_p), !SUCCESS);
-			last_tk_type = TK_WORD;
-		}
 		// TODO: read TK_SUBSHELL... '('
 	}
 	//print_tokens(*tokens_p);

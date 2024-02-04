@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 15:34:18 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/03 21:13:26 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/04 13:13:13 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	token_destroy(void *token_void)
 	t_token *token = token_void;
 
 	if (token->tk_type == TK_REDIR)
-		redir_destroy(&token->redir);
+		redir_destroy(token->redir);
 	if (token->tk_type == TK_WORD)
 		string_destroy(&token->string);
 	if (token->tk_type == TK_SUBSHELL)
@@ -167,8 +167,8 @@ void	print_tokens(t_tokenlist *tokens)
 			fd_str = NULL;
 		}
 		printf(" {T%d: Type: %s; t_string: %s; FD_Type: %s; FD_t_string: %s)} -->\n",  i, type_text, token->string.buf, fd_type, fd_str);
-		if (token->redir->type == FD_HEREDOC && token->redir->content.buf)
-			charptr_array_print(&token->redir->content);
+		// if (token->redir->type == FD_HEREDOC && token->redir->content.buf)
+		// 	charptr_array_print(&token->redir->content);
 		tokens = tokens->next;
 		i++;
 	}

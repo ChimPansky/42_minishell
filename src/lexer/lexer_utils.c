@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 12:15:28 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/03 21:21:39 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/04 11:15:09 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ size_t read_shell_spaces(char **input)
 	return (sep_count);
 }
 
-int read_word(t_msh *msh, char **pos_in_input, t_string *str)
+static int read_word(t_msh *msh, char **pos_in_input, t_string *str)
 {
 	char    quote_type;
 
@@ -78,7 +78,8 @@ static	t_redir_type	read_redir_type(char **pos_in_input)
 	return (FD_NULL);
 }
 
-int  read_tk_redir(t_msh *msh, t_tokenlist **tokens_p, char **pos_in_input)
+int  read_tk_redir(t_msh *msh, t_tokenlist **tokens_p, char **pos_in_input,
+				t_token_type *last_tk_type)
 {
 	t_token			*new_token;
 	t_redir_detail	*new_redir;
@@ -88,12 +89,12 @@ int  read_tk_redir(t_msh *msh, t_tokenlist **tokens_p, char **pos_in_input)
 		return (!SUCCESS);
 	if (redir_init(&new_redir, read_redir_type(pos_in_input)) != SUCCESS)
 		return (!SUCCESS);
-	if (read_word(msh, pos_in_input, &new_redir->string) != SUCCESS)
-		return (redir_destroy(&new_redir), !SUCCESS);
+	if (read_word(msh, pos_in_input, &(new_redir->string)) != SUCCESS)
+		return (redir_destroy(new_redir), !SUCCESS);
 	new_token->redir = new_redir;
+	*last_tk_type = TK_REDIR;
 	return (SUCCESS);
 }
-
 static	t_token_type	read_tk_type(char **pos_in_input)
 {
 	if (ft_strncmp("&&", *pos_in_input, 2) == MATCH)
@@ -114,7 +115,7 @@ static	t_token_type	read_tk_type(char **pos_in_input)
 	return (TK_NULL);
 }
 
-int	read_and_or_pipe(t_msh *msh, t_tokenlist **tokens_p, char **pos_in_input,
+int	read_tk_and_or_pipe(t_msh *msh, t_tokenlist **tokens_p, char **pos_in_input,
 t_token_type *last_tk_type)
 {
 	t_token_type	tk_type;
@@ -137,7 +138,8 @@ t_token_type *last_tk_type)
 	return (SUCCESS);
 }
 
-int	read_tk_word(t_msh *msh, t_tokenlist **tokens_p, char **pos_in_input)
+int	read_tk_word(t_msh *msh, t_tokenlist **tokens_p, char **pos_in_input,
+				t_token_type *last_tk_type)
 {
 	t_token			*new_token;
 
@@ -146,6 +148,7 @@ int	read_tk_word(t_msh *msh, t_tokenlist **tokens_p, char **pos_in_input)
 		return (!SUCCESS);
 	if (read_word(msh, pos_in_input, &new_token->string) != SUCCESS)
 		return (!SUCCESS);
+	*last_tk_type = TK_WORD;
 	return (SUCCESS);
 }
 

@@ -2,6 +2,7 @@
 #define LIST_COMMANDS_H
 
 #include "libft.h"
+#include "ft_list.h"
 #include "redirs.h"
 #include "ft_charptr_array.h"
 
