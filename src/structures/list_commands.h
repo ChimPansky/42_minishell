@@ -22,7 +22,7 @@ typedef struct s_simple_command
 		t_charptr_array	cmd_with_args;
 		t_cmdlist	*subcommand;
 	};
-	t_redirections	*redirections;
+	t_redirlist	*redirections;
 }		t_simple_command;
 
 int					command_specialise(t_simple_command *cmd, t_cmd_type type);

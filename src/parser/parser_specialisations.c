@@ -3,11 +3,11 @@
 // TODO change ft_list to redirlist
 int	parse_redirection(t_msh *msh, t_parser *parser)
 {
-	t_redirections	*new_redir;
-	t_redirections	**redirlist;
+	t_redirlist	*new_redir;
+	t_redirlist	**redirlist;
 	t_redir_detail	*redir;
 
-	redir = &parser->token->redir;
+	redir = parser->token->redir;
 	redirlist = &parser->cmd->redirections;
 	new_redir = ft_lstnew(redir);
 	if (!new_redir)

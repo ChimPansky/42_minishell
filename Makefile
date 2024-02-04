@@ -1,7 +1,7 @@
 NAME = minishell
 CC = cc
 CFLAGS = -Wall -Werror -Wextra
-CFLAGS += -g -Og -fsanitize=address,undefined,leak
+# CFLAGS += -g -Og -fsanitize=address,undefined,leak
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
 IFLAGS = -I $(LIBFT_DIR)/include
@@ -15,7 +15,6 @@ MS_FILENAMES = \
 	app.c \
 	exit_error.c \
 	heredoc.c \
-	lexer.c \
 	minishell.c \
 	prompt.c \
 	signals.c
@@ -37,8 +36,12 @@ MS_FILENAMES += \
 	executor/redirections.c
 
 MS_FILENAMES += \
-	helpers/string_utils.c \
-	helpers/rl_wrapper.c
+	helpers/rl_wrapper.c \
+	helpers/string_utils.c
+
+MS_FILENAMES += \
+	lexer/lexer_utils.c \
+	lexer/lexer.c
 
 MS_FILENAMES += \
 	parser/expander_utils.c \
@@ -51,7 +54,8 @@ MS_FILENAMES += \
 MS_FILENAMES += \
 	structures/list_commands.c \
 	structures/list_tokens.c \
-	structures/list_variables.c
+	structures/list_variables.c \
+	structures/redirs.c
 
 SRC = $(addprefix $(SOURCE_DIR)/,$(MS_FILENAMES))
 

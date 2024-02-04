@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expander.h                                         :+:      :+:    :+:   */
+/*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 14:18:59 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/01 15:33:12 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/04 17:31:51 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,4 @@ int		expand_singleq(t_expander *expander);
 int		expand_variable(t_msh *msh, t_expander *expander, t_charptr_array *arr);
 char	*get_var_content(t_msh *msh, char **pos_in_str);
 
-#endif  // PARSER_PARSER__H
+#endif  // PARSER__H

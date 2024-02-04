@@ -7,7 +7,6 @@
 // pipe buf is 64kb
 static int process_heredoc(t_charptr_array *heredoc_lines, t_executor *executor)
 {
-	size_t	line_len;
 	size_t	line_nb;
 	int		pipe_fds[2];
 
@@ -16,9 +15,8 @@ static int process_heredoc(t_charptr_array *heredoc_lines, t_executor *executor)
 	line_nb = 0;
 	while (line_nb < heredoc_lines->sz)
 	{
-		line_len = ft_strlen(heredoc_lines->buf[line_nb]);
-		if (line_len)
-			write(pipe_fds[WR_END], heredoc_lines->buf[line_nb], line_len);
+		if (heredoc_lines->buf[line_nb][0] != '\0')
+			ft_dprintf(pipe_fds[WR_END], "%s", heredoc_lines->buf[line_nb]);
 		line_nb++;
 	}
 	close(pipe_fds[WR_END]);
@@ -60,7 +58,7 @@ static int process_redirection(t_redir_detail *redir, t_executor *executor)
 	return process_files(redir, executor);
 }
 
-int process_redirections(t_executor *executor, t_redirections *redirs)
+int process_redirections(t_executor *executor, t_redirlist *redirs)
 {
 	while (redirs)
 	{

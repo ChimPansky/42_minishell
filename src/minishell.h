@@ -30,7 +30,6 @@ typedef enum e_ms_error
 	ER_AMBIGUOUS_REDIRECT
 }		t_ms_error;
 
-
 typedef struct s_msh
 {
 	t_string		prompt;
@@ -41,37 +40,30 @@ typedef struct s_msh
 
 typedef int (*t_built_in)(t_msh *msh, char **cmd_with_args, int fd_out);
 
-//minishell.c
-char **strings_append(char **strings, char *appendix);
-void strings_print(char **strings);
-
-// TODO Vova:
-int 	execute(t_msh *msh, t_cmdlist *cmds);
-
 // app.c
-void	ms_init(t_msh *msh, char **envp);
-void	ms_destroy_and_exit(t_msh *msh);
-void	ms_stop(t_msh *msh);
+void		ms_init(t_msh *msh, char **envp);
+void		ms_destroy_and_exit(t_msh *msh);
+void		ms_stop(t_msh *msh);
 
 // prompt.c
-void	update_prompt(t_msh *msh);
+void		update_prompt(t_msh *msh);
 
 //exit_error.c
-void	error_unexpected_token(char *str);
-void	ms_error_msg(int error_nr, char *err_info);
-void	ms_error(int error_nr);
+void		error_unexpected_token(char symbol);
+void		ms_error_msg(int error_nr, char *err_info);
+void		ms_error(int error_nr);
 
 // built_ins/built_in.c
-t_built_in get_built_in_by_name(char *func_name);
+t_built_in	get_built_in_by_name(char *func_name);
 
-// lexer.c
-int lex(t_msh *msh, t_tokenlist **tokens_p, char *input);
+// lexer/lexer.c
+int 		lex(t_msh *msh, t_tokenlist **tokens_p, char *input);
 
 // heredoc.c
-int 	read_heredocs(t_tokenlist *tokens, t_string *rl_input);
+int 		read_heredocs(t_tokenlist *tokens, t_string *rl_input);
 
 // expander/expander.c
-int	expand(t_msh *msh, t_tokenlist *tokens);
+int			expand(t_msh *msh, t_tokenlist *tokens);
 
 // parser.c
 int 	parse_and_execute(t_msh *msh, t_tokenlist *tokens);
@@ -80,7 +72,7 @@ int 	parse_and_execute(t_msh *msh, t_tokenlist *tokens);
 char	*readline_wrapper(char *prompt);
 
 // signals.c
-void register_signals(void);
+void 		register_signals(void);
 
 // helpers/string_utils.c
 bool    is_token_seperator(char c);

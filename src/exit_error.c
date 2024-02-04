@@ -6,15 +6,18 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 15:04:32 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/01 15:28:15 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/04 18:49:15 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	error_unexpected_token(char *str)
+void	error_unexpected_token(char symbol)
 {
-	ft_printf_err("syntax error near unexpected token `%s'", str);
+	if (symbol == '\n' || !symbol)
+		ft_printf_err("syntax error near unexpected token 'newline'\n");
+	else
+		ft_printf_err("syntax error near unexpected token '%c'\n", symbol);
 }
 
 void	ms_error_msg(int error_nr, char *err_info)
@@ -26,7 +29,7 @@ void	ms_error_msg(int error_nr, char *err_info)
 		ft_putendl_fd("Error: Unclosed quotes.", STDERR_FILENO);
 	else if (error_nr == ER_UNEXPECTED_TOKEN)
 	{
-		ft_putstr_fd("syntax error near unexpected token `", STDERR_FILENO);
+		ft_putstr_fd("syntax error near unexpected token '", STDERR_FILENO);
 		if (err_info)
 		{
 			ft_putstr_fd(err_info, STDERR_FILENO);
