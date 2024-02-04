@@ -13,7 +13,6 @@
 #include "list_tokens.h"
 #include "libft.h"
 
-
 // t_redir_detail	*redir_detail_create(t_redir_type fd_type, t_string str)
 // {
 // 	t_redir_detail	*redir;

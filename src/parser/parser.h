@@ -17,10 +17,6 @@
 
 int		expand_string_to_arr(t_msh *msh, char *string, t_charptr_array *str_array);
 int		expand_heredoc(t_msh *msh, t_charptr_array *heredoc_lines);
-
-char	*get_last_exit_code(t_msh *msh);
 char	*get_var_content(t_msh *msh, char **pos_in_str);
-
-
 
 #endif  // PARSER_PARSER__H

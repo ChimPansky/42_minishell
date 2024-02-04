@@ -31,11 +31,13 @@ int try_read_with_readline(t_msh *msh, t_string *rl_input)
 	return (SUCCESS);
 }
 
+// todo: find all the places where to check for sigint:
+// 	minimum main readline, heredoc readline, executor
 int	check_for_sigint(t_msh *msh)
 {
 	if (g_sigint_received)
 	{
-		msh->last_exit_code = 130;
+		msh->last_exit_code = EXIT_SIG_INT;
 		g_sigint_received = false;
 		return (!SUCCESS);
 	}
