@@ -82,8 +82,7 @@ char	*readline_wrapper(char *prompt);
 // signals.c
 void register_signals(void);
 
-// strings.c
-bool    is_shell_space(char c);
+// helpers/string_utils.c
 bool    is_token_seperator(char c);
 bool	is_special_var_name(char c);
 bool	is_var_name_start(char c);

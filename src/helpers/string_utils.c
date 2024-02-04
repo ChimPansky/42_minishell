@@ -1,29 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   strings.c                                          :+:      :+:    :+:   */
+/*   string_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 11:29:38 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/04 15:46:21 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/04 17:21:48 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-
-bool	is_shell_space(char c)
-{
-    const char  *whitespaces = STR_WHITESPACE;
-
-    return (c && ft_strchr(whitespaces, c));
-}
+#include "libft.h"
 
 bool    is_token_seperator(char c)
 {
     const char  *shell_seps = "|<>;!";
 
-    return (is_shell_space(c) || ft_strchr(shell_seps, c));
+    return (ft_isspace(c) || ft_strchr(shell_seps, c));
 }
 
 bool	is_special_var_name(char c)
@@ -44,5 +37,5 @@ bool    is_var_separator(char c)
 {
     const char  *var_seps = "\n$;&|><(){}[],.!?=+-*/%\\'\"";
 
-    return (is_shell_space(c) || ft_strchr(var_seps, c));
+    return (ft_isspace(c) || ft_strchr(var_seps, c));
 }

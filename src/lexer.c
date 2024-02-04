@@ -29,7 +29,7 @@ size_t read_shell_spaces(char **input)
 	size_t  sep_count;
 
 	sep_count = 0;
-	while (is_shell_space(**input))
+	while (ft_isspace(**input))
 	{
 		*(input) += 1;
 		sep_count++;
@@ -121,7 +121,7 @@ int lex(t_msh *msh, t_tokenlist **tokens_p, char *input)
 			last_token_type = TK_PIPE;
 			input++;
 		}
-		else if (is_shell_space(*input))
+		else if (ft_isspace(*input))
 			input++;
 		else
 		{
