@@ -1,18 +1,14 @@
 #include "parser.h"
 
-// TODO change ft_list to redirlist
 int	parse_redirection(t_msh *msh, t_parser *parser)
 {
-	t_redirlist	*new_redir;
 	t_redirlist	**redirlist;
 	t_redir_detail	*redir;
 
 	redir = parser->token->redir;
 	redirlist = &parser->cmd->redirections;
-	new_redir = ft_lstnew(redir);
-	if (!new_redir)
-		return (perror("parse_redirection: ft_lstnew"), !SUCCESS);
-	ft_lstadd_back(redirlist, new_redir);
+	if (redirlist_add_redir(redirlist, redir) != SUCCESS)
+		return (!SUCCESS);
 	if (redir->type == FD_HEREDOC)
 		return (expand_heredoc(msh, &redir->content) != SUCCESS);
 	return (expand_string_to_arr(msh, redir->string.buf, &redir->content));
