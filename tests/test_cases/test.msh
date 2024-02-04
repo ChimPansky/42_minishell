@@ -2,3 +2,4 @@ export A=42
 cd ..
 pwd
 echo $A
+./ajsbdkjb

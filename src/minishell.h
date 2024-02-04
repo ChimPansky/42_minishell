@@ -74,7 +74,7 @@ int 	read_heredocs(t_tokenlist *tokens, t_string *rl_input);
 int	expand(t_msh *msh, t_tokenlist *tokens);
 
 // parser.c
-int 	parse_and_ecexute(t_msh *msh, t_tokenlist *tokens);
+int 	parse_and_execute(t_msh *msh, t_tokenlist *tokens);
 
 // helpers
 char	*readline_wrapper(char *prompt);
@@ -82,9 +82,10 @@ char	*readline_wrapper(char *prompt);
 // signals.c
 void register_signals(void);
 
-// strings.c
-bool    is_shell_space(char c);
+// helpers/string_utils.c
 bool    is_token_seperator(char c);
+bool	is_special_var_name(char c);
+bool	is_var_name_start(char c);
 bool    is_var_separator(char c);
 
 // executor/executor.c

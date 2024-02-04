@@ -52,7 +52,7 @@ if [[ $BASH_EXIT != $MSH_EXIT ]]; then
 	TEST_OK=false
 	echo -e "got ${YELLOW}$MSH_EXIT${NC} exit code, ${YELLOW}$BASH_EXIT${NC} was expected"
 fi
-if [[ TEST_OK == true ]]; then
+if [[ $TEST_OK == true ]]; then
 	echo -e "${GREEN}OK${NC}"
 else
 	echo -e "${RED}KO${NC}"
