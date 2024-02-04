@@ -17,8 +17,11 @@ static void sig_int_handler(int signo)
 
 void register_signals(void)
 {
-	g_sigint_received = false;
 	struct sigaction sig_act;
+
+	g_sigint_received = false;
+    sigemptyset(&sig_act.sa_mask);
+    sig_act.sa_flags = 0;
 	sig_act.sa_handler = SIG_IGN;
     if (sigaction(SIGQUIT, &sig_act, NULL) != 0)
     {
