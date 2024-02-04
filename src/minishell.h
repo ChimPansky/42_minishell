@@ -59,11 +59,8 @@ t_built_in	get_built_in_by_name(char *func_name);
 // lexer/lexer.c
 int 		lex(t_msh *msh, t_tokenlist **tokens_p, char *input);
 
-// heredoc.c
+// lexer/heredoc.c
 int 		read_heredocs(t_tokenlist *tokens, t_string *rl_input);
-
-// expander/expander.c
-int			expand(t_msh *msh, t_tokenlist *tokens);
 
 // parser.c
 int 	parse_and_execute(t_msh *msh, t_tokenlist *tokens);
@@ -79,6 +76,7 @@ bool    is_token_seperator(char c);
 bool	is_special_var_name(char c);
 bool	is_var_name_start(char c);
 bool    is_var_separator(char c);
+void	str_remove_quotes(char **str);
 
 // executor/executor.c
 int 		execute(t_msh *msh, t_cmdlist *cmds);

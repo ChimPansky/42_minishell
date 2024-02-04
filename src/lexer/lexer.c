@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 12:15:28 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/04 18:17:55 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/04 23:34:19 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,36 +37,42 @@
 // EXECUTOR
 
 // turns input into token_list; stores token_list in msh.tokens
+
+static void	init_lexer(t_lexer *lexer, t_tokenlist **tokens, char *input)
+{
+	lexer->tokens = tokens;
+	*lexer->tokens = NULL;
+	lexer->last_tk_type = TK_NULL;
+	lexer->pos_in_input = input;
+	lexer->redir_type = FD_NULL;
+}
+
 int lex(t_msh *msh, t_tokenlist **tokens_p, char *input)
 {
-	t_token_type	last_tk_type;
-	char			*pos_in_input;
+	t_lexer		lexer;
 
-	pos_in_input = input;
-	last_tk_type = TK_NULL;
-	*tokens_p = NULL;
-	while (*pos_in_input)
+	init_lexer(&lexer, tokens_p, input);
+	while (*lexer.pos_in_input)
 	{
-		if (ft_isspace(*pos_in_input))
-			pos_in_input++;
-		else if (*pos_in_input == '<' || *pos_in_input == '>')
+		if (ft_isspace(*lexer.pos_in_input))
+			lexer.pos_in_input++;
+		else if (*lexer.pos_in_input == '<' || *lexer.pos_in_input == '>')
 		{
-			if (read_tk_redir(msh, tokens_p, &pos_in_input, &last_tk_type) != SUCCESS)
+			if (read_tk_redir(msh, &lexer) != SUCCESS)
 				return (tokenlist_destroy(tokens_p), !SUCCESS);
 		}
-		else if (*pos_in_input == '&' || *pos_in_input == '|')
+		else if (*lexer.pos_in_input == '&' || *lexer.pos_in_input == '|')
 		{
-			if (read_tk_simple_cmd_separator(msh, tokens_p, &pos_in_input, &last_tk_type)
-				!= SUCCESS)
+			if (read_tk_simple_cmd_separator(msh, &lexer)	!= SUCCESS)
 				return (tokenlist_destroy(tokens_p), !SUCCESS);
 		}
-		// TODO
-		//else if else if (*pos_in_input == '(')
-		// { read tk subshell}
-		//	return (tokenlist_destroy(tokens_p), !SUCCESS);
-		else if (read_tk_word(msh, tokens_p, &pos_in_input, &last_tk_type)!= SUCCESS)
+		else if (*lexer.pos_in_input == '(')
+		{
+			if (read_tk_subshell(msh, &lexer) != SUCCESS)
+				return (tokenlist_destroy(tokens_p), !SUCCESS);
+		}
+		else if (read_tk_word(msh, &lexer)!= SUCCESS)
 			return (tokenlist_destroy(tokens_p), !SUCCESS);
 	}
-	//print_tokens(*tokens_p);
 	return (SUCCESS);
 }

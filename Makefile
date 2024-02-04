@@ -14,7 +14,6 @@ include $(LIBFT_DIR)/colors.mk
 MS_FILENAMES = \
 	app.c \
 	exit_error.c \
-	heredoc.c \
 	minishell.c \
 	prompt.c \
 	signals.c
@@ -40,6 +39,7 @@ MS_FILENAMES += \
 	helpers/string_utils.c
 
 MS_FILENAMES += \
+	lexer/lexer_heredoc.c \
 	lexer/lexer_utils.c \
 	lexer/lexer.c
 
