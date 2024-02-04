@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 16:08:11 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/04 17:40:58 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/04 19:08:30 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static int	process_heredoc(t_charptr_array *heredoc_content, char *limiter)
             // ^D message and exit
                 return (!SUCCESS);
         }
-		if (ft_strcmp(limiter, line) == MATCH)
+		if (ft_strcmp(limiter, line) == SUCCESS)
 			break ;
 		string_init_with_allocated(&line_w_nl, line);
 		if (string_add_chr(&line_w_nl, '\n') != SUCCESS)

@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 12:15:28 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/04 17:34:36 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/04 18:17:55 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,16 @@ int lex(t_msh *msh, t_tokenlist **tokens_p, char *input)
 		}
 		else if (*pos_in_input == '&' || *pos_in_input == '|')
 		{
-			if (read_tk_and_or_pipe(msh, tokens_p, &pos_in_input, &last_tk_type)
+			if (read_tk_simple_cmd_separator(msh, tokens_p, &pos_in_input, &last_tk_type)
 				!= SUCCESS)
 				return (tokenlist_destroy(tokens_p), !SUCCESS);
 		}
+		// TODO
+		//else if else if (*pos_in_input == '(')
+		// { read tk subshell}
+		//	return (tokenlist_destroy(tokens_p), !SUCCESS);
 		else if (read_tk_word(msh, tokens_p, &pos_in_input, &last_tk_type)!= SUCCESS)
 			return (tokenlist_destroy(tokens_p), !SUCCESS);
-		// TODO: read TK_SUBSHELL... '('
 	}
 	//print_tokens(*tokens_p);
 	return (SUCCESS);

@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 12:15:28 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/04 17:34:32 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/04 18:36:01 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,12 @@ static int read_word(t_msh *msh, char **pos_in_input, t_string *str)
 
 static	t_redir_type	read_redir_type(char **pos_in_input)
 {
-	if (ft_strncmp("<<", *pos_in_input, 2) == MATCH)
+	if (ft_strncmp("<<", *pos_in_input, 2) == SUCCESS)
 	{
 		*pos_in_input += 2;
 		return (FD_HEREDOC);
 	}
-	else 	if (ft_strncmp(">>", *pos_in_input, 2) == MATCH)
+	else 	if (ft_strncmp(">>", *pos_in_input, 2) == SUCCESS)
 	{
 		*pos_in_input += 2;
 		return (FD_OUT_APPEND);
@@ -95,14 +95,15 @@ int  read_tk_redir(t_msh *msh, t_tokenlist **tokens_p, char **pos_in_input,
 	*last_tk_type = TK_REDIR;
 	return (SUCCESS);
 }
-static	t_token_type	read_tk_type(char **pos_in_input)
+
+static	t_token_type	read_tk_simple_cmd_separator_type(char **pos_in_input)
 {
-	if (ft_strncmp("&&", *pos_in_input, 2) == MATCH)
+	if (ft_strncmp("&&", *pos_in_input, 2) == SUCCESS)
 	{
 		*pos_in_input += 2;
 		return (TK_LOGIC_AND);
 	}
-	else if (ft_strncmp("||", *pos_in_input, 2) == MATCH)
+	else if (ft_strncmp("||", *pos_in_input, 2) == SUCCESS)
 	{
 		*pos_in_input += 2;
 		return (TK_LOGIC_OR);
@@ -115,7 +116,7 @@ static	t_token_type	read_tk_type(char **pos_in_input)
 	return (TK_NULL);
 }
 
-int	read_tk_and_or_pipe(t_msh *msh, t_tokenlist **tokens_p, char **pos_in_input,
+int	read_tk_simple_cmd_separator(t_msh *msh, t_tokenlist **tokens_p, char **pos_in_input,
 t_token_type *last_tk_type)
 {
 	t_token_type	tk_type;
@@ -125,7 +126,7 @@ t_token_type *last_tk_type)
 		msh->last_exit_code = ER_UNEXPECTED_TOKEN;
 		return (error_unexpected_token(**pos_in_input), !SUCCESS);
 	}
-	tk_type = read_tk_type(pos_in_input);
+	tk_type = read_tk_simple_cmd_separator_type(pos_in_input);
 	if (!tokenlist_add_token(tokens_p, tk_type))
 		return (!SUCCESS);
 	*last_tk_type = tk_type;
@@ -154,9 +155,9 @@ int	read_tk_word(t_msh *msh, t_tokenlist **tokens_p, char **pos_in_input,
 
 // int  read_redir(t_redir_detail *redir, char **input)
 // {
-// 	if (ft_strncmp("<<", *input, 2) == MATCH)
+// 	if (ft_strncmp("<<", *input, 2) == SUCCESS)
 // 		redir->type = FD_HEREDOC;
-// 	else if (ft_strncmp(">>", *input, 2) == MATCH)
+// 	else if (ft_strncmp(">>", *input, 2) == SUCCESS)
 // 		redir->type = FD_OUT_APPEND;
 // 	else if (**input == '<')
 // 		redir->type = FD_IN;

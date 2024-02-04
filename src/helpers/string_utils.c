@@ -6,15 +6,16 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 11:29:38 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/04 17:21:48 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/04 18:23:20 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+// mb add semicolon
 bool    is_token_seperator(char c)
 {
-    const char  *shell_seps = "|<>;!";
+    const char  *shell_seps = "|<>&";
 
     return (ft_isspace(c) || ft_strchr(shell_seps, c));
 }

@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 15:34:33 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/04 17:36:06 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/04 18:46:26 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 
 typedef t_list t_tokenlist;
 
+// mb add semicolon
 typedef enum e_token_type
 {
 	TK_NULL,
@@ -46,6 +47,5 @@ void 		token_destroy(void *token_void);
 void		tokenlist_destroy(t_tokenlist **tokens);
 
 void	print_tokens(t_tokenlist *tokens);
-
 
 #endif  // LIST_TOKENS_H

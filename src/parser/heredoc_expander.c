@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:30:33 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/04 17:34:41 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/04 17:56:18 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int	expand_line(t_msh *msh, char **line)
 		return (!SUCCESS);
 	while (*pos_in_line)
 	{
-		if (*pos_in_line == '$' && !ft_isspace(pos_in_line[1]))
+		if (*pos_in_line == '$' && is_var_name_start(pos_in_line[1]))
 		{
 			pos_in_line++;
 			var_content = get_var_content(msh, &pos_in_line);
@@ -47,7 +47,7 @@ int expand_heredoc(t_msh *msh, t_charptr_array *heredoc_lines)
 	i = 0;
 	while (i < heredoc_lines->sz)
 	{
-		if (heredoc_lines->buf[i][0] != '\0')
+		if (heredoc_lines->buf[i][0] != '\0') // chekc for $ mb
 		{
 			if (expand_line(msh, &heredoc_lines->buf[i]) != SUCCESS)
 				return (!SUCCESS);
