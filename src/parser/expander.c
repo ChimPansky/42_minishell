@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:30:33 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/01 14:32:15 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/04 15:48:20 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	expand_next(t_msh *msh, t_expander *expander, t_charptr_array *arr)
 		expander->pos++;
 		return (SUCCESS);
 	}
-	if (*expander->pos == '$' && !ft_isspace(expander->pos[1]))
+	if (*expander->pos == '$' && is_var_name_start(expander->pos[1]))
 		return (expand_variable(msh, expander, arr));
 	if (SUCCESS != string_add_chr(&expander->replace, *expander->pos++))
 		return (perror("expand_next: string_add_chr"),

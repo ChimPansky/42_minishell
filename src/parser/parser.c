@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:30:33 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/01 15:32:45 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/04 15:53:19 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static int	parse_token(t_msh *msh, t_parser *parser)
 		!SUCCESS);
 }
 
-int	parse_and_ecexute(t_msh *msh, t_tokenlist *tokenlist)
+int	parse_and_execute(t_msh *msh, t_tokenlist *tokenlist)
 {
 	t_parser			parser;
 

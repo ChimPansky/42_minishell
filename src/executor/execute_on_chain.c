@@ -12,7 +12,7 @@ static void execute_one_on_chain(t_msh *msh, t_simple_command *cmd, t_executor *
 		perror("msh: executor: dup2"), close(STDIN_FILENO), exit(EXIT_FAILURE);
 	if (cmd->cmd_type == CMD_SUBSHELL)
 	{
-		if (parse_and_ecexute(msh, cmd->subcommand) != SUCCESS)
+		if (parse_and_execute(msh, cmd->subcommand) != SUCCESS)
 			close(STDIN_FILENO), close(STDOUT_FILENO), exit(EXIT_FAILURE);
 		close(STDIN_FILENO), close(STDOUT_FILENO), exit(msh->last_exit_code);
 	}

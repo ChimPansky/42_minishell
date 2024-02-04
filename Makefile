@@ -18,8 +18,7 @@ MS_FILENAMES = \
 	lexer.c \
 	minishell.c \
 	prompt.c \
-	signals.c \
-	strings.c
+	signals.c
 
 MS_FILENAMES += \
 	built_ins/built_in.c \
@@ -38,6 +37,7 @@ MS_FILENAMES += \
 	executor/redirections.c
 
 MS_FILENAMES += \
+	helpers/string_utils.c \
 	helpers/rl_wrapper.c
 
 MS_FILENAMES += \
