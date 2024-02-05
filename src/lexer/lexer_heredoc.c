@@ -6,15 +6,11 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 16:08:11 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/04 23:56:09 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/05 14:50:25 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-#include "lexer.h"
-#include "libft.h"
-#include <stdbool.h>
-#include <unistd.h>
 
 // cmd d and cmd c check
 // if success return SUCCESS

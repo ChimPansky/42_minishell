@@ -1,7 +1,7 @@
 NAME = minishell
 CC = cc
 CFLAGS = -Wall -Werror -Wextra
-# CFLAGS += -g -Og -fsanitize=address,undefined,leak
+CFLAGS += -g -Og -fsanitize=address,undefined,leak
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
 IFLAGS = -I $(LIBFT_DIR)/include
@@ -39,8 +39,11 @@ MS_FILENAMES += \
 	helpers/string_utils.c
 
 MS_FILENAMES += \
+	lexer/lexer_cmd_seps.c \
 	lexer/lexer_heredoc.c \
-	lexer/lexer_utils.c \
+	lexer/lexer_redir.c \
+	lexer/lexer_subshell.c \
+	lexer/lexer_word.c \
 	lexer/lexer.c
 
 MS_FILENAMES += \

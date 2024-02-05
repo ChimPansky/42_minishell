@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 15:34:18 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/04 17:33:05 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/05 12:43:01 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,6 +167,15 @@ void	print_tokens(t_tokenlist *tokens)
 			fd_str = NULL;
 		}
 		printf(" {T%d: Type: %s; t_string: %s; FD_Type: %s; FD_t_string: %s)} -->\n",  i, type_text, token->string.buf, fd_type, fd_str);
+		if (token->tk_type == TK_SUBSHELL)
+		{
+			type_text = "SUBSHELL";
+			fd_type = NULL;
+			fd_str = NULL;
+			printf ("\n---SUB-TOKENS START\n");
+			print_tokens(token->subshell);
+			printf ("---SUB-TOKENS END\n");
+		}
 		// if (token->redir->type == FD_HEREDOC && token->redir->content.buf)
 		// 	charptr_array_print(&token->redir->content);
 		tokens = tokens->next;
