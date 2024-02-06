@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 12:15:28 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/06 15:42:26 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/06 16:16:37 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,8 @@ int lex(t_msh *msh, t_tokenlist **tokens_p, char *input)
 {
 	if (lex_tokens(msh, tokens_p, input) != SUCCESS || !*tokens_p)
 		return (!SUCCESS);
+	// iterate throuh tokens and check if tokens are in a valid order...
+	// for example: between to subshells there has to be a command separator
 	if (lex_heredocs(*tokens_p) != SUCCESS)
 		return (tokenlist_destroy(tokens_p), !SUCCESS);
 	return (SUCCESS);
