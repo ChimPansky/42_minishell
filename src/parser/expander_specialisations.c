@@ -18,7 +18,7 @@ static int	expand_var_in_glob(
 				if (SUCCESS != string_init(&expander->replace, ""))
 					return (perror("expand_var_in_glob: "
 							"string_init"), !SUCCESS);
-				ft_lstclear(&expander->true_wildcards, NULL);
+				ft_lstclear(&expander->true_wildcards, free);
 			}
 			pos_in_var++;
 		}

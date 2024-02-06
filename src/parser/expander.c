@@ -26,7 +26,7 @@ int	expander_init(t_expander *expander, char *string)
 void	expander_destroy(t_expander *expander)
 {
 	string_destroy(&expander->replace);
-	ft_lstclear(&expander->true_wildcards, NULL);
+	ft_lstclear(&expander->true_wildcards, free);
 }
 
 int	expand_next(t_msh *msh, t_expander *expander, t_charptr_array *arr)
