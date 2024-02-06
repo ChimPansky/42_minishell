@@ -117,9 +117,8 @@ int	check_unexpected_token(t_msh *msh, t_token_type last_type,
 
 int lex(t_msh *msh, t_tokenlist **tokens_p, char *input)
 {
-	if (lex_tokens(msh, tokens_p, input) != SUCCESS || !*tokens_p)
-		return (!SUCCESS);
+	return (lex_tokens(msh, tokens_p, input));
 	// iterate throuh tokens and check if tokens are in a valid order...
 	// for example: between to subshells there has to be a command separator
-	return (SUCCESS);
+	// return (SUCCESS);
 }

@@ -72,6 +72,8 @@ int	parse_and_execute(t_msh *msh, t_tokenlist *tokenlist)
 {
 	t_parser			parser;
 
+	if (!tokenlist)
+		return (SUCCESS);
 	init_parser(&parser);
 	while (!parser.done)
 	{
