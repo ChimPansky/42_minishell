@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:30:33 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/04 17:30:39 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/06 13:21:26 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	expand_string_to_arr(t_msh *msh, char *string, t_charptr_array *arr)
 			return (expander_destroy(&expander), !SUCCESS);
 	}
 	if (!expander.glob)
-		return (ft_printf_err("CRIT ERR: unexpected eol"),
+		return (ft_printf_err("CRIT ERR: unexpected eol\n"),
 			expander_destroy(&expander), !SUCCESS);
 	if (!string_is_empty(&expander.replace))
 		if (SUCCESS
