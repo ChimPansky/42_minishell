@@ -6,11 +6,12 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 20:05:41 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/04 18:52:21 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/06 21:46:25 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "structures/list_tokens.h"
 
 bool g_sigint_received;
 
@@ -60,19 +61,17 @@ int main_loop(t_msh *msh)
 			string_destroy(&rl_input);
 			continue;
 		}
-		if (SUCCESS != lex(msh, &tokens, rl_input.buf) || !tokens)
+		if (SUCCESS != lex(msh, &tokens, rl_input.buf))
 		{
-			add_history(rl_input.buf), string_destroy(&rl_input);
+			add_history(rl_input.buf);
+			string_destroy(&rl_input);
 			continue;
 		}
-		if (SUCCESS != read_heredocs(tokens, &rl_input))
-		{
-			(add_history(rl_input.buf), string_destroy(&rl_input), tokenlist_destroy(&tokens));
-			continue;
-		}
+		//print_tokens(tokens);
 		add_history(rl_input.buf);
 		string_destroy(&rl_input);
 		parse_and_execute(msh, tokens);
+		tokenlist_destroy(&tokens);
 	}
 	return (SUCCESS);
 }
@@ -88,6 +87,6 @@ int	main(int ac, char **av, char **envp)
 	ms_init(&msh, envp);
 	main_loop(&msh);
 	exit_code = msh.last_exit_code;
-	ms_destroy_and_exit(&msh);
+	ms_destroy(&msh);
 	return (exit_code);
 }

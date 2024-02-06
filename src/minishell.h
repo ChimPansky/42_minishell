@@ -42,14 +42,15 @@ typedef int (*t_built_in)(t_msh *msh, char **cmd_with_args, int fd_out);
 
 // app.c
 void		ms_init(t_msh *msh, char **envp);
-void		ms_destroy_and_exit(t_msh *msh);
+void		ms_destroy(t_msh *msh);
 void		ms_stop(t_msh *msh);
 
 // prompt.c
 void		update_prompt(t_msh *msh);
 
 //exit_error.c
-void		error_unexpected_token(char symbol);
+void		error_unexp_tk_s(t_msh *msh, char *token);
+void		error_unexp_tk_c(t_msh *msh, char symbol);
 void		ms_error_msg(int error_nr, char *err_info);
 void		ms_error(int error_nr);
 
@@ -58,12 +59,6 @@ t_built_in	get_built_in_by_name(char *func_name);
 
 // lexer/lexer.c
 int 		lex(t_msh *msh, t_tokenlist **tokens_p, char *input);
-
-// heredoc.c
-int 		read_heredocs(t_tokenlist *tokens, t_string *rl_input);
-
-// expander/expander.c
-int			expand(t_msh *msh, t_tokenlist *tokens);
 
 // parser.c
 int 	parse_and_execute(t_msh *msh, t_tokenlist *tokens);
@@ -79,6 +74,7 @@ bool    is_token_seperator(char c);
 bool	is_special_var_name(char c);
 bool	is_var_name_start(char c);
 bool    is_var_separator(char c);
+void	str_remove_quotes(char **str);
 
 // executor/executor.c
 int 		execute(t_msh *msh, t_cmdlist *cmds);

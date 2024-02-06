@@ -21,7 +21,7 @@ int	parse_redirection(t_msh *msh, t_parser *parser)
 int	parse_word(t_msh *msh, t_parser *parser)
 {
 	if (parser->cmd->cmd_type == CMD_SUBSHELL)
-		return (ft_printf_err("CRIT ERR: got subshell in a regular comand"),
+		return (ft_printf_err("CRIT ERR: got subshell_tokens in a regular comand\n"),
 			!SUCCESS);
 	if (parser->cmd->cmd_type == CMD_NULL
 		&& SUCCESS != command_specialise(parser->cmd, CMD_EXEC))
@@ -33,14 +33,14 @@ int	parse_word(t_msh *msh, t_parser *parser)
 int	parse_subshell(t_parser *parser)
 {
 	if (parser->cmd->cmd_type == CMD_SUBSHELL)
-		return (ft_printf_err("CRIT ERR: got multiple subshells in one comand"),
+		return (ft_printf_err("CRIT ERR: got multiple subshells in one comand\n"),
 			!SUCCESS);
 	if (parser->cmd->cmd_type == CMD_EXEC)
-		return (ft_printf_err("CRIT ERR: got subshell in a regular comand"),
+		return (ft_printf_err("CRIT ERR: got subshell_tokens in a regular comand\n"),
 			!SUCCESS);
 	if (SUCCESS != command_specialise(parser->cmd, CMD_SUBSHELL))
 		return (perror("parse_subshell: command_specialise"), !SUCCESS);
-	parser->cmd->subcommand = parser->token->subshell;
+	parser->cmd->subcommand = parser->token->subshell_tokens;
 	return (SUCCESS);
 }
 

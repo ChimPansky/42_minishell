@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:30:33 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/04 17:31:33 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/06 13:21:41 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static int	init_token(t_parser *parser, t_tokenlist *tokenlist)
 	}
 	parser->token = tokenlist->content;
 	if (!parser->token)
-		return (ft_printf_err("CRIT ERR: empty token content"), !SUCCESS);
+		return (ft_printf_err("CRIT ERR: empty token content\n"), !SUCCESS);
 	if (!parser->cmd)
 		parser->cmd = cmdlist_add_cmd(&parser->cmdlist);
 	if (!parser->cmd)
@@ -72,6 +72,8 @@ int	parse_and_execute(t_msh *msh, t_tokenlist *tokenlist)
 {
 	t_parser			parser;
 
+	if (!tokenlist)
+		return (SUCCESS);
 	init_parser(&parser);
 	while (!parser.done)
 	{

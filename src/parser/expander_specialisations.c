@@ -38,7 +38,7 @@ int	expand_singleq(t_expander *expander)
 		if (SUCCESS != string_add_chr(&expander->replace, *expander->pos++))
 			return (perror("expand_singleq: string_add_chr"), !SUCCESS);
 	if (!*expander->pos)
-		return (ft_printf_err("CRIT ERR: unexpected eol"), !SUCCESS);
+		return (ft_printf_err("CRIT ERR: unexpected eol\n"), !SUCCESS);
 	expander->pos++;
 	return (SUCCESS);
 }

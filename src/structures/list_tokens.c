@@ -6,13 +6,14 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 15:34:18 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/04 17:33:05 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/06 21:10:55 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "list_tokens.h"
 #include "redirs.h"
 #include "libft.h"
+#include <unistd.h>
 
 int	token_init(t_token **token, t_token_type type)
 {
@@ -52,7 +53,7 @@ void	token_destroy(void *token_void)
 	if (token->tk_type == TK_WORD)
 		string_destroy(&token->string);
 	if (token->tk_type == TK_SUBSHELL)
-		tokenlist_destroy(&token->subshell);
+		tokenlist_destroy(&token->subshell_tokens);
 	free(token);
 }
 
@@ -60,6 +61,8 @@ void tokenlist_destroy(t_tokenlist **tokens)
 {
 	ft_lstclear(tokens, token_destroy);
 }
+
+//void	tokelist_print()
 
 // int	token_add(t_tokenlist **tokens, t_token *token)
 // {
@@ -167,6 +170,15 @@ void	print_tokens(t_tokenlist *tokens)
 			fd_str = NULL;
 		}
 		printf(" {T%d: Type: %s; t_string: %s; FD_Type: %s; FD_t_string: %s)} -->\n",  i, type_text, token->string.buf, fd_type, fd_str);
+		if (token->tk_type == TK_SUBSHELL)
+		{
+			type_text = "SUBSHELL";
+			fd_type = NULL;
+			fd_str = NULL;
+			printf ("\n---SUB-TOKENS START\n");
+			print_tokens(token->subshell_tokens);
+			printf ("---SUB-TOKENS END\n");
+		}
 		// if (token->redir->type == FD_HEREDOC && token->redir->content.buf)
 		// 	charptr_array_print(&token->redir->content);
 		tokens = tokens->next;

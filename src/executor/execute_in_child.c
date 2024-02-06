@@ -7,9 +7,9 @@ static int try_exec_built_in(t_msh *msh, char **cmd_with_args)
 	const t_built_in func = get_built_in_by_name(cmd_with_args[0]);
 
 	if (func == NULL)
-		return !SUCCESS;
+		return (!SUCCESS);
 	msh->last_exit_code = func(msh, cmd_with_args, STDOUT_FILENO);
-	return SUCCESS;
+	return (SUCCESS);
 }
 
 // todo: if no path - check in getcwd
@@ -48,7 +48,8 @@ static int	try_find_in_path(t_msh *msh, const char *exec, char **exec_in_path)
 // after fork
 // is it needed to free and close?
 // TODO check for directories, etc
-void	execute_in_child_process(t_msh *msh, char **cmd_with_args)
+// return SUCCESS if last exit code was set
+int	execute_in_child_process(t_msh *msh, char **cmd_with_args)
 {
 	t_charptr_array		envp;
 	const char			*exec = cmd_with_args[0];
@@ -59,29 +60,29 @@ void	execute_in_child_process(t_msh *msh, char **cmd_with_args)
 	if (NULL == strchr(exec, '/'))
 	{
 		if (try_exec_built_in(msh, cmd_with_args) == SUCCESS)
-			return (void)msh->last_exit_code;
+			return (SUCCESS);
 		if (try_find_in_path(msh, exec, &exec_with_path) != SUCCESS)
-		 	return (void)msh->last_exit_code;
+		 	return (!SUCCESS);
 	}
 	else if (SUCCESS == access(exec, F_OK))
 	{
 		exec_with_path = ft_strdup(exec);
 		if (!exec_with_path)
-			return (perror("strdup"));
+			return (perror("strdup"), !SUCCESS);
 	}
 	if (exec_with_path == NULL)
 	{
 		msh->last_exit_code = EXIT_COMMAND_NOT_FOUND;
-		return ((void)ft_printf_err("msh: command not found: %s\n", exec));
+		return (ft_printf_err("msh: command not found: %s\n", exec), SUCCESS);
 	}
 	// if is dir
 	else if (SUCCESS != access(exec_with_path, X_OK))
 	{
 		msh->last_exit_code = EXIT_PERMISSION_DENIED;
-		return (ft_printf_err("msh: permission denied: %s\n", exec_with_path), free(exec_with_path));
+		return (ft_printf_err("msh: permission denied: %s\n", exec_with_path), free(exec_with_path), SUCCESS);
 	}
 	if (varlist_convert_to_array(msh->env, &envp) != SUCCESS)
-		return (perror("msh: "), free(exec_with_path));
+		return (perror("msh: "), free(exec_with_path), !SUCCESS);
 	execve(exec_with_path, cmd_with_args, envp.buf);
-	return (perror("msh: exeve"), charptr_array_destroy(&envp), free(exec_with_path));
+	return (perror("msh: exeve"), charptr_array_destroy(&envp), free(exec_with_path), !SUCCESS);
 }
