@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 15:34:18 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/05 12:43:01 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/06 14:42:41 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	token_destroy(void *token_void)
 	if (token->tk_type == TK_WORD)
 		string_destroy(&token->string);
 	if (token->tk_type == TK_SUBSHELL)
-		tokenlist_destroy(&token->subshell);
+		tokenlist_destroy(&token->subshell_tokens);
 	free(token);
 }
 
@@ -173,7 +173,7 @@ void	print_tokens(t_tokenlist *tokens)
 			fd_type = NULL;
 			fd_str = NULL;
 			printf ("\n---SUB-TOKENS START\n");
-			print_tokens(token->subshell);
+			print_tokens(token->subshell_tokens);
 			printf ("---SUB-TOKENS END\n");
 		}
 		// if (token->redir->type == FD_HEREDOC && token->redir->content.buf)

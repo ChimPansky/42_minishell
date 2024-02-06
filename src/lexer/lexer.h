@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 14:18:59 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/05 17:35:49 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/06 15:49:22 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "../minishell.h"
 # include "ft_string.h"
+#include <stdbool.h>
 
 typedef struct s_lexer
 {
@@ -22,13 +23,14 @@ typedef struct s_lexer
 	t_token_type	last_tk_type;
 	t_redir_type	redir_type;
 	char			*pos_in_input;
-	char			*start_of_sub_input;
 	char			*end_of_sub_input;
 	char			*sub_input;
 }		t_lexer;
 
 // lexer.c
 size_t	read_shell_spaces(char **input);
+int 	lex_tokens(t_msh *msh, t_tokenlist **tokens_p, char *input);
+int 	lex_heredocs(t_tokenlist *tokens);
 
 // lexer_redir.c
 int		read_tk_redir(t_msh *msh,  t_lexer *lexer);

@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 16:08:11 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/05 14:50:25 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/06 15:33:33 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,11 @@ static int	process_heredoc(t_charptr_array *heredoc_content, char **limiter)
 // to add heredoc history add the function
 // add_heredoc_to_history(rl_mainloop_input, token->redir->content))
 // after process_heredoc
-int 	read_heredocs(t_tokenlist *tokens, t_string *rl_mainloop_input)
+int 	lex_heredocs(t_tokenlist *tokens)
 {
     t_tokenlist *cur_tokens;
     t_token     *token;
 
-	(void)rl_mainloop_input;
     cur_tokens = tokens;
     token = NULL;
     while (cur_tokens)

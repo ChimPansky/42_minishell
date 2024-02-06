@@ -59,9 +59,6 @@ t_built_in	get_built_in_by_name(char *func_name);
 // lexer/lexer.c
 int 		lex(t_msh *msh, t_tokenlist **tokens_p, char *input);
 
-// lexer/heredoc.c
-int 		read_heredocs(t_tokenlist *tokens, t_string *rl_input);
-
 // parser.c
 int 	parse_and_execute(t_msh *msh, t_tokenlist *tokens);
 

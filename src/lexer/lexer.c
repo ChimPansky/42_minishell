@@ -6,14 +6,14 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 12:15:28 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/05 17:43:07 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/06 15:42:26 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 #include "lexer.h"
 
-// if brace, look for the other brace, execute in subshell
+// if brace, look for the other brace, execute in subshell_tokens
 // if && || or ; execute everything before
 // if pipe in expression open pipe first, redirect output to pipe-in-fd execute before pipe
 // if pipe before expression redirect input from pipe-out-fd
@@ -58,12 +58,11 @@ static void	init_lexer(t_lexer *lexer, t_tokenlist **tokens, char *input)
 	lexer->last_tk_type = TK_NULL;
 	lexer->redir_type = FD_NULL;
 	lexer->pos_in_input = input;
-	lexer->start_of_sub_input = NULL;
 	lexer->end_of_sub_input = NULL;
 	lexer->sub_input = NULL;
 }
 
-int lex(t_msh *msh, t_tokenlist **tokens_p, char *input)
+int lex_tokens(t_msh *msh, t_tokenlist **tokens_p, char *input)
 {
 	t_lexer		lexer;
 
@@ -89,5 +88,14 @@ int lex(t_msh *msh, t_tokenlist **tokens_p, char *input)
 		else if (*lexer.pos_in_input && read_tk_word(msh, &lexer)!= SUCCESS)
 			return (tokenlist_destroy(tokens_p), !SUCCESS);
 	}
+	return (SUCCESS);
+}
+
+int lex(t_msh *msh, t_tokenlist **tokens_p, char *input)
+{
+	if (lex_tokens(msh, tokens_p, input) != SUCCESS || !*tokens_p)
+		return (!SUCCESS);
+	if (lex_heredocs(*tokens_p) != SUCCESS)
+		return (tokenlist_destroy(tokens_p), !SUCCESS);
 	return (SUCCESS);
 }

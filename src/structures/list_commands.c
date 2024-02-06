@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:43:57 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/04 17:35:17 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/06 16:12:19 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void command_destroy(void *cmd_p)
 	t_simple_command *cmd = cmd_p;
 
 	if (cmd->cmd_type == CMD_EXEC)
-		charptr_array_destroy(&cmd->cmd_with_args);
+	 	charptr_array_destroy(&cmd->cmd_with_args);
 	else if (cmd->cmd_type == CMD_SUBSHELL)
 		cmdlist_destroy(&cmd->subcommand);
 	redirlist_destroy(&cmd->redirections);

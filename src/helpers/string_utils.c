@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 11:29:38 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/04 22:35:54 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/06 13:20:02 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 // mb add semicolon
 bool    is_token_seperator(char c)
 {
-    const char  *shell_seps = "|<>&";
+    const char  *shell_seps = "|<>&()";
 
     return (ft_isspace(c) || ft_strchr(shell_seps, c));
 }
