@@ -6,11 +6,13 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 12:15:28 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/06 16:16:37 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/06 18:41:24 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+#include "libft.h"
+#include <stdbool.h>
 #include "lexer.h"
 
 // if brace, look for the other brace, execute in subshell_tokens
@@ -55,6 +57,7 @@ static void	init_lexer(t_lexer *lexer, t_tokenlist **tokens, char *input)
 {
 	lexer->tokens = tokens;
 	*lexer->tokens = NULL;
+	lexer->cur_tk_type = TK_NULL;
 	lexer->last_tk_type = TK_NULL;
 	lexer->redir_type = FD_NULL;
 	lexer->pos_in_input = input;
@@ -72,22 +75,43 @@ int lex_tokens(t_msh *msh, t_tokenlist **tokens_p, char *input)
 		read_shell_spaces(&lexer.pos_in_input);
 		if (*lexer.pos_in_input == '<' || *lexer.pos_in_input == '>')
 		{
-			if (read_tk_redir(msh, &lexer) != SUCCESS)
+			if (lex_tk_redir(msh, &lexer) != SUCCESS)
 				return (tokenlist_destroy(tokens_p), !SUCCESS);
 		}
 		else if (*lexer.pos_in_input == '&' || *lexer.pos_in_input == '|')
 		{
-			if (read_tk_simple_cmd_separator(msh, &lexer)	!= SUCCESS)
+			if (lex_tk_simple_cmd_separator(msh, &lexer)	!= SUCCESS)
 				return (tokenlist_destroy(tokens_p), !SUCCESS);
 		}
 		else if (*lexer.pos_in_input == '(')
 		{
-			if (read_tk_subshell(msh, &lexer) != SUCCESS)
+			if (lex_tk_subshell(msh, &lexer) != SUCCESS)
 				return (tokenlist_destroy(tokens_p), !SUCCESS);
 		}
-		else if (*lexer.pos_in_input && read_tk_word(msh, &lexer)!= SUCCESS)
+		else if (*lexer.pos_in_input && lex_tk_word(msh, &lexer)!= SUCCESS)
 			return (tokenlist_destroy(tokens_p), !SUCCESS);
 	}
+	return (SUCCESS);
+}
+
+int	check_unexpected_token(t_msh *msh, t_token_type last_type,
+	t_token_type cur_type)
+{
+	char	*error_text;
+
+	error_text = NULL;
+	if (cur_type == TK_SUBSHELL && (last_type == TK_SUBSHELL
+		|| last_type == TK_WORD || last_type == TK_REDIR))
+		error_text = "(";
+	else if (cur_type == TK_LOGIC_AND && (last_type == TK_LOGIC_AND
+		|| last_type == TK_LOGIC_OR || last_type == TK_PIPE))
+		error_text = "&";
+	else if ((cur_type == TK_LOGIC_OR || cur_type == TK_PIPE)
+		&& (last_type == TK_LOGIC_AND || last_type == TK_LOGIC_OR
+		|| last_type == TK_PIPE))
+		error_text = "|";
+	if (error_text)
+		return (error_unexp_tk_s(msh, error_text), !SUCCESS);
 	return (SUCCESS);
 }
 
@@ -97,7 +121,5 @@ int lex(t_msh *msh, t_tokenlist **tokens_p, char *input)
 		return (!SUCCESS);
 	// iterate throuh tokens and check if tokens are in a valid order...
 	// for example: between to subshells there has to be a command separator
-	if (lex_heredocs(*tokens_p) != SUCCESS)
-		return (tokenlist_destroy(tokens_p), !SUCCESS);
 	return (SUCCESS);
 }

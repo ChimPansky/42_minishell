@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 12:15:28 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/05 14:55:37 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/06 18:43:09 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,14 @@ int read_word(t_msh *msh, t_lexer *lexer, t_string *str)
 	}
 	if (quote_type != 0 || string_is_empty(str))
 	{
-		error_unexpected_token(*lexer->pos_in_input);
+		error_unexp_tk_c(msh, *lexer->pos_in_input);
 		msh->last_exit_code = ER_UNEXPECTED_TOKEN;
 		return (!SUCCESS);
 	}
 	return (SUCCESS);
 }
 
-int	read_tk_word(t_msh *msh, t_lexer *lexer)
+int	lex_tk_word(t_msh *msh, t_lexer *lexer)
 {
 	t_token			*new_token;
 

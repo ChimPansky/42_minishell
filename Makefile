@@ -40,7 +40,6 @@ MS_FILENAMES += \
 
 MS_FILENAMES += \
 	lexer/lexer_cmd_seps.c \
-	lexer/lexer_heredoc.c \
 	lexer/lexer_redir.c \
 	lexer/lexer_subshell.c \
 	lexer/lexer_word.c \
