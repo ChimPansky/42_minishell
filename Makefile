@@ -1,7 +1,7 @@
 NAME = minishell
 CC = cc
 CFLAGS = -Wall -Werror -Wextra
-# CFLAGS += -g -Og -fsanitize=address,undefined,leak
+CFLAGS += -g -Og # -fsanitize=address,undefined,leak
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
 IFLAGS = -I $(LIBFT_DIR)/include
@@ -14,7 +14,6 @@ include $(LIBFT_DIR)/colors.mk
 MS_FILENAMES = \
 	app.c \
 	exit_error.c \
-	heredoc.c \
 	minishell.c \
 	prompt.c \
 	signals.c
@@ -40,7 +39,10 @@ MS_FILENAMES += \
 	helpers/string_utils.c
 
 MS_FILENAMES += \
-	lexer/lexer_utils.c \
+	lexer/lexer_cmd_seps.c \
+	lexer/lexer_redir.c \
+	lexer/lexer_subshell.c \
+	lexer/lexer_word.c \
 	lexer/lexer.c
 
 MS_FILENAMES += \
@@ -85,6 +87,6 @@ test: $(NAME)
 	bash tests/test_runner.sh
 
 valgrind:
-	valgrind --track-origins=yes --leak-check=full --show-leak-kinds=all $(NAME)
+	valgrind --trace-children=yes --track-origins=yes --leak-check=full --show-leak-kinds=all ./$(NAME)
 
 .PHONY: all bonus clean fclean re test

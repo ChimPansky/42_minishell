@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "structures/list_tokens.h"
 
 bool g_sigint_received;
 
@@ -60,19 +61,17 @@ int main_loop(t_msh *msh)
 			string_destroy(&rl_input);
 			continue;
 		}
-		if (SUCCESS != lex(msh, &tokens, rl_input.buf) || !tokens)
+		if (SUCCESS != lex(msh, &tokens, rl_input.buf))
 		{
-			add_history(rl_input.buf), string_destroy(&rl_input);
+			add_history(rl_input.buf);
+			string_destroy(&rl_input);
 			continue;
 		}
-		if (SUCCESS != read_heredocs(tokens, &rl_input))
-		{
-			(add_history(rl_input.buf), string_destroy(&rl_input), tokenlist_destroy(&tokens));
-			continue;
-		}
+		//print_tokens(tokens);
 		add_history(rl_input.buf);
 		string_destroy(&rl_input);
 		parse_and_execute(msh, tokens);
+		tokenlist_destroy(&tokens);
 	}
 	return (SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 15:34:33 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/04 18:46:26 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/06 13:06:59 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,10 @@ typedef enum e_token_type
 typedef struct s_token
 {
 	t_token_type		tk_type;
-	union {
+	union {	
 		t_string		string;
 		t_redir_detail	*redir;
-		t_tokenlist		*subshell;		//	only for bonus
+		t_tokenlist		*subshell_tokens;		//	only for bonus
 	};
 }		t_token;
 

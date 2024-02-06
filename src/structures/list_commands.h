@@ -1,6 +1,7 @@
 #ifndef LIST_COMMANDS_H
 #define LIST_COMMANDS_H
 
+#include "list_tokens.h"
 #include "redirs.h"
 #include "ft_list.h"
 
@@ -20,7 +21,7 @@ typedef struct s_simple_command
 	union
 	{
 		t_charptr_array	cmd_with_args;
-		t_cmdlist	*subcommand;
+		t_tokenlist		*subcommand;
 	};
 	t_redirlist	*redirections;
 }		t_simple_command;
