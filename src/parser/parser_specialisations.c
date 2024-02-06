@@ -3,8 +3,8 @@
 // TODO change ft_list to redirlist
 int	parse_redirection(t_msh *msh, t_parser *parser)
 {
-	t_redirlist	*new_redir;
-	t_redirlist	**redirlist;
+	t_redirlist		*new_redir;
+	t_redirlist		**redirlist;
 	t_redir_detail	*redir;
 
 	redir = parser->token->redir;

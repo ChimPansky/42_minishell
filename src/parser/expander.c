@@ -17,6 +17,7 @@ int	expander_init(t_expander *expander, char *string)
 {
 	expander->glob = true;
 	expander->pos = string;
+	expander->true_wildcards = NULL;
 	if (SUCCESS != string_init(&expander->replace, ""))
 		return (perror("expander_init: string_init"), !SUCCESS);
 	return (SUCCESS);
@@ -25,6 +26,7 @@ int	expander_init(t_expander *expander, char *string)
 void	expander_destroy(t_expander *expander)
 {
 	string_destroy(&expander->replace);
+	ft_lstclear(&expander->true_wildcards, free);
 }
 
 int	expand_next(t_msh *msh, t_expander *expander, t_charptr_array *arr)
@@ -39,10 +41,7 @@ int	expand_next(t_msh *msh, t_expander *expander, t_charptr_array *arr)
 	}
 	if (*expander->pos == '$' && is_var_name_start(expander->pos[1]))
 		return (expand_variable(msh, expander, arr));
-	if (SUCCESS != string_add_chr(&expander->replace, *expander->pos++))
-		return (perror("expand_next: string_add_chr"),
-			string_destroy(&expander->replace), !SUCCESS);
-	return (SUCCESS);
+	return (check_for_wc_and_improve(expander, &expander->pos));
 }
 
 int	expand_string_to_arr(t_msh *msh, char *string, t_charptr_array *arr)
@@ -60,10 +59,7 @@ int	expand_string_to_arr(t_msh *msh, char *string, t_charptr_array *arr)
 		return (ft_printf_err("CRIT ERR: unexpected eol\n"),
 			expander_destroy(&expander), !SUCCESS);
 	if (!string_is_empty(&expander.replace))
-		if (SUCCESS
-			!= charptr_array_add_allocated_str(arr, &expander.replace.buf))
-			return (perror("expand_string_to_arr: "
-					"charptr_array_add_allocated_str"),
-				expander_destroy(&expander), !SUCCESS);
+		if (SUCCESS != expand_wildcard_and_finalize(&expander, arr))
+			return (expander_destroy(&expander), !SUCCESS);
 	return (expander_destroy(&expander), SUCCESS);
 }

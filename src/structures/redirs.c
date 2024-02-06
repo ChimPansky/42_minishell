@@ -26,6 +26,7 @@ int	redir_init(t_redir_detail **redir, t_redir_type rd_type)
 		return (string_destroy(&(*redir)->string), free(*redir), !SUCCESS);
 	return (SUCCESS);
 }
+
 void	redir_destroy(void *redir_void)
 {
 	if (!redir_void)

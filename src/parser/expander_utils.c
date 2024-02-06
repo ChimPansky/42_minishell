@@ -28,7 +28,7 @@ char	*get_last_exit_code(t_msh *msh)
 	return (ret_code_buf);
 }
 
-static char	*get_env_var_content(t_msh *msh, char **pos_in_string)
+static char	*get_env_var_content(t_msh *msh, const char **pos_in_string)
 {
 	int		name_len;
 	char	*content;
@@ -45,7 +45,7 @@ static char	*get_env_var_content(t_msh *msh, char **pos_in_string)
 
 // if more spec variables
 // is_special_var_name -> get_spec_var_value_by_name
-char	*get_var_content(t_msh *msh, char **pos_in_string)
+char	*get_var_content(t_msh *msh, const char **pos_in_string)
 {
 	if (**pos_in_string == '?')
 	{
@@ -53,4 +53,26 @@ char	*get_var_content(t_msh *msh, char **pos_in_string)
 		return (get_last_exit_code(msh));
 	}
 	return (get_env_var_content(msh, pos_in_string));
+}
+
+int	check_for_wc_and_improve(t_expander *expander, const char **str)
+{
+	t_list	*new_wc;
+	size_t	*pos;
+
+	if (SUCCESS != string_add_chr(&expander->replace, **str))
+		return (perror("expand_rest: string_add_chr"), !SUCCESS);
+	if (**str == '*' && expander->glob)
+	{
+		pos = malloc(sizeof(size_t));
+		if (!pos)
+			return (perror("expander_add_wc: malloc"), !SUCCESS);
+		*pos = expander->replace.len - 1;
+		new_wc = ft_lstnew((void *)pos);
+		if (!new_wc)
+			return (free(pos), perror("expander_add_wc: ft_lstnew"), !SUCCESS);
+		ft_lstadd_back(&expander->true_wildcards, new_wc);
+	}
+	*str += 1;
+	return (SUCCESS);
 }

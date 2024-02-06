@@ -1,8 +1,8 @@
 #include "parser.h"
 
 static int	expand_var_in_glob(
+	t_expander *expander,
 	const char *var_content,
-	t_string *replace,
 	t_charptr_array *arr)
 {
 	const char	*pos_in_var = var_content;
@@ -11,23 +11,22 @@ static int	expand_var_in_glob(
 	{
 		if (ft_isspace(*pos_in_var))
 		{
-			if (!string_is_empty(replace))
+			if (!string_is_empty(&expander->replace))
 			{
-				if (SUCCESS
-					!= charptr_array_add_allocated_str(arr, &replace->buf))
-					return (perror("expand_var_in_glob: "
-							"charptr_array_add_allocated_str"), !SUCCESS);
-				if (SUCCESS != string_init(replace, ""))
+				if (SUCCESS != expand_wildcard_and_finalize(expander, arr))
+					return (!SUCCESS);
+				if (SUCCESS != string_init(&expander->replace, ""))
 					return (perror("expand_var_in_glob: "
 							"string_init"), !SUCCESS);
+				ft_lstclear(&expander->true_wildcards, free);
 			}
+			pos_in_var++;
 		}
 		else
 		{
-			if (SUCCESS != string_add_chr(replace, *pos_in_var))
-				return (perror("expand_var_in_glob: string_add_chr"), !SUCCESS);
+			if (SUCCESS != check_for_wc_and_improve(expander, &pos_in_var))
+				return (!SUCCESS);
 		}
-		pos_in_var++;
 	}
 	return (SUCCESS);
 }
@@ -51,7 +50,7 @@ int	expand_variable(t_msh *msh, t_expander *expander, t_charptr_array *arr)
 	expander->pos++;
 	var_content = get_var_content(msh, &expander->pos);
 	if (expander->glob)
-		return (expand_var_in_glob(var_content, &expander->replace, arr));
+		return (expand_var_in_glob(expander, var_content, arr));
 	if (SUCCESS != string_add_str(&expander->replace, var_content))
 		return (perror("expand_variable: string_add_chr"), !SUCCESS);
 	return (SUCCESS);
