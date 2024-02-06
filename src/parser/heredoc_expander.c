@@ -16,8 +16,8 @@
 static int	expand_line(t_msh *msh, char **line)
 {
 	t_string	expanded;
-	char		*pos_in_line;
-	char		*var_content;
+	const char	*pos_in_line;
+	const char	*var_content;
 
 	pos_in_line = *line;
 	if (string_init(&expanded, "") != SUCCESS)
@@ -40,14 +40,15 @@ static int	expand_line(t_msh *msh, char **line)
 	return (SUCCESS);
 }
 
-int expand_heredoc(t_msh *msh, t_charptr_array *heredoc_lines)
+// check for $ instead of 0 mb
+int	expand_heredoc(t_msh *msh, t_charptr_array *heredoc_lines)
 {
 	size_t	i;
 
 	i = 0;
 	while (i < heredoc_lines->sz)
 	{
-		if (heredoc_lines->buf[i][0] != '\0') // chekc for $ mb
+		if (heredoc_lines->buf[i][0] != '\0')
 		{
 			if (expand_line(msh, &heredoc_lines->buf[i]) != SUCCESS)
 				return (!SUCCESS);

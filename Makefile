@@ -1,7 +1,7 @@
 NAME = minishell
 CC = cc
-CFLAGS = -Wall -Werror -Wextra
-# CFLAGS += -g -Og -fsanitize=address,undefined,leak
+CFLAGS = -Wall -Werror -Wextra #-Wpedantic
+CFLAGS += -g -Og # -fsanitize=address,undefined,leak
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
 IFLAGS = -I $(LIBFT_DIR)/include
@@ -49,7 +49,8 @@ MS_FILENAMES += \
 	parser/expander.c \
 	parser/heredoc_expander.c \
 	parser/parser_specialisations.c \
-	parser/parser.c
+	parser/parser.c \
+	parser/wildcards.c
 
 MS_FILENAMES += \
 	structures/list_commands.c \

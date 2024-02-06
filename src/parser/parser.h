@@ -30,18 +30,23 @@ int		parse_separators(t_msh *msh, t_parser *parser, t_token_type tk_type);
 
 typedef struct s_expander
 {
-	bool		glob;
-	char		*pos;
-	t_string	replace;
+	bool			glob;
+	const char		*pos;
+	t_list			*true_wildcards;
+	t_string		replace;
 }		t_expander;
 
 int		expand_heredoc(t_msh *msh, t_charptr_array *heredoc_lines);
+int		check_for_wc_and_improve(t_expander *expander, const char **str);
 int		expand_string_to_arr(
 			t_msh *msh,
 			char *string,
 			t_charptr_array *str_array);
 int		expand_singleq(t_expander *expander);
 int		expand_variable(t_msh *msh, t_expander *expander, t_charptr_array *arr);
-char	*get_var_content(t_msh *msh, char **pos_in_str);
+char	*get_var_content(t_msh *msh, const char **pos_in_str);
+int		expand_wildcard_and_finalize(
+			t_expander *expander,
+			t_charptr_array *arr);
 
 #endif  // PARSER__H
