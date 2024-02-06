@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 20:05:41 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/04 18:52:21 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/06 21:46:25 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,6 @@ int	main(int ac, char **av, char **envp)
 	ms_init(&msh, envp);
 	main_loop(&msh);
 	exit_code = msh.last_exit_code;
-	ms_destroy_and_exit(&msh);
+	ms_destroy(&msh);
 	return (exit_code);
 }

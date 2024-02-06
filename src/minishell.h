@@ -42,7 +42,7 @@ typedef int (*t_built_in)(t_msh *msh, char **cmd_with_args, int fd_out);
 
 // app.c
 void		ms_init(t_msh *msh, char **envp);
-void		ms_destroy_and_exit(t_msh *msh);
+void		ms_destroy(t_msh *msh);
 void		ms_stop(t_msh *msh);
 
 // prompt.c

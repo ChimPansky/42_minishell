@@ -5,8 +5,8 @@
 void init_executor(t_executor *exec, int num_of_cmds) {
 	exec->fd_in = STDIN_FILENO;
 	exec->fd_out = STDOUT_FILENO;
-	exec->exit_code = EXIT_FAILURE;
 	exec->num_of_cmds = num_of_cmds;
+	exec->is_parent = true;
 	if (num_of_cmds == 0)
 		(printf("cmds is empty. this should not happen"), exit(EXIT_FAILURE));
 }
@@ -19,20 +19,20 @@ void destroy_executor(t_executor *exec) {
 }
 
 // waitpid errors seems to be okay to ignore
-void	wait_with_check(pid_t* pids, t_executor *executor)
+void	wait_with_check(pid_t* pids, int num_of_cmds, int *last_exit_code)
 {
 	int i = 0;
 
-	while (i < executor->num_of_cmds)
+	while (i < num_of_cmds)
 	{
 		if (pids[i] < 0)
 		{
-			executor->exit_code = EXIT_FAILURE;
+			*last_exit_code = EXIT_FAILURE;
 			break;
 		}
 		if (g_sigint_received)
 			kill(pids[i++], SIGKILL);
-		if (waitpid(pids[i], &executor->exit_code, WNOHANG) == 0)
+		if (waitpid(pids[i], last_exit_code, WNOHANG) == 0)
 			usleep(1000);
 		else
 			i++;
@@ -50,10 +50,10 @@ bool try_execute_built_in(t_msh *msh, t_simple_command *cmd, t_executor *executo
 		return false;
 	if (process_redirections(executor, cmd->redirections) != SUCCESS)
 	{
-		executor->exit_code = EXIT_FAILURE;
+		msh->last_exit_code = EXIT_FAILURE;
 		return true;
 	}
-	executor->exit_code = func(msh, cmd->cmd_with_args.buf, executor->fd_out);
+	msh->last_exit_code = func(msh, cmd->cmd_with_args.buf, executor->fd_out);
 	return true;
 }
 
@@ -66,7 +66,6 @@ int execute(t_msh *msh, t_cmdlist *cmds)
 	init_executor(&executor, ft_lstsize(cmds));
 	if (executor.num_of_cmds > 1 || !try_execute_built_in(msh, cmds->content, &executor))
 		execute_on_chain(msh, cmds, &executor);
-	msh->last_exit_code = executor.exit_code;
 	destroy_executor(&executor);
 	return SUCCESS;
 }

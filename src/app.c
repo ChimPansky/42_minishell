@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 11:46:05 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/01 15:15:31 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/06 21:46:34 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	ms_init(t_msh *msh, char **envp)
 	}
 }
 
-void	ms_destroy_and_exit(t_msh *msh)
+void	ms_destroy(t_msh *msh)
 {
 	rl_clear_history();
 	string_destroy(&msh->prompt);
