@@ -6,13 +6,14 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 15:34:18 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/06 14:42:41 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/06 21:10:55 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "list_tokens.h"
 #include "redirs.h"
 #include "libft.h"
+#include <unistd.h>
 
 int	token_init(t_token **token, t_token_type type)
 {
@@ -60,6 +61,8 @@ void tokenlist_destroy(t_tokenlist **tokens)
 {
 	ft_lstclear(tokens, token_destroy);
 }
+
+//void	tokelist_print()
 
 // int	token_add(t_tokenlist **tokens, t_token *token)
 // {
