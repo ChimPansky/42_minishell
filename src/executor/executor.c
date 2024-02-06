@@ -1,5 +1,6 @@
 #include "../minishell.h"
 #include "executor.h"
+#include <stdlib.h>
 #include <sys/wait.h>
 
 void init_executor(t_executor *exec, int num_of_cmds) {
@@ -22,6 +23,7 @@ void destroy_executor(t_executor *exec) {
 void	wait_with_check(pid_t* pids, int num_of_cmds, int *last_exit_code)
 {
 	int i = 0;
+	int	status;
 
 	while (i < num_of_cmds)
 	{
@@ -32,11 +34,18 @@ void	wait_with_check(pid_t* pids, int num_of_cmds, int *last_exit_code)
 		}
 		if (g_sigint_received)
 			kill(pids[i++], SIGKILL);
-		if (waitpid(pids[i], last_exit_code, WNOHANG) == 0)
+		if (waitpid(pids[i], &status, WNOHANG) == 0)
 			usleep(1000);
 		else
 			i++;
 	}
+	if (g_sigint_received)
+		*last_exit_code = EXIT_SIG_INT;
+	else if (WIFEXITED(status))
+        *last_exit_code = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+		*last_exit_code = WSTOPSIG(status);
+	// else ??
 }
 
 bool try_execute_built_in(t_msh *msh, t_simple_command *cmd, t_executor *executor)
