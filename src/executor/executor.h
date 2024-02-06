@@ -11,15 +11,15 @@ typedef struct s_executor
 {
 	int fd_in;
 	int fd_out;
-	int exit_code;
 	int num_of_cmds;
+	bool	is_parent;
 }		t_executor;
 
 int		process_redirections(t_executor *executor, t_redirlist *redirs);
 int		execute_no_chain(t_msh *msh, t_simple_command *cmd, t_executor *executor);
 int		execute_on_chain(t_msh *msh, t_cmdlist *cmds, t_executor *executor);
-void	wait_with_check(pid_t* pids, t_executor *executor);
+void	wait_with_check(pid_t* pids, int num_of_cmds, int *last_exit_code);
 // noreturn
-void	execute_in_child_process(t_msh *msh, char **cmd_with_args);
+int	execute_in_child_process(t_msh *msh, char **cmd_with_args);
 
 #endif  // EXECUTOR_H

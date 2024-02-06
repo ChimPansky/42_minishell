@@ -2,26 +2,29 @@
 #include <sys/wait.h>
 
 // noreturn
-static void execute_one_on_chain(t_msh *msh, t_simple_command *cmd, t_executor *executor)
+static int execute_one_on_chain(t_msh *msh, t_simple_command *cmd, t_executor *executor)
 {
+	msh->done = true;
+	executor->is_parent = false;
 	if (process_redirections(executor, cmd->redirections) != SUCCESS)
-		exit(EXIT_FAILURE);
+		return (EXIT_FAILURE);
 	if (STDIN_FILENO != dup2(executor->fd_in, STDIN_FILENO))
-		perror("msh: executor: dup2"), exit(EXIT_FAILURE);
+		return (perror("msh: executor: dup2"), EXIT_FAILURE);
 	if (STDOUT_FILENO != dup2(executor->fd_out, STDOUT_FILENO))
-		perror("msh: executor: dup2"), close(STDIN_FILENO), exit(EXIT_FAILURE);
+		return (perror("msh: executor: dup2"), close(STDIN_FILENO), EXIT_FAILURE);
 	if (cmd->cmd_type == CMD_SUBSHELL)
 	{
 		if (parse_and_execute(msh, cmd->subcommand) != SUCCESS)
-			close(STDIN_FILENO), close(STDOUT_FILENO), exit(EXIT_FAILURE);
-		close(STDIN_FILENO), close(STDOUT_FILENO), exit(msh->last_exit_code);
+			return (close(STDIN_FILENO), close(STDOUT_FILENO), EXIT_FAILURE);
+		return (close(STDIN_FILENO), close(STDOUT_FILENO), msh->last_exit_code);
 	}
 	else if (cmd->cmd_type == CMD_EXEC)
 	{
-		execute_in_child_process(msh, cmd->cmd_with_args.buf);
-		close(STDIN_FILENO), close(STDOUT_FILENO), exit(msh->last_exit_code);
+		if (execute_in_child_process(msh, cmd->cmd_with_args.buf) != SUCCESS)
+			return (close(STDIN_FILENO), close(STDOUT_FILENO), EXIT_FAILURE);
+		return (close(STDIN_FILENO), close(STDOUT_FILENO), msh->last_exit_code);
 	}
-	close(STDIN_FILENO), close(STDOUT_FILENO), exit(EXIT_SUCCESS);
+	return (close(STDIN_FILENO), close(STDOUT_FILENO), EXIT_SUCCESS);
 }
 
 static int execute_cmds(t_msh *msh, t_executor *executor, t_cmdlist **cmds, pid_t* pids)
@@ -42,7 +45,7 @@ static int execute_cmds(t_msh *msh, t_executor *executor, t_cmdlist **cmds, pid_
 		{
 			close(pipe_fds[RD_END]), close(executor->fd_out);
 			executor->fd_out = pipe_fds[WR_END];
-			execute_one_on_chain(msh, (*cmds)->content, executor);
+			return (execute_one_on_chain(msh, (*cmds)->content, executor));
 		}
 		else
 		{
@@ -58,8 +61,8 @@ static int execute_cmds(t_msh *msh, t_executor *executor, t_cmdlist **cmds, pid_
 	if (pids[idx] < 0)
 		return perror("fork"), !SUCCESS;
 	if (pids[idx] == 0)
-		execute_one_on_chain(msh, (*cmds)->content, executor);
-	return SUCCESS;
+		return (execute_one_on_chain(msh, (*cmds)->content, executor));
+	return (SUCCESS);
 }
 
 // is it 0 in waitpid options?
@@ -74,8 +77,9 @@ int execute_on_chain(t_msh *msh, t_cmdlist *cmds, t_executor *executor)
 	i = 0;
 	while (i < executor->num_of_cmds)
 		pids[i++] = -1;
-	execute_cmds(msh, executor, &cmds, pids);
-	wait_with_check(pids, executor);
+	msh->last_exit_code = execute_cmds(msh, executor, &cmds, pids);
+	if (executor->is_parent)
+		wait_with_check(pids, executor->num_of_cmds, &msh->last_exit_code);
 	free(pids);
 	return SUCCESS;
 }
