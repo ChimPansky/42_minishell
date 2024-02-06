@@ -28,7 +28,7 @@ static bool	does_string_match_wildcard_expression(
 		idx += len + 1;
 		true_wcs = true_wcs->next;
 	}
-	return (ft_str_end_with(string, pattern + idx, -1));
+	return (ft_str_end_with(string, pattern + idx));
 }
 
 static int	check_dir(char *name, t_expander *expander, t_charptr_array *arr)
