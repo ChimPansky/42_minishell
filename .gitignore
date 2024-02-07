@@ -14,6 +14,9 @@ test_quotes.c
 # IDE
 .vscode
 
+#folders:
+minishell_tester/
+
 # binaries
 *.o
 *.a

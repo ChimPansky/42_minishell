@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vvilensk <vilenskii.v@gmail.com>           +#+  +:+       +#+        */
+/*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 17:33:15 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/01/27 22:15:04 by vvilensk         ###   ########.fr       */
+/*   Updated: 2024/02/07 18:45:05 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	built_in_exit(t_msh *msh, char **cmd_with_args, int fd_out)
 	(void)		fd_out;
 	int			exit_code;
 	char		*exit_arg;
-
+	//TODO: check parameter to be numeric
 	ft_printf_err("exit\n");
 	exit_arg = cmd_with_args[1];
 	if (exit_arg && cmd_with_args[2])
