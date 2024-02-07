@@ -33,7 +33,7 @@ int	built_in_cd(t_msh *msh, char **cmd_with_args, int fd_out)
 	char	*dir;
 
 	if (cmd_with_args[2])
-		return(ft_printf_err("cd: too many arguments"), EXIT_FAILURE);
+		return(ft_printf_err("cd: too many arguments\n"), EXIT_FAILURE);
 	if (!cmd_with_args[1])
 		dir = varlist_get_value(msh->env, "HOME");
 	else if (strcmp(cmd_with_args[1], "-") == SUCCESS)

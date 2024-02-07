@@ -32,7 +32,7 @@ typedef struct s_lexer
 size_t	read_shell_spaces(char **input);
 int 	lex_tokens(t_msh *msh, t_tokenlist **tokens_p, char *input);
 int		check_unexpected_token(t_msh *msh, t_token_type last_tk_tyke,
-		t_token_type cur_tk_type);
+		t_token_type cur_tk_type, t_lexer *lexer);
 
 // lexer_redir.c
 int		lex_tk_redir(t_msh *msh,  t_lexer *lexer);

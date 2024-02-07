@@ -14,11 +14,14 @@ test_quotes.c
 # IDE
 .vscode
 
+minishell_tester
+
 # binaries
 *.o
 *.a
 *.out
 minishell
+
 
 # generated
 tests/tests_output/*
