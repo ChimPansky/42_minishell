@@ -57,9 +57,17 @@ void	token_destroy(void *token_void)
 	free(token);
 }
 
-void tokenlist_destroy(t_tokenlist **tokens)
+void	tokenlist_destroy(t_tokenlist **tokens)
 {
 	ft_lstclear(tokens, token_destroy);
+}
+
+bool	is_cmd_separator_token(t_token_type tk_type)
+{
+	return (false
+		|| tk_type == TK_LOGIC_OR
+		|| tk_type == TK_LOGIC_AND
+		|| tk_type == TK_NULL);
 }
 
 //void	tokelist_print()

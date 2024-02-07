@@ -61,7 +61,7 @@ int	expand_string_to_arr(t_msh *msh, char *string, t_charptr_array *arr)
 		return (ft_printf_err("CRIT ERR: unexpected eol\n"),
 			expander_destroy(&expander), !SUCCESS);
 	if ((string_is_empty(&expander.replace) && expander.add_if_empty)
-			|| !string_is_empty(&expander.replace))
+		|| !string_is_empty(&expander.replace))
 		if (SUCCESS != expand_wildcard_and_finalize(&expander, arr))
 			return (expander_destroy(&expander), !SUCCESS);
 	return (expander_destroy(&expander), SUCCESS);
