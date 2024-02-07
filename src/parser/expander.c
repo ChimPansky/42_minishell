@@ -16,6 +16,7 @@
 int	expander_init(t_expander *expander, char *string)
 {
 	expander->glob = true;
+	expander->add_if_empty = false;
 	expander->pos = string;
 	expander->true_wildcards = NULL;
 	if (SUCCESS != string_init(&expander->replace, ""))
@@ -35,6 +36,7 @@ int	expand_next(t_msh *msh, t_expander *expander, t_charptr_array *arr)
 		return (expand_singleq(expander) != SUCCESS);
 	if (*expander->pos == '"')
 	{
+		expander->add_if_empty = true;
 		expander->glob = !expander->glob;
 		expander->pos++;
 		return (SUCCESS);
@@ -58,7 +60,8 @@ int	expand_string_to_arr(t_msh *msh, char *string, t_charptr_array *arr)
 	if (!expander.glob)
 		return (ft_printf_err("CRIT ERR: unexpected eol\n"),
 			expander_destroy(&expander), !SUCCESS);
-	if (!string_is_empty(&expander.replace))
+	if ((string_is_empty(&expander.replace) && expander.add_if_empty)
+			|| !string_is_empty(&expander.replace))
 		if (SUCCESS != expand_wildcard_and_finalize(&expander, arr))
 			return (expander_destroy(&expander), !SUCCESS);
 	return (expander_destroy(&expander), SUCCESS);
