@@ -37,13 +37,13 @@
 // 	}
 // 	return (SUCCESS);
 // }
-static int	lex_heredoc(t_charptr_array *heredoc_content, char **limiter)
+static int	lex_heredoc(t_redir_detail *redir)
 {
     char    	*line;
 	t_string	line_w_nl;
 
-	str_remove_quotes(limiter);
-	line = NULL;
+	if (!(ft_strlen(redir->string.buf) > string_remove_quotes(&redir->string)))
+		redir->expand_heredoc = true;
 	while (1)
 	{
 		line = readline_wrapper("> ");
@@ -52,15 +52,15 @@ static int	lex_heredoc(t_charptr_array *heredoc_content, char **limiter)
             if (errno)
             	return (perror("readline heredoc"), !SUCCESS);
 			ft_printf("\nwarning: here-document delimited "
-				"by end-of-file (wanted '%s')\n", *limiter);
+				"by end-of-file (wanted '%s')\n", redir->string.buf);
         }
-		if (line == NULL || ft_strcmp(*limiter, line) == SUCCESS)
+		if (line == NULL || ft_strcmp(redir->string.buf, line) == SUCCESS)
 			break ;
 		string_init_with_allocated(&line_w_nl, line);
 		if (string_add_chr(&line_w_nl, '\n') != SUCCESS)
 			return (string_destroy(&line_w_nl), !SUCCESS);
-		if (charptr_array_add_allocated_str(heredoc_content, &(line_w_nl.buf))
-			!= SUCCESS)
+		if (charptr_array_add_allocated_str(&redir->content,
+			&(line_w_nl.buf)) != SUCCESS)
 			return (!SUCCESS);
 	}
     return (free(line), SUCCESS);
@@ -109,8 +109,7 @@ int	lex_tk_redir(t_msh *msh,  t_lexer *lexer)
 		return (redir_destroy(new_redir), !SUCCESS);
 	new_token->redir = new_redir;
 	lexer->last_tk_type = TK_REDIR;
-	if (new_redir->type == FD_HEREDOC && lex_heredoc(&new_redir->content,
-		&(new_redir->string.buf)) != SUCCESS)
+	if (new_redir->type == FD_HEREDOC && lex_heredoc(new_redir) != SUCCESS)
 				return (redir_destroy(new_redir), !SUCCESS);
 	return (SUCCESS);
 }

@@ -74,7 +74,8 @@ bool    is_token_seperator(char c);
 bool	is_special_var_name(char c);
 bool	is_var_name_start(char c);
 bool    is_var_separator(char c);
-void	str_remove_quotes(char **str);
+size_t	str_remove_quotes(char **str);
+size_t	string_remove_quotes(t_string *string);
 
 // executor/executor.c
 int 		execute(t_msh *msh, t_cmdlist *cmds);
