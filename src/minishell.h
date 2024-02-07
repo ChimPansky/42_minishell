@@ -14,9 +14,11 @@
 # define PROMPT_MAX_LEN  99 //255
 # define PROMPT_INVITATION "$ "
 
+# define EXIT_BUILT_IN_ERROR		2
 # define EXIT_COMMAND_NOT_FOUND		127
 # define EXIT_PERMISSION_DENIED		126
 # define EXIT_SIG_INT				130
+
 
 extern bool g_sigint_received;
 
