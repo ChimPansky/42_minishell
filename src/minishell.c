@@ -6,35 +6,20 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 20:05:41 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/06 21:46:25 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/07 10:54:18 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "libft.h"
 #include "structures/list_tokens.h"
+#include <errno.h>
 
 bool g_sigint_received;
 
-int try_read_with_readline(t_msh *msh, t_string *rl_input)
-{
-	char	*rl_raw;
-
-	rl_raw = readline_wrapper(msh->prompt.buf);
-	if (!rl_raw)
-	{
-		if (errno) // check for type of err, sometimes ms_stop
-			perror("readline"), ms_stop(msh);
-		else
-			ms_stop(msh);
-		return (!SUCCESS);
-	}
-	string_init_with_allocated(rl_input, rl_raw);
-	return (SUCCESS);
-}
-
 // todo: find all the places where to check for sigint:
 // 	minimum main readline, heredoc readline, executor
-int	check_for_sigint(t_msh *msh)
+static int	check_for_sigint(t_msh *msh)
 {
 	if (g_sigint_received)
 	{
@@ -42,6 +27,25 @@ int	check_for_sigint(t_msh *msh)
 		g_sigint_received = false;
 		return (!SUCCESS);
 	}
+	return (SUCCESS);
+}
+
+static int try_read_with_readline(t_msh *msh, t_string *rl_input)
+{
+	char	*rl_raw;
+
+	rl_raw = readline_wrapper(msh->prompt.buf);
+	if (!rl_raw)
+	{
+		if (!errno)
+			ms_stop(msh);
+		else if (check_for_sigint(msh) != SUCCESS)
+			return (!SUCCESS);
+		else // check for type of err, sometimes ms_stop
+			perror("readline"), ms_stop(msh);
+		return (!SUCCESS);
+	}
+	string_init_with_allocated(rl_input, rl_raw);
 	return (SUCCESS);
 }
 
@@ -56,11 +60,6 @@ int main_loop(t_msh *msh)
 		update_prompt(msh);
 		if (SUCCESS != try_read_with_readline(msh, &rl_input))
 			continue;
-		if (SUCCESS != check_for_sigint(msh))
-		{
-			string_destroy(&rl_input);
-			continue;
-		}
 		if (SUCCESS != lex(msh, &tokens, rl_input.buf))
 		{
 			add_history(rl_input.buf);

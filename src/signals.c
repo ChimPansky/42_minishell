@@ -25,13 +25,13 @@ void register_signals(void)
 	sig_act.sa_handler = SIG_IGN;
     if (sigaction(SIGQUIT, &sig_act, NULL) != 0)
     {
-        dprintf(STDERR_FILENO, "An error occurred while setting a signal handler.\n");
+        ft_dprintf(STDERR_FILENO, "An error occurred while setting a signal handler.\n");
         exit(EXIT_FAILURE);
     }
     sig_act.sa_handler = sig_int_handler;
     if (sigaction(SIGINT, &sig_act, NULL) != 0)
     {
-        dprintf(STDERR_FILENO, "An error occurred while setting a signal handler.\n");
+        ft_dprintf(STDERR_FILENO, "An error occurred while setting a signal handler.\n");
         exit(EXIT_FAILURE);
     }
 }
