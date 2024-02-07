@@ -1,6 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser_specialisations.c                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/07 17:51:47 by tkasbari          #+#    #+#             */
+/*   Updated: 2024/02/07 17:51:54 by tkasbari         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "parser.h"
 
-// TODO change ft_list to redirlist
 int	parse_redirection(t_msh *msh, t_parser *parser)
 {
 	t_redirlist		*new_redir;

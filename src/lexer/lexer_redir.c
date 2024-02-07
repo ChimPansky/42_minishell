@@ -6,37 +6,13 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 12:15:28 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/06 16:49:35 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/07 17:52:57 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 #include "lexer.h"
 
-// cmd d and cmd c check
-// if success return SUCCESS
-// + expansionon the expansion step
-// + empty delimeter case
-
-
-// newlines appear as ^J in rl_history.
-// this is a limitation of the rl_history library and can not be changed...
-// so for now we wont use this function...
-// static int	add_heredoc_to_history(t_string *rl_mainloop_input,
-// 	t_charptr_array heredoc_content)
-// {
-// 	size_t	i;
-
-// 	i = 0;
-// 	while (i < heredoc_content.sz)
-// 	{
-// 		if (string_add_chr(rl_mainloop_input, '\n') != SUCCESS
-// 			|| string_add_str(rl_mainloop_input, heredoc_content.buf[i]) != SUCCESS)
-// 			return (!SUCCESS);
-// 		i++;
-// 	}
-// 	return (SUCCESS);
-// }
 static int	lex_heredoc(t_redir_detail *redir)
 {
     char    	*line;

@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 12:15:28 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/06 19:00:36 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/07 17:53:03 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include "lexer.h"
 #include "libft.h"
 #include <unistd.h>
-
 
 static void	find_end_of_sub_input(t_lexer *lexer)
 {

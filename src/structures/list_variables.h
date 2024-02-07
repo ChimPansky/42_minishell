@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   list_variables.h                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/07 17:52:30 by tkasbari          #+#    #+#             */
+/*   Updated: 2024/02/07 17:52:31 by tkasbari         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef VARIABLES_H
 #define VARIABLES_H
 
@@ -20,8 +32,7 @@ void		varlist_delete_one(t_varlist **vars_p, const char *name);
 void		varlist_destoy(t_varlist **vars_p);
 
 t_varlist	*varlist_init_from_envp(char **envp);
-// on fail returns null
-int			varlist_convert_to_array(t_varlist *vars, t_charptr_array *arr);
 
+int			varlist_convert_to_array(t_varlist *vars, t_charptr_array *arr);
 
 #endif  // VARIABLES_H

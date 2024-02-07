@@ -11,7 +11,7 @@
 # include "structures/list_tokens.h"
 # include "structures/list_commands.h"
 
-# define PROMPT_MAX_LEN  99 //255
+# define PROMPT_MAX_LEN  127
 # define PROMPT_INVITATION "$ "
 
 # define EXIT_COMMAND_NOT_FOUND		127
@@ -61,23 +61,23 @@ t_built_in	get_built_in_by_name(char *func_name);
 int 		lex(t_msh *msh, t_tokenlist **tokens_p, char *input);
 
 // parser.c
-int 	parse_and_execute(t_msh *msh, t_tokenlist *tokens);
+int 		parse_and_execute(t_msh *msh, t_tokenlist *tokens);
+
+// executor/executor.c
+int 		execute(t_msh *msh, t_cmdlist *cmds);
 
 // helpers
-char	*readline_wrapper(char *prompt);
+char		*readline_wrapper(char *prompt);
 
 // signals.c
 void 		register_signals(void);
 
 // helpers/string_utils.c
-bool    is_token_seperator(char c);
-bool	is_special_var_name(char c);
-bool	is_var_name_start(char c);
-bool    is_var_separator(char c);
-size_t	str_remove_quotes(char **str);
-size_t	string_remove_quotes(t_string *string);
-
-// executor/executor.c
-int 		execute(t_msh *msh, t_cmdlist *cmds);
+bool    	is_token_seperator(char c);
+bool		is_special_var_name(char c);
+bool		is_var_name_start(char c);
+bool    	is_var_separator(char c);
+size_t		str_remove_quotes(char **str);
+size_t		string_remove_quotes(t_string *string);
 
 #endif

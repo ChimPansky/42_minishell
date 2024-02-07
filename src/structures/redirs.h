@@ -18,8 +18,6 @@
 #include "ft_list.h"
 #include <stdbool.h>
 
-// redirlist doesn't own redir_details!
-// details should be free through tokens!
 typedef t_list t_redirlist;
 
 typedef enum e_redir_type

@@ -87,8 +87,6 @@ t_simple_command *cmdlist_add_cmd(t_cmdlist **cmdlist)
 // 	return (command);
 // }
 
-
-
 // void	print_redirs(t_list **redirections)
 // {
 // 	t_redirlist	*cur_redir;

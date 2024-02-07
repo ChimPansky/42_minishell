@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 15:35:04 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/01 15:35:17 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/07 18:14:23 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,28 +81,30 @@ t_var *varlist_find(t_varlist *vars, const char *name)
 
 t_var *varlist_set(t_varlist **vars_p, const char *name, const char *value)
 {
-	t_var		*existing_var;
-	t_var 		*new_var;
-	t_varlist	*new_varlist;
+	t_var		*var;
+	t_varlist	*node;
+	char		*temp_val;
 
-	existing_var = varlist_find(*vars_p, name);
-	if (!existing_var)
+	var = varlist_find(*vars_p, name);
+	if (!var)
 	{
-		new_var = variable(name, value);
-		new_varlist = ft_lstnew(new_var);
-		if (!new_varlist)
-			return (destroy_variable(new_var), NULL);
-		ft_lstadd_front(vars_p, new_varlist);
-		return (new_var);
+		var = variable(name, value);
+		if (!var)
+			return (NULL);
+		node = ft_lstnew(var);
+		if (!node)
+			return (destroy_variable(var), NULL);
+		ft_lstadd_front(vars_p, node);
 	}
 	else
 	{
-		free(existing_var->value);
-		existing_var->value = ft_strdup(value);
-		if (!existing_var->value)
+		temp_val = ft_strdup(value);
+		if (!temp_val)
 			return (NULL);
-		return (existing_var);
+		free(var->value);
+		var->value = temp_val;
 	}
+	return (var);
 }
 
 void varlist_delete_one(t_varlist **vars_p, const char *name)
@@ -146,7 +148,6 @@ t_varlist *varlist_init_from_envp(char **envp)
 	return env;
 }
 
-// on fail returns NULL
 int varlist_convert_to_array(t_varlist *vars, t_charptr_array *arr)
 {
 	char	*allocated;

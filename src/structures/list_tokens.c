@@ -61,128 +61,79 @@ void tokenlist_destroy(t_tokenlist **tokens)
 {
 	ft_lstclear(tokens, token_destroy);
 }
-
-//void	tokelist_print()
-
-// int	token_add(t_tokenlist **tokens, t_token *token)
+// void	print_tokens(t_tokenlist *tokens)
 // {
-// 	if (!token)
-// 		return (!SUCCESS);
+// 	t_token		*token;
 
-// 	t_token 	*token;
+// 	char		*type_text;
+// 	char		*fd_type;
+// 	char		*fd_str;
 
-// 	token = malloc(sizeof(t_token));	//ask vova why its not sizeof(t_token *)...
-// 	if (!token)
-// 		return NULL;
-// 	ft_bzero(token, sizeof(token));
-// 	token->tk_type = tk_type;
-// 	if (tk_type == TK_REDIR)
-// 		token->redir = *redir;
-// 	else if (tk_type == TK_WORD)
-// 		token->string = *str;
-// 	t_tokenlist *new_token = ft_lstnew(token);
-// 	if (!new_token)
-// 		return (token_destroy(token), NULL);
-// 	ft_lstadd_back(tokens, new_token);
-// 	return (token);
+
+// 	int			i = 1;
+
+// 	printf("token_list:\n");
+// 	while (tokens)
+// 	{
+// 		token = tokens->content;
+// 		if (token->tk_type == TK_WORD)
+// 		{
+// 			type_text = "WORD";
+// 			fd_type = NULL;
+// 			fd_str = NULL;
+// 		}
+// 		else if (token->tk_type == TK_REDIR)
+// 		{
+// 			type_text = "REDIR";
+// 			if (token->redir->string.buf)
+// 				fd_str = token->redir->string.buf;
+// 			else
+// 				fd_str = NULL;
+// 			if (token->redir->type == FD_IN)
+// 				fd_type = "<";
+// 			else if (token->redir->type == FD_HEREDOC)
+// 				fd_type = "<<";
+// 			else if (token->redir->type == FD_OUT_TRUNC)
+// 				fd_type = ">";
+// 			else if (token->redir->type == FD_OUT_APPEND)
+// 				fd_type = ">>";
+// 		}
+// 		else if (token->tk_type == TK_PIPE)
+// 		{
+// 			type_text = "PIPE";
+// 			fd_type = NULL;
+// 			fd_str = NULL;
+// 		}
+// 		else if (token->tk_type == TK_LOGIC_AND)
+// 		{
+// 			type_text = "LOGIC_AND";
+// 			fd_type = NULL;
+// 			fd_str = NULL;
+// 		}
+// 		else if (token->tk_type == TK_LOGIC_OR)
+// 		{
+// 			type_text = "LOGIC_OR";
+// 			fd_type = NULL;
+// 			fd_str = NULL;
+// 		}
+// 		else if (token->tk_type == TK_SUBSHELL)
+// 		{
+// 			type_text = "SUBSHELL";
+// 			fd_type = NULL;
+// 			fd_str = NULL;
+// 		}
+// 		printf(" {T%d: Type: %s; t_string: %s; FD_Type: %s; FD_t_string: %s)} -->\n",  i, type_text, token->string.buf, fd_type, fd_str);
+// 		if (token->tk_type == TK_SUBSHELL)
+// 		{
+// 			type_text = "SUBSHELL";
+// 			fd_type = NULL;
+// 			fd_str = NULL;
+// 			printf ("\n---SUB-TOKENS START\n");
+// 			print_tokens(token->subshell_tokens);
+// 			printf ("---SUB-TOKENS END\n");
+// 		}
+// 		tokens = tokens->next;
+// 		i++;
+// 	}
+// 	printf("\n");
 // }
-
-// t_token		*token_add(t_tokenlist **tokens, t_token_type tk_type,
-// 						t_string *str, t_redir_detail *redir)
-// {
-// 	t_token 	*token;
-
-// 	token = malloc(sizeof(t_token));	//ask vova why its not sizeof(t_token *)...
-// 	if (!token)
-// 		return NULL;
-// 	ft_bzero(token, sizeof(token));
-// 	token->tk_type = tk_type;
-// 	if (tk_type == TK_REDIR)
-// 		token->redir = *redir;
-// 	else if (tk_type == TK_WORD)
-// 		token->string = *str;
-// 	t_tokenlist *new_token = ft_lstnew(token);
-// 	if (!new_token)
-// 		return (token_destroy(token), NULL);
-// 	ft_lstadd_back(tokens, new_token);
-// 	return (token);
-// }
-
-void	print_tokens(t_tokenlist *tokens)
-{
-	t_token		*token;
-
-	char		*type_text;
-	char		*fd_type;
-	char		*fd_str;
-
-
-	int			i = 1;
-
-	printf("token_list:\n");
-	while (tokens)
-	{
-		token = tokens->content;
-		if (token->tk_type == TK_WORD)
-		{
-			type_text = "WORD";
-			fd_type = NULL;
-			fd_str = NULL;
-		}
-		else if (token->tk_type == TK_REDIR)
-		{
-			type_text = "REDIR";
-			if (token->redir->string.buf)
-				fd_str = token->redir->string.buf;
-			else
-				fd_str = NULL;
-			if (token->redir->type == FD_IN)
-				fd_type = "<";
-			else if (token->redir->type == FD_HEREDOC)
-				fd_type = "<<";
-			else if (token->redir->type == FD_OUT_TRUNC)
-				fd_type = ">";
-			else if (token->redir->type == FD_OUT_APPEND)
-				fd_type = ">>";
-		}
-		else if (token->tk_type == TK_PIPE)
-		{
-			type_text = "PIPE";
-			fd_type = NULL;
-			fd_str = NULL;
-		}
-		else if (token->tk_type == TK_LOGIC_AND)
-		{
-			type_text = "LOGIC_AND";
-			fd_type = NULL;
-			fd_str = NULL;
-		}
-		else if (token->tk_type == TK_LOGIC_OR)
-		{
-			type_text = "LOGIC_OR";
-			fd_type = NULL;
-			fd_str = NULL;
-		}
-		else if (token->tk_type == TK_SUBSHELL)
-		{
-			type_text = "SUBSHELL";
-			fd_type = NULL;
-			fd_str = NULL;
-		}
-		printf(" {T%d: Type: %s; t_string: %s; FD_Type: %s; FD_t_string: %s)} -->\n",  i, type_text, token->string.buf, fd_type, fd_str);
-		if (token->tk_type == TK_SUBSHELL)
-		{
-			type_text = "SUBSHELL";
-			fd_type = NULL;
-			fd_str = NULL;
-			printf ("\n---SUB-TOKENS START\n");
-			print_tokens(token->subshell_tokens);
-			printf ("---SUB-TOKENS END\n");
-		}
-		// if (token->redir->type == FD_HEREDOC && token->redir->content.buf)
-		// 	charptr_array_print(&token->redir->content);
-		tokens = tokens->next;
-		i++;
-	}
-	printf("\n");
-}

@@ -6,14 +6,13 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 12:15:28 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/06 18:43:09 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/07 17:53:06 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 #include "ft_string.h"
 #include "lexer.h"
-
 
 int read_word(t_msh *msh, t_lexer *lexer, t_string *str)
 {

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   list_commands.h                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/07 17:52:18 by tkasbari          #+#    #+#             */
+/*   Updated: 2024/02/07 17:52:19 by tkasbari         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef LIST_COMMANDS_H
 #define LIST_COMMANDS_H
 
@@ -30,6 +42,7 @@ int					command_specialise(t_simple_command *cmd, t_cmd_type type);
 void				cmdlist_destroy(t_cmdlist **commands);
 t_simple_command	*cmdlist_add_cmd(t_cmdlist **cmdlist);
 
-// void				cmdlist_print(t_cmdlist **commands);
+// only for debugging:
+void				cmdlist_print(t_cmdlist **commands);
 
 #endif  // LIST_COMMANDS_H

@@ -67,7 +67,6 @@ int main_loop(t_msh *msh)
 			string_destroy(&rl_input);
 			continue;
 		}
-		//print_tokens(tokens);
 		add_history(rl_input.buf);
 		string_destroy(&rl_input);
 		parse_and_execute(msh, tokens);
@@ -76,7 +75,7 @@ int main_loop(t_msh *msh)
 	return (SUCCESS);
 }
 
-// add parameter check? are we allowed to call for example: ./minishell arg1 arg2...
+// TODO add parameter check? are we allowed to call for example: ./minishell arg1 arg2...
 int	main(int ac, char **av, char **envp)
 {
 	t_msh	msh;
