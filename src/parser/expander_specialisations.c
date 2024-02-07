@@ -1,5 +1,15 @@
 #include "parser.h"
 
+static int	expander_reset_for_new(t_expander *expander)
+{
+	if (SUCCESS != string_init(&expander->replace, ""))
+		return (perror("expander_reset_for_new: "
+				"string_init"), !SUCCESS);
+	ft_lstclear(&expander->true_wildcards, free);
+	expander->add_if_empty = false;
+	return (SUCCESS);
+}
+
 static int	expand_var_in_glob(
 	t_expander *expander,
 	const char *var_content,
@@ -11,14 +21,13 @@ static int	expand_var_in_glob(
 	{
 		if (ft_isspace(*pos_in_var))
 		{
-			if (!string_is_empty(&expander->replace))
+			if ((string_is_empty(&expander->replace) && expander->add_if_empty)
+					|| !string_is_empty(&expander->replace))
 			{
 				if (SUCCESS != expand_wildcard_and_finalize(expander, arr))
 					return (!SUCCESS);
-				if (SUCCESS != string_init(&expander->replace, ""))
-					return (perror("expand_var_in_glob: "
-							"string_init"), !SUCCESS);
-				ft_lstclear(&expander->true_wildcards, free);
+				if (SUCCESS != expander_reset_for_new(expander))
+					return !SUCCESS;
 			}
 			pos_in_var++;
 		}
@@ -34,6 +43,7 @@ static int	expand_var_in_glob(
 int	expand_singleq(t_expander *expander)
 {
 	expander->pos++;
+	expander->add_if_empty = true;
 	while (*expander->pos && *expander->pos != '\'')
 		if (SUCCESS != string_add_chr(&expander->replace, *expander->pos++))
 			return (perror("expand_singleq: string_add_chr"), !SUCCESS);
