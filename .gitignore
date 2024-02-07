@@ -11,6 +11,9 @@ test_buffer.c
 test_free.c
 test_quotes.c
 
+# folders:
+minishell_tester/
+
 # IDE
 .vscode
 

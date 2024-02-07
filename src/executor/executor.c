@@ -51,7 +51,7 @@ void	wait_with_check(pid_t* pids, int num_of_cmds, int *last_exit_code)
 bool try_execute_built_in(t_msh *msh, t_simple_command *cmd, t_executor *executor)
 {
 	t_built_in func;
-
+	// TODO add $_
 	if (cmd->cmd_type != CMD_EXEC)
 		return false;
 	func = get_built_in_by_name(cmd->cmd_with_args.buf[0]);
