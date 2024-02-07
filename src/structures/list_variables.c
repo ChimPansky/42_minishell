@@ -81,14 +81,28 @@ t_var *varlist_find(t_varlist *vars, const char *name)
 
 t_var *varlist_set(t_varlist **vars_p, const char *name, const char *value)
 {
-	t_var *var = variable(name, value);
-	if (!var)
-		return NULL;
-	t_varlist *new_var = ft_lstnew(var);
-	if (!new_var)
-		return (destroy_variable(var), NULL);
-	ft_lstadd_front(vars_p, new_var);
-	return var;
+	t_var		*existing_var;
+	t_var 		*new_var;
+	t_varlist	*new_varlist;
+
+	existing_var = varlist_find(*vars_p, name);
+	if (!existing_var)
+	{
+		new_var = variable(name, value);
+		new_varlist = ft_lstnew(new_var);
+		if (!new_varlist)
+			return (destroy_variable(new_var), NULL);
+		ft_lstadd_front(vars_p, new_varlist);
+		return (new_var);
+	}
+	else
+	{
+		free(existing_var->value);
+		existing_var->value = ft_strdup(value);
+		if (!existing_var->value)
+			return (NULL);
+		return (existing_var);
+	}
 }
 
 void varlist_delete_one(t_varlist **vars_p, const char *name)

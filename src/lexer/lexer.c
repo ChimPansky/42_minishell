@@ -95,20 +95,22 @@ int lex_tokens(t_msh *msh, t_tokenlist **tokens_p, char *input)
 }
 
 int	check_unexpected_token(t_msh *msh, t_token_type last_type,
-	t_token_type cur_type)
+	t_token_type cur_type, t_lexer *lexer)
 {
 	char	*error_text;
 
+	(void)lexer; //TODO remove
 	error_text = NULL;
 	if (cur_type == TK_SUBSHELL && (last_type == TK_SUBSHELL
 		|| last_type == TK_WORD || last_type == TK_REDIR))
 		error_text = "(";
 	else if (cur_type == TK_LOGIC_AND && (last_type == TK_LOGIC_AND
-		|| last_type == TK_LOGIC_OR || last_type == TK_PIPE))
+		|| last_type == TK_LOGIC_OR || last_type == TK_PIPE
+		|| last_type == TK_NULL))
 		error_text = "&";
 	else if ((cur_type == TK_LOGIC_OR || cur_type == TK_PIPE)
 		&& (last_type == TK_LOGIC_AND || last_type == TK_LOGIC_OR
-		|| last_type == TK_PIPE))
+		|| last_type == TK_PIPE || last_type == TK_NULL))
 		error_text = "|";
 	if (error_text)
 		return (error_unexp_tk_s(msh, error_text), !SUCCESS);

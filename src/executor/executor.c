@@ -9,7 +9,8 @@ void init_executor(t_executor *exec, int num_of_cmds) {
 	exec->num_of_cmds = num_of_cmds;
 	exec->is_parent = true;
 	if (num_of_cmds == 0)
-		(printf("cmds is empty. this should not happen"), exit(EXIT_FAILURE));
+		(ft_printf_err("cmds is empty. this should not happen\n"),
+		exit(EXIT_FAILURE));
 }
 
 void destroy_executor(t_executor *exec) {

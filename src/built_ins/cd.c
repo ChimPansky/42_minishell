@@ -20,7 +20,7 @@ int check_permissions(const char* dir)
 	if (SUCCESS != access(dir, F_OK))
 		return (ft_printf_err("cd: %s: no such file or directory\n", dir), !SUCCESS);
     if (SUCCESS != stat(dir, &fstat))
-		return (ft_printf_err("cd: %s: ", dir), perror("stat"), !SUCCESS);
+		return (ft_printf_err("cd: %s: \n", dir), perror("stat"), !SUCCESS);
     if (!S_ISDIR(fstat.st_mode))
 		return (ft_printf_err("cd: %s: not a directory\n", dir), !SUCCESS);
 	if (SUCCESS != access(dir, X_OK))
@@ -33,7 +33,7 @@ int	built_in_cd(t_msh *msh, char **cmd_with_args, int fd_out)
 	char	*dir;
 
 	if (cmd_with_args[2])
-		return(ft_printf_err("cd: too many arguments"), EXIT_FAILURE);
+		return(ft_printf_err("cd: too many arguments\n"), EXIT_FAILURE);
 	if (!cmd_with_args[1])
 		dir = varlist_get_value(msh->env, "HOME");
 	else if (strcmp(cmd_with_args[1], "-") == SUCCESS)
@@ -48,7 +48,7 @@ int	built_in_cd(t_msh *msh, char **cmd_with_args, int fd_out)
 	if (check_permissions(dir) != SUCCESS)
 		return EXIT_FAILURE;
 	if (chdir(dir) != SUCCESS)
-		return (ft_printf_err("cd: %s: ", dir), perror("chdir"), EXIT_FAILURE);
+		return (ft_printf_err("cd: %s: \n", dir), perror("chdir"), EXIT_FAILURE);
 	varlist_set(&msh->env, "OLDPWD", varlist_get_value(msh->env, "PWD"));
 	dir = getcwd(NULL, 0);
 	varlist_set(&msh->env, "PWD", dir);

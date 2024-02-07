@@ -40,7 +40,7 @@ int	lex_tk_simple_cmd_separator(t_msh *msh, t_lexer *lexer)
 	lex_tk_simple_cmd_separator_type(lexer);
 
 	if (check_unexpected_token(msh, lexer->last_tk_type,
-		lexer->cur_tk_type) != SUCCESS)
+		lexer->cur_tk_type, lexer) != SUCCESS)
 		return (!SUCCESS);
 	if (!tokenlist_add_token(lexer->tokens, lexer->cur_tk_type))
 		return (!SUCCESS);
