@@ -22,12 +22,12 @@ static int	expand_var_in_glob(
 		if (ft_isspace(*pos_in_var))
 		{
 			if ((string_is_empty(&expander->replace) && expander->add_if_empty)
-					|| !string_is_empty(&expander->replace))
+				|| !string_is_empty(&expander->replace))
 			{
 				if (SUCCESS != expand_wildcard_and_finalize(expander, arr))
 					return (!SUCCESS);
 				if (SUCCESS != expander_reset_for_new(expander))
-					return !SUCCESS;
+					return (!SUCCESS);
 			}
 			pos_in_var++;
 		}

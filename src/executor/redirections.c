@@ -11,7 +11,7 @@ static int process_heredoc(t_charptr_array *heredoc_lines, t_executor *executor)
 	int		pipe_fds[2];
 
 	if (pipe(pipe_fds) < 0)
-		return (perror("heredoc pipe"), !SUCCESS);
+		return (perror("process_heredoc: pipe"), !SUCCESS);
 	line_nb = 0;
 	while (line_nb < heredoc_lines->sz)
 	{
