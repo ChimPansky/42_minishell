@@ -6,13 +6,13 @@
 int init_executor(t_executor *exec, int num_of_cmds) {
 	exec->fd_in = STDIN_FILENO;
 	exec->fd_out = STDOUT_FILENO;
-	exec->num_of_cmds = 0;
+	exec->num_of_cmds_in_pipe = num_of_cmds;
 	exec->is_parent = true;
 	exec->pids = malloc(num_of_cmds * sizeof(pid_t));
 	if (!exec->pids)
 		return (perror("init_executor: malloc"), !SUCCESS);
-	while (exec->num_of_cmds < num_of_cmds)
-		exec->pids[exec->num_of_cmds++] = -1;
+	while (num_of_cmds--)
+		exec->pids[num_of_cmds] = -1;
 	return (SUCCESS);
 }
 
@@ -31,7 +31,7 @@ void	wait_with_check(t_executor *executor, int *last_exit_code)
 	int i = 0;
 	int	status;
 
-	while (i < executor->num_of_cmds)
+	while (i < executor->num_of_cmds_in_pipe)
 	{
 		if (executor->pids[i] < 0)
 		{
@@ -63,7 +63,7 @@ bool try_execute_built_in(t_msh *msh, t_simple_command *cmd, t_executor *executo
 	func = get_built_in_by_name(cmd->cmd_with_args.buf[0]);
 	if (func == NULL)
 		return (false);
-	executor->num_of_cmds = 0;
+	executor->num_of_cmds_in_pipe = 0;
 	if (process_redirections(executor, cmd->redirections) != SUCCESS)
 		msh->last_exit_code = EXIT_FAILURE;
 	else
@@ -85,11 +85,11 @@ int execute(t_msh *msh, t_cmdlist *cmds)
 		msh->last_exit_code = EXIT_FAILURE;
 		return (SUCCESS);
 	}
-	if (executor.num_of_cmds > 1 || !try_execute_built_in(msh, cmds->content, &executor))
+	if (num_of_cmds > 1 || !try_execute_built_in(msh, cmds->content, &executor))
 		execute_on_chain(msh, &executor, cmds);
 	(executor.fd_in > 2 && close(executor.fd_in));
 	// what if execute on chain returned !SUCCESS meaning sistem error?
-	if (executor.is_parent && executor.num_of_cmds > 0)
+	if (executor.is_parent && executor.num_of_cmds_in_pipe > 0)
 		wait_with_check(&executor, &msh->last_exit_code);
 	if (!executor.is_parent)
 		msh->done = true;

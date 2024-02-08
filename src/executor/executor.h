@@ -11,7 +11,7 @@ typedef struct s_executor
 {
 	int		fd_in;
 	int		fd_out;
-	int		num_of_cmds;
+	int		num_of_cmds_in_pipe;
 	pid_t	*pids;
 	bool	is_parent;
 
