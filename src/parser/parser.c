@@ -75,7 +75,7 @@ int	parse_and_execute(t_msh *msh, t_tokenlist *tokenlist)
 	if (!tokenlist)
 		return (SUCCESS);
 	init_parser(&parser, tokenlist);
-	while (!parser.done && !msh->done)
+	while (!parser.done && !msh->done && !g_sigint_received)
 	{
 		if (SUCCESS != init_token(&parser))
 			return (destroy_parser(&parser), !SUCCESS);

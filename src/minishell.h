@@ -4,6 +4,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <stdio.h>
+# include <signal.h>
 # include "ms_macros.h"
 # include "libft.h"
 # include "ft_string.h"
@@ -18,7 +19,7 @@
 # define EXIT_PERMISSION_DENIED		126
 # define EXIT_SIG_INT				130
 
-extern bool g_sigint_received;
+extern sig_atomic_t g_sigint_received;
 
 typedef enum e_ms_error
 {
