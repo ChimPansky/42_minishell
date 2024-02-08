@@ -42,7 +42,8 @@ static int execute_to_pipe(t_msh *msh, t_executor *executor, t_simple_command *c
 		return (execute_one_on_chain(msh, cmd, executor));
 	}
 	close(pipe_fds[WR_END]);
-	(executor->fd_in > 2 && close(executor->fd_in));
+	if (executor->fd_in > 2)
+		close(executor->fd_in);
 	executor->fd_in = pipe_fds[RD_END];
 	return (EXIT_SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:43:57 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/06 20:43:08 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/08 13:19:07 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,6 @@ static void command_destroy(void *cmd_p)
 
 	if (cmd->cmd_type == CMD_EXEC)
 	 	charptr_array_destroy(&cmd->cmd_with_args);
-	else if (cmd->cmd_type == CMD_SUBSHELL)
-		;
 	redirlist_destroy(&cmd->redirections);
 	free(cmd);
 }
