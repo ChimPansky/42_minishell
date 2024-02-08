@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 12:15:28 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/06 16:49:35 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/08 19:26:43 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static int	lex_heredoc(t_redir_detail *redir)
 		redir->expand_heredoc = true;
 	while (1)
 	{
-		line = readline_wrapper("> ");
+		line = readline_wrapper("> ", 0);
 		if (line == NULL)
         {
             if (errno)

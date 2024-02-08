@@ -6,20 +6,25 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 20:05:41 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/06 21:46:25 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/08 19:52:59 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "libft.h"
 #include "structures/list_tokens.h"
+#include <unistd.h>
 
 int try_read_with_readline(t_msh *msh, t_string *rl_input)
 {
 	char	*rl_raw;
 
-	rl_raw = readline_wrapper(msh->prompt.buf);
+	rl_raw = readline_wrapper(msh->prompt.buf, msh->last_exit_code);
 	if (!rl_raw)
 	{
+		ft_putendl_fd("RL returned NULL", STDOUT_FILENO);
+		if (g_signal_received)
+			ft_putendl_fd("RL returned NULL && signal received", STDOUT_FILENO);
 		if (errno) // check for type of err, sometimes ms_stop
 			perror("readline"), ms_stop(msh);
 		else
@@ -30,17 +35,16 @@ int try_read_with_readline(t_msh *msh, t_string *rl_input)
 	return (SUCCESS);
 }
 
-// todo: find all the places where to check for sigint:
-// 	minimum main readline, heredoc readline, executor
-int	check_for_sigint(t_msh *msh)
+static int	check_for_signals(t_msh *msh)
 {
-	if (g_sigint_received)
+	if (g_signal_received == SIGINT)
 	{
 		msh->last_exit_code = EXIT_SIG_INT;
-		g_sigint_received = false;
-		return (!SUCCESS);
+		g_signal_received = 0;
+		return (true);
 	}
-	return (SUCCESS);
+	else
+		return (false);
 }
 
 int main_loop(t_msh *msh)
@@ -54,11 +58,8 @@ int main_loop(t_msh *msh)
 		update_prompt(msh);
 		if (SUCCESS != try_read_with_readline(msh, &rl_input))
 			continue;
-		if (SUCCESS != check_for_sigint(msh))
-		{
-			string_destroy(&rl_input);
+		if (check_for_signals(msh))
 			continue;
-		}
 		if (SUCCESS != lex(msh, &tokens, rl_input.buf))
 		{
 			add_history(rl_input.buf);

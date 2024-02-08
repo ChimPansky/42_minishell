@@ -19,7 +19,7 @@
 # define EXIT_PERMISSION_DENIED		126
 # define EXIT_SIG_INT				130
 
-extern sig_atomic_t g_sigint_received;
+extern sig_atomic_t g_signal_received;
 
 typedef enum e_ms_error
 {
@@ -65,7 +65,7 @@ int 		lex(t_msh *msh, t_tokenlist **tokens_p, char *input);
 int 	parse_and_execute(t_msh *msh, t_tokenlist *tokens);
 
 // helpers
-char	*readline_wrapper(char *prompt);
+char	*readline_wrapper(char *prompt, int last_exit_code);
 
 // signals.c
 void 		register_signals(void);

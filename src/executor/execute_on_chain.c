@@ -54,7 +54,8 @@ int execute_on_chain(t_msh *msh, t_executor *executor, t_cmdlist *cmds)
 	int	idx;
 
 	idx = 0;
-	while (cmds->next && !g_sigint_received) {
+	while (cmds->next && !g_signal_received)
+	{
 		msh->last_exit_code = execute_to_pipe(msh, executor, cmds->content, &executor->pids[idx]);
 		if (!executor->is_parent)
 			return (SUCCESS);
@@ -63,7 +64,7 @@ int execute_on_chain(t_msh *msh, t_executor *executor, t_cmdlist *cmds)
 		idx++;
 		cmds = cmds->next;
 	}
-	if (g_sigint_received)
+	if (g_signal_received)
 		return (!SUCCESS);
 	executor->pids[idx] = fork();
 	if (executor->pids[idx] < 0)

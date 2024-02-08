@@ -1,5 +1,5 @@
 NAME = minishell
-CC = cc
+CC = clang
 CFLAGS = -Wall -Werror -Wextra #-Wpedantic
 CFLAGS += -g -Og # -fsanitize=address,undefined,leak
 LIBFT_DIR = libft
