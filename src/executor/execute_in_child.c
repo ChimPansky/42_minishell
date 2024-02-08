@@ -1,5 +1,6 @@
 #include "executor.h"
 #include "ft_charptr_array.h"
+#include <sys/stat.h>
 
 // fileno in child process always STDOUT_FILENO
 static int try_exec_built_in(t_msh *msh, char **cmd_with_args)
@@ -12,77 +13,120 @@ static int try_exec_built_in(t_msh *msh, char **cmd_with_args)
 	return (SUCCESS);
 }
 
-// todo: if no path - check in getcwd
-// ignore directories on path
-static int	try_find_in_path(t_msh *msh, const char *exec, char **exec_in_path)
+bool	file_found_on_path(const char *exec_in_path)
 {
-	const char	*path = varlist_get_value(msh->env, "PATH");
+    struct stat fstat;
+
+	if (access(exec_in_path, F_OK) == SUCCESS)
+		return (false);
+	if (SUCCESS != stat(exec_in_path, &fstat))
+		return (false);
+    return (S_ISREG(fstat.st_mode));
+}
+
+typedef struct s_child
+{
+	const char	*path;
+	const char	*exec;
+	char		*exec_with_path;
+}		t_child;
+
+static int	try_find_in_path(t_child *ch)
+{
 	char 		**path_entries;
 	size_t 		i;
 
-	*exec_in_path = NULL;
-	if (path == NULL || !*path)
-		return SUCCESS;
-	path_entries = ft_split(path, ":");
+	path_entries = ft_split(ch->path, ":");
 	if (path_entries == NULL)
 		return (perror("ft_split"), !SUCCESS);
 	i = 0;
 	while (path_entries[i])
 	{
-		*exec_in_path = ft_strnjoin(3, path_entries[i], "/", exec);
-		if (!*exec_in_path)
+		if (ft_str_end_with(ch->exec_with_path, "/"))
+			ch->exec_with_path = ft_strnjoin(2, path_entries[i], ch->exec);
+		else
+			ch->exec_with_path = ft_strnjoin(3, path_entries[i], "/", ch->exec);
+		if (!ch->exec_with_path)
 			return (free(path_entries), perror("ft_strnjoin"), !SUCCESS);
-		// if not dir and exist
-		if (access(*exec_in_path, F_OK) == SUCCESS)
+		if (file_found_on_path(ch->exec_with_path))
 			return (free(path_entries), SUCCESS);
-		free(*exec_in_path);
+		free(ch->exec_with_path);
 		i++;
 	}
-	free(path_entries);
-	*exec_in_path = NULL;
-	return SUCCESS;
+	ch->exec_with_path = NULL;
+	return (free(path_entries), SUCCESS);
 }
 
-// is it garanteed that cmd_with args is not empty?
-// exit code?
-// after fork
-// is it needed to free and close?
-// TODO check for directories, etc
-// return SUCCESS if last exit code was set
+int	init_child(t_msh *msh, t_child *ch, char **cmd_with_args)
+{
+	ch->path = varlist_get_value(msh->env, "PATH");
+	ch->exec = cmd_with_args[0];
+	ch->exec_with_path = NULL;
+	if (NULL == strchr(ch->exec, '/') && *ch->path)
+	{
+		if (try_find_in_path(ch) != SUCCESS)
+		 	return (!SUCCESS);
+	}
+	else
+	{
+		ch->exec_with_path = ft_strdup(ch->exec);
+		if (ch->exec_with_path)
+			return (perror("execute_in_child_process: ft_strdup"), !SUCCESS);
+	}
+	return (SUCCESS);
+}
+
+void	destroy_child(t_child *ch)
+{
+	free(ch->exec_with_path);
+}
+
+static int check_permissions(t_msh *msh, const char* exec)
+{
+    struct stat fstat;
+	if (exec == NULL)
+	{
+		msh->last_exit_code = EXIT_COMMAND_NOT_FOUND;
+		return (ft_printf_err("msh: command not found: %s\n", exec), !SUCCESS);
+	}
+	else if (SUCCESS != access(exec, F_OK))
+	{
+		msh->last_exit_code = EXIT_COMMAND_NOT_FOUND;
+		return (ft_printf_err("msh: %s: no such file or directory\n", exec), !SUCCESS);
+	}
+    if (SUCCESS != stat(exec, &fstat))
+		return (perror("check_permissions: stat"), !SUCCESS);
+    if (!S_ISDIR(fstat.st_mode))
+	{
+		msh->last_exit_code = EXIT_PERMISSION_DENIED;
+		return (ft_printf_err("msh: %s: is a directory\n", exec), !SUCCESS);
+	}
+	if (SUCCESS != access(exec, X_OK))
+	{
+		msh->last_exit_code = EXIT_PERMISSION_DENIED;
+		return (ft_printf_err("msh: %s: permission denied\n", exec), !SUCCESS);
+	}
+	return (SUCCESS);
+}
+
+// exit code is set to EXIT_FAILURE higher on stack
+// return value may be skipped
 int	execute_in_child_process(t_msh *msh, char **cmd_with_args)
 {
 	t_charptr_array		envp;
-	const char			*exec = cmd_with_args[0];
-	char				*exec_with_path;
+	t_child				ch;
 
-	exec_with_path = NULL;
-	msh->last_exit_code = EXIT_FAILURE;
-	if (NULL == strchr(exec, '/'))
-	{
-		if (try_exec_built_in(msh, cmd_with_args) == SUCCESS)
-			return (SUCCESS);
-		if (try_find_in_path(msh, exec, &exec_with_path) != SUCCESS)
-		 	return (!SUCCESS);
-	}
-	else if (SUCCESS == access(exec, F_OK))
-	{
-		exec_with_path = ft_strdup(exec);
-		if (!exec_with_path)
-			return (perror("strdup"), !SUCCESS);
-	}
-	if (exec_with_path == NULL)
-	{
-		msh->last_exit_code = EXIT_COMMAND_NOT_FOUND;
-		return (ft_printf_err("msh: command not found: %s\n", exec), SUCCESS);
-	}
-	// if is dir
-	else if (SUCCESS != access(exec_with_path, X_OK))
-	{
-		msh->last_exit_code = EXIT_PERMISSION_DENIED;
-		return (ft_printf_err("msh: permission denied: %s\n", exec_with_path), free(exec_with_path), SUCCESS);
-	}
+	if (NULL == strchr(ch.exec, '/')
+		&& try_exec_built_in(msh, cmd_with_args) == SUCCESS)
+		return (SUCCESS);
+	if (SUCCESS != init_child(msh, &ch, cmd_with_args))
+		return (!SUCCESS);
+	if (check_permissions(msh, ch.exec) != SUCCESS)
+		return (destroy_child(&ch), SUCCESS);
 	if (varlist_convert_to_array(msh->env, &envp) != SUCCESS)
-		return (perror("msh: "), free(exec_with_path), !SUCCESS);
-	execve(exec_with_path, cmd_with_args, envp.buf);
-	return (perror("msh: exeve"), charptr_array_destroy(&envp), free(exec_with_path), !SUCCESS);
+		return (perror("execute_in_child_process: "
+				"varlist_convert_to_array"), destroy_child(&ch), !SUCCESS);
+	execve(ch.exec_with_path, cmd_with_args, envp.buf);
+	return (perror("execute_in_child_process: exeve"),
+			charptr_array_destroy(&envp), destroy_child(&ch), !SUCCESS);
 }

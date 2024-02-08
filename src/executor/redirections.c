@@ -2,6 +2,8 @@
 #include "executor.h"
 #include "../minishell.h"
 
+
+
 // assume always \n at the end
 // what if write error? possibly write in different process, though it is fucked up
 // pipe buf is 64kb
