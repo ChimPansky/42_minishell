@@ -1,5 +1,5 @@
 NAME = minishell
-CC = cc
+CC = clang
 CFLAGS = -Wall -Werror -Wextra #-Wpedantic
 CFLAGS += -g #-Og -fsanitize=address,undefined,leak
 LIBFT_DIR = libft
@@ -73,6 +73,9 @@ $(NAME): $(OBJ) $(LIBFT)
 $(LIBFT):
 	@make -C $(LIBFT_DIR) all clean
 
+lft:
+	@make -C $(LIBFT_DIR) all clean
+
 %.o : %.c $(MS_HEADER)
 	$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@
 
@@ -90,4 +93,4 @@ test: $(NAME)
 valgrind:
 	valgrind --trace-children=yes --track-origins=yes --leak-check=full --show-leak-kinds=all ./$(NAME)
 
-.PHONY: all bonus clean fclean re test
+.PHONY: all bonus clean fclean re test lft

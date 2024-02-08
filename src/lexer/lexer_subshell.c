@@ -59,7 +59,7 @@ int		lex_tk_subshell(t_msh *msh, t_lexer *lexer)
 	t_token		*new_token;
 
 	if (check_unexpected_token(msh, lexer->last_tk_type,
-		TK_SUBSHELL) != SUCCESS)
+		TK_SUBSHELL, lexer) != SUCCESS)
 		return (!SUCCESS);
 	lexer->pos_in_input += 1;
 	if (get_sub_input(msh, lexer) != SUCCESS)

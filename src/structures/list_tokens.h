@@ -34,7 +34,7 @@ typedef enum e_token_type
 typedef struct s_token
 {
 	t_token_type		tk_type;
-	union {	
+	union {
 		t_string		string;
 		t_redir_detail	*redir;
 		t_tokenlist		*subshell_tokens;		//	only for bonus
@@ -45,6 +45,7 @@ int			token_init(t_token **token, t_token_type type);
 t_token		*tokenlist_add_token(t_tokenlist **tokenlist, t_token_type type);
 void 		token_destroy(void *token_void);
 void		tokenlist_destroy(t_tokenlist **tokens);
+bool	is_cmd_separator_token(t_token_type tk_type);
 
 void	print_tokens(t_tokenlist *tokens);
 

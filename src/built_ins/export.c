@@ -39,7 +39,7 @@ static int export_add_var(t_msh *msh, char* var_descr)
 	else
 		var_value = "";
 	if (!is_valid_var_name(var_descr))
-		return (ft_printf_err("export: \'%s\': not a valid identifier",
+		return (ft_printf_err("export: \'%s\': not a valid identifier\n",
 			var_descr), !SUCCESS);
 	if (!varlist_set(&msh->env, var_descr, var_value))
 		return (perror("export"), !SUCCESS);

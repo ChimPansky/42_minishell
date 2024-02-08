@@ -13,8 +13,6 @@
 #include "minishell.h"
 #include "structures/list_tokens.h"
 
-bool g_sigint_received;
-
 int try_read_with_readline(t_msh *msh, t_string *rl_input)
 {
 	char	*rl_raw;

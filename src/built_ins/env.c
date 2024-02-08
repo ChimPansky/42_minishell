@@ -18,7 +18,7 @@ int	built_in_env(t_msh *msh, char **cmd_with_args, int fd_out)
 	t_var		*var;
 
 	if (cmd_with_args[1])
-		return (ft_printf_err("env only works with no args"), EXIT_FAILURE);
+		return (ft_printf_err("env: too many arguments\n"), EXIT_FAILURE);
 	env = msh->env;
 	while (env)
 	{

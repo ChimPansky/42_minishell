@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include "ft_string.h"
 
 // mb add semicolon
 bool    is_token_seperator(char c)
@@ -41,7 +42,7 @@ bool    is_var_separator(char c)
     return (ft_isspace(c) || ft_strchr(var_seps, c));
 }
 
-void	str_remove_quotes(char **str)
+size_t	str_remove_quotes(char **str)
 {
 	char	*pos_in_str;
 	char	quote_type;
@@ -67,4 +68,14 @@ void	str_remove_quotes(char **str)
 		else
 			pos_in_str++;
 	}
+	return (ft_strlen(*str));
+}
+
+size_t	string_remove_quotes(t_string *string)
+{
+	size_t	new_len;
+
+	new_len = str_remove_quotes(&string->buf);
+	string->len = new_len;
+	return (string->len);
 }

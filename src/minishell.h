@@ -4,6 +4,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <stdio.h>
+# include <signal.h>
 # include "ms_macros.h"
 # include "libft.h"
 # include "ft_string.h"
@@ -19,8 +20,7 @@
 # define EXIT_PERMISSION_DENIED		126
 # define EXIT_SIG_INT				130
 
-
-extern bool g_sigint_received;
+extern sig_atomic_t g_sigint_received;
 
 typedef enum e_ms_error
 {
@@ -76,7 +76,8 @@ bool    is_token_seperator(char c);
 bool	is_special_var_name(char c);
 bool	is_var_name_start(char c);
 bool    is_var_separator(char c);
-void	str_remove_quotes(char **str);
+size_t	str_remove_quotes(char **str);
+size_t	string_remove_quotes(t_string *string);
 
 // executor/executor.c
 int 		execute(t_msh *msh, t_cmdlist *cmds);

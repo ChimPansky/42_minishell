@@ -19,21 +19,24 @@ typedef struct s_parser
 {
 	t_cmdlist			*cmdlist;
 	t_simple_command	*cmd;
+	t_tokenlist			*tokenlist;
 	t_token				*token;
+	t_token_type		tk_type;
 	bool				done;
 }		t_parser;
 
 int		parse_redirection(t_msh *msh, t_parser *parser);
 int		parse_word(t_msh *msh, t_parser *parser);
 int		parse_subshell(t_parser *parser);
-int		parse_separators(t_msh *msh, t_parser *parser, t_token_type tk_type);
+int		parse_separators(t_msh *msh, t_parser *parser);
 
 typedef struct s_expander
 {
-	bool			glob;
 	const char		*pos;
 	t_list			*true_wildcards;
 	t_string		replace;
+	bool			add_if_empty;
+	bool			glob;
 }		t_expander;
 
 int		expand_heredoc(t_msh *msh, t_charptr_array *heredoc_lines);

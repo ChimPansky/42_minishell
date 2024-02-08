@@ -23,6 +23,7 @@ minishell_tester/
 *.out
 minishell
 
+
 # generated
 tests/tests_output/*
 
