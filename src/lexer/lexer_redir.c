@@ -6,11 +6,12 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 12:15:28 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/06 16:49:35 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/08 18:05:55 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+#include "ft_charptr_array.h"
 #include "lexer.h"
 
 // cmd d and cmd c check
@@ -110,6 +111,6 @@ int	lex_tk_redir(t_msh *msh,  t_lexer *lexer)
 	new_token->redir = new_redir;
 	lexer->last_tk_type = TK_REDIR;
 	if (new_redir->type == FD_HEREDOC && lex_heredoc(new_redir) != SUCCESS)
-				return (redir_destroy(new_redir), !SUCCESS);
+		return (redir_destroy(new_redir), !SUCCESS);
 	return (SUCCESS);
 }
