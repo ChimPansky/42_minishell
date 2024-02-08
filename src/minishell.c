@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 20:05:41 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/08 19:52:59 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/08 21:27:44 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ int try_read_with_readline(t_msh *msh, t_string *rl_input)
 	rl_raw = readline_wrapper(msh->prompt.buf, msh->last_exit_code);
 	if (!rl_raw)
 	{
-		ft_putendl_fd("RL returned NULL", STDOUT_FILENO);
 		if (g_signal_received)
 			ft_putendl_fd("RL returned NULL && signal received", STDOUT_FILENO);
 		if (errno) // check for type of err, sometimes ms_stop
@@ -58,12 +57,20 @@ int main_loop(t_msh *msh)
 		update_prompt(msh);
 		if (SUCCESS != try_read_with_readline(msh, &rl_input))
 			continue;
-		if (check_for_signals(msh))
-			continue;
+		check_for_signals(msh);
 		if (SUCCESS != lex(msh, &tokens, rl_input.buf))
 		{
-			add_history(rl_input.buf);
-			string_destroy(&rl_input);
+			ft_putstr_fd("Lex returned !0", STDOUT_FILENO);
+			if (check_for_signals(msh))
+			{
+				ft_putstr_fd("prompt after heredoc sigint", STDOUT_FILENO);
+				//tokenlist_destroy(&tokens);
+			}
+			else
+			{
+				add_history(rl_input.buf);
+				string_destroy(&rl_input);
+			}
 			continue;
 		}
 		//print_tokens(tokens);

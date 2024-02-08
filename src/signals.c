@@ -10,15 +10,20 @@ sig_atomic_t g_signal_received;
 static void sig_int_handler(int signo)
 {
 	g_signal_received = signo;
+	ft_putstr_fd("SIG_INT_HANDLER", STDOUT_FILENO);
 	if (signo != SIGINT)
 		return ;
-	rl_replace_line(NULL, 1);
-	//rl_redisplay();
-	write(STDOUT_FILENO, "\n", 1);
-	rl_done = 1;
+	//write(STDOUT_FILENO, "\n", 1);
 	//rl_on_new_line();
-	//rl_done = 1;
+	rl_replace_line("", 0);
+	rl_done = 1;
 	//rl_redisplay();
+
+	//write(STDOUT_FILENO, "\n", 1);
+	// rl_on_new_line();
+	// rl_replace_line("", 1);
+	// rl_redisplay();
+	// //rl_done = 1;
 }
 
 void register_signals(void)
