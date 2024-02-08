@@ -9,9 +9,9 @@ static int execute_one_on_chain(t_msh *msh, t_simple_command *cmd, t_executor *e
 	if (process_redirections(executor, cmd->redirections) != SUCCESS)
 		return (EXIT_FAILURE);
 	if (STDIN_FILENO != dup2(executor->fd_in, STDIN_FILENO))
-		return (perror("msh: executor: dup2"), EXIT_FAILURE);
+		return (perror("execute_one_on_chain: dup2"), EXIT_FAILURE);
 	if (STDOUT_FILENO != dup2(executor->fd_out, STDOUT_FILENO))
-		return (perror("msh: executor: dup2"), close(STDIN_FILENO), EXIT_FAILURE);
+		return (perror("execute_one_on_chain: dup2"), close(STDIN_FILENO), EXIT_FAILURE);
 	if (cmd->cmd_type == CMD_SUBSHELL)
 	{
 		if (parse_and_execute(msh, cmd->subcommand) != SUCCESS)
@@ -27,7 +27,7 @@ static int execute_one_on_chain(t_msh *msh, t_simple_command *cmd, t_executor *e
 	return (close(STDIN_FILENO), close(STDOUT_FILENO), EXIT_SUCCESS);
 }
 
-static int execute_cmds(t_msh *msh, t_executor *executor, t_cmdlist **cmds, pid_t* pids)
+static int execute_cmds(t_msh *msh, t_executor *executor, t_cmdlist **cmds)
 {
 	int idx;
 	int pipe_fds[2];
@@ -37,31 +37,29 @@ static int execute_cmds(t_msh *msh, t_executor *executor, t_cmdlist **cmds, pid_
 		if (g_sigint_received)
 			return !SUCCESS;
 		if (pipe(pipe_fds) < 0)
-			return perror("pipe"), !SUCCESS;
-		pids[idx] = fork();
-		if (pids[idx] < 0)
-			return perror("fork"), close(pipe_fds[0]), close(pipe_fds[1]), !SUCCESS;
-		if (pids[idx] == 0)
+			return perror("execute_cmds: pipe"), !SUCCESS;
+		executor->pids[idx] = fork();
+		if (executor->pids[idx] < 0)
+			return perror("execute_cmds: fork"), close(pipe_fds[0]), close(pipe_fds[1]), !SUCCESS;
+		if (executor->pids[idx] == 0)
 		{
 			close(pipe_fds[RD_END]), close(executor->fd_out);
 			executor->fd_out = pipe_fds[WR_END];
 			return (execute_one_on_chain(msh, (*cmds)->content, executor));
 		}
-		else
-		{
-			if (executor->fd_in > 2)
-				close(executor->fd_in);
-			close(pipe_fds[WR_END]);
-			executor->fd_in = pipe_fds[RD_END];
-		}
+		close(pipe_fds[WR_END]);
+		(executor->fd_in > 2 && close(executor->fd_in));
+		executor->fd_in = pipe_fds[RD_END];
 		idx++;
 		*cmds = (*cmds)->next;
 	}
-	pids[idx] = fork();
-	if (pids[idx] < 0)
-		return perror("fork"), !SUCCESS;
-	if (pids[idx] == 0)
+	executor->pids[idx] = fork();
+	if (executor->pids[idx] < 0)
+		return perror("execute_cmds: fork"), !SUCCESS;
+	if (executor->pids[idx] == 0)
 		return (execute_one_on_chain(msh, (*cmds)->content, executor));
+	(executor->fd_in > 2 && close(executor->fd_in));
+	executor->fd_in = STDIN_FILENO;
 	return (SUCCESS);
 }
 
@@ -69,17 +67,6 @@ static int execute_cmds(t_msh *msh, t_executor *executor, t_cmdlist **cmds, pid_
 // waitpid errors seems to be okay to ignore
 int execute_on_chain(t_msh *msh, t_cmdlist *cmds, t_executor *executor)
 {
-	int				i;
-	pid_t *const	pids = malloc(executor->num_of_cmds * sizeof(pid_t));
-
-	if (!pids)
-		return perror(NULL), !SUCCESS;
-	i = 0;
-	while (i < executor->num_of_cmds)
-		pids[i++] = -1;
-	msh->last_exit_code = execute_cmds(msh, executor, &cmds, pids);
-	if (executor->is_parent)
-		wait_with_check(pids, executor->num_of_cmds, &msh->last_exit_code);
-	free(pids);
+	msh->last_exit_code = execute_cmds(msh, executor, &cmds);
 	return SUCCESS;
 }

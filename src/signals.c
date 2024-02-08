@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include "minishell.h"
 
+sig_atomic_t g_sigint_received;
+
 static void sig_int_handler(int signo)
 {
 	if (signo != SIGINT)
