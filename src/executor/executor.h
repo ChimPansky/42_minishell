@@ -18,9 +18,8 @@ typedef struct s_executor
 }		t_executor;
 
 int		process_redirections(t_executor *executor, t_redirlist *redirs);
-int		execute_on_chain(t_msh *msh, t_cmdlist *cmds, t_executor *executor);
+int		execute_on_chain(t_msh *msh, t_executor *executor, t_cmdlist *cmds);
 void	wait_with_check(t_executor *executor, int *last_exit_code);
-// noreturn
-int	execute_in_child_process(t_msh *msh, char **cmd_with_args);
+int		execute_in_child_process(t_msh *msh, char **cmd_with_args);
 
 #endif  // EXECUTOR_H

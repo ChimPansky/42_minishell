@@ -59,18 +59,16 @@ bool try_execute_built_in(t_msh *msh, t_simple_command *cmd, t_executor *executo
 	t_built_in func;
 
 	if (cmd->cmd_type != CMD_EXEC)
-		return false;
+		return (false);
 	func = get_built_in_by_name(cmd->cmd_with_args.buf[0]);
 	if (func == NULL)
-		return false;
+		return (false);
 	executor->num_of_cmds = 0;
 	if (process_redirections(executor, cmd->redirections) != SUCCESS)
-	{
 		msh->last_exit_code = EXIT_FAILURE;
-		return true;
-	}
-	msh->last_exit_code = func(msh, cmd->cmd_with_args.buf, executor->fd_out);
-	return true;
+	else
+		msh->last_exit_code = func(msh, cmd->cmd_with_args.buf, executor->fd_out);
+	return (true);
 }
 
 // todo special case cmdwitargs=NULL, redirections != null
@@ -87,10 +85,14 @@ int execute(t_msh *msh, t_cmdlist *cmds)
 		msh->last_exit_code = EXIT_FAILURE;
 		return (SUCCESS);
 	}
-	if (executor.num_of_cmds == 1 || !try_execute_built_in(msh, cmds->content, &executor))
-		execute_on_chain(msh, cmds, &executor);
+	if (executor.num_of_cmds > 1 || !try_execute_built_in(msh, cmds->content, &executor))
+		execute_on_chain(msh, &executor, cmds);
+	(executor.fd_in > 2 && close(executor.fd_in));
+	// what if execute on chain returned !SUCCESS meaning sistem error?
 	if (executor.is_parent && executor.num_of_cmds > 0)
 		wait_with_check(&executor, &msh->last_exit_code);
+	if (!executor.is_parent)
+		msh->done = true;
 	destroy_executor(&executor);
 	return (SUCCESS);
 }
