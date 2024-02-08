@@ -32,6 +32,7 @@ MS_FILENAMES += \
 	executor/execute_in_child.c \
 	executor/execute_on_chain.c \
 	executor/executor.c \
+	executor/path_finder.c \
 	executor/redirections.c
 
 MS_FILENAMES += \

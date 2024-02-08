@@ -1,7 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execute_on_chain.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vvilensk <vilenskii.v@gmail.com>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/08 19:42:48 by vvilensk          #+#    #+#             */
+/*   Updated: 2024/02/08 19:43:59 by vvilensk         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "executor.h"
 #include <sys/wait.h>
 
-static int execute_one_on_chain(t_msh *msh, t_simple_command *cmd, t_executor *executor)
+static int	execute_one_on_chain(
+	t_msh *msh,
+	t_simple_command *cmd,
+	t_executor *executor)
 {
 	executor->is_parent = false;
 	msh->last_exit_code = EXIT_FAILURE;
@@ -10,7 +25,8 @@ static int execute_one_on_chain(t_msh *msh, t_simple_command *cmd, t_executor *e
 	if (STDIN_FILENO != dup2(executor->fd_in, STDIN_FILENO))
 		return (perror("execute_one_on_chain: dup2"), SUCCESS);
 	if (STDOUT_FILENO != dup2(executor->fd_out, STDOUT_FILENO))
-		return (perror("execute_one_on_chain: dup2"), close(STDIN_FILENO), SUCCESS);
+		return (perror("execute_one_on_chain: dup2"),
+			close(STDIN_FILENO), SUCCESS);
 	if (cmd->cmd_type == CMD_SUBSHELL)
 	{
 		parse_and_execute(msh, cmd->subcommand);
@@ -25,9 +41,13 @@ static int execute_one_on_chain(t_msh *msh, t_simple_command *cmd, t_executor *e
 	return (close(STDIN_FILENO), close(STDOUT_FILENO), SUCCESS);
 }
 
-static int execute_to_pipe(t_msh *msh, t_executor *executor, t_simple_command *cmd, pid_t *pid)
+static int	execute_to_pipe(
+	t_msh *msh,
+	t_executor *executor,
+	t_simple_command *cmd,
+	pid_t *pid)
 {
-	int pipe_fds[2];
+	int	pipe_fds[2];
 
 	if (pipe(pipe_fds) < 0)
 		return (perror("execute_to_pipe: pipe"), !SUCCESS);
@@ -37,22 +57,23 @@ static int execute_to_pipe(t_msh *msh, t_executor *executor, t_simple_command *c
 			close(pipe_fds[0]), close(pipe_fds[1]), !SUCCESS);
 	if (*pid == 0)
 	{
-		close(pipe_fds[RD_END]), close(executor->fd_out);
+		(void)(close(pipe_fds[RD_END]), close(executor->fd_out));
 		executor->fd_out = pipe_fds[WR_END];
 		return (execute_one_on_chain(msh, cmd, executor), SUCCESS);
 	}
 	close(pipe_fds[WR_END]);
-	(executor->fd_in > 2 && close(executor->fd_in));
+	(void)(executor->fd_in > 2 && close(executor->fd_in));
 	executor->fd_in = pipe_fds[RD_END];
 	return (SUCCESS);
 }
 
-int execute_on_chain(t_msh *msh, t_executor *executor, t_cmdlist *cmds)
+int	execute_on_chain(t_msh *msh, t_executor *executor, t_cmdlist *cmds)
 {
 	int	idx;
 
 	idx = 0;
-	while (cmds->next && !g_sigint_received) {
+	while (cmds->next && !g_sigint_received)
+	{
 		if (execute_to_pipe(msh, executor, cmds->content, &executor->pids[idx])
 			!= SUCCESS)
 			return (!SUCCESS);
