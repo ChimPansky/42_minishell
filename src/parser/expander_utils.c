@@ -6,7 +6,7 @@
 /*   By: vvilensk <vilenskii.v@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:30:33 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/08 19:36:47 by vvilensk         ###   ########.fr       */
+/*   Updated: 2024/02/09 19:37:42 by vvilensk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,6 @@ int	check_for_wc_and_improve(t_expander *expander, const char **str)
 	t_list	*new_wc;
 	size_t	*pos;
 
-	if (**str == '$' && (str[0][1] == '"' || str[0][1] == '\''))
-		return ((*str)++, SUCCESS);
 	if (SUCCESS != string_add_chr(&expander->replace, **str))
 		return (perror("expand_rest: string_add_chr"), !SUCCESS);
 	if (**str == '*' && expander->glob)

@@ -4,7 +4,7 @@ char *readline_wrapper(char *prompt)
 {
 	char *rl_raw;
 
-	if (isatty(STDIN_FILENO))
+	if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO))
 		return (readline(prompt));
 	rl_raw = get_next_line(STDIN_FILENO);
 	if (rl_raw)

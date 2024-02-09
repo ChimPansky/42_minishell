@@ -6,7 +6,7 @@
 /*   By: vvilensk <vilenskii.v@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 19:42:48 by vvilensk          #+#    #+#             */
-/*   Updated: 2024/02/08 19:43:59 by vvilensk         ###   ########.fr       */
+/*   Updated: 2024/02/09 20:43:52 by vvilensk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ int	execute_on_chain(t_msh *msh, t_executor *executor, t_cmdlist *cmds)
 {
 	int	idx;
 
+	msh->last_exit_code = EXIT_FAILURE;
 	idx = 0;
 	while (cmds->next && !g_sigint_received)
 	{

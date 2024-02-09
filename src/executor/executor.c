@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
+/*   By: vvilensk <vilenskii.v@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 19:41:54 by vvilensk          #+#    #+#             */
-/*   Updated: 2024/02/09 15:04:57 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/09 20:43:17 by vvilensk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ bool	try_execute_built_in(
 	else
 		msh->last_exit_code
 			= func(msh, cmd->cmd_with_args.buf, executor->fd_out);
-	
 	return (true);
 }
 
@@ -99,7 +98,6 @@ int	execute(t_msh *msh, t_cmdlist *cmds)
 
 	if (num_of_cmds == 0)
 		return (SUCCESS);
-	msh->last_exit_code = EXIT_FAILURE;
 	if (init_executor(&executor, num_of_cmds) != SUCCESS)
 		return (SUCCESS);
 	if (num_of_cmds > 1 || !try_execute_built_in(msh, cmds->content, &executor))
