@@ -52,12 +52,12 @@ static void	sig_handler_rl_heredoc(int signo)
 {
 	g_signal_data.signal_code = signo;
 	write(STDOUT_FILENO, "\n", 1);
-	//rl_on_new_line();
+	rl_on_new_line();
 	rl_replace_line("", 0);
-	rl_forced_update_display();
-	//rl_done = 1;
+	rl_done = 1;
+	//rl_forced_update_display();
 	//rl_redisplay();
-	//write(g_signal_data.rl_pipe[1], "\n", 1); // write to readline to trigger end of input
+	write(g_signal_data.rl_pipe[1], "\n", 1); // write to readline to trigger end of input
 }
 
 static void	sig_handler_no_rl(int signo)
