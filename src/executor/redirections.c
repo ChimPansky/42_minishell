@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vvilensk <vilenskii.v@gmail.com>           +#+  +:+       +#+        */
+/*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 19:39:12 by vvilensk          #+#    #+#             */
-/*   Updated: 2024/02/08 19:48:40 by vvilensk         ###   ########.fr       */
+/*   Updated: 2024/02/09 14:48:45 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static int	check_permissions(char *fname, bool read_only)
 	}
 	if (SUCCESS != stat(fname, &fstat))
 		return (perror("check_permissions: stat"), !SUCCESS);
-	if (S_ISREG(fstat.st_mode))
+	if (S_ISDIR(fstat.st_mode))
 		return (ft_printf_err("msh: %s: Is a directory", fname), !SUCCESS);
 	if (access(fname, W_OK) == SUCCESS)
 		return (SUCCESS);

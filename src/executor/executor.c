@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vvilensk <vilenskii.v@gmail.com>           +#+  +:+       +#+        */
+/*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 19:41:54 by vvilensk          #+#    #+#             */
-/*   Updated: 2024/02/08 19:49:22 by vvilensk         ###   ########.fr       */
+/*   Updated: 2024/02/09 15:04:57 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ bool	try_execute_built_in(
 	else
 		msh->last_exit_code
 			= func(msh, cmd->cmd_with_args.buf, executor->fd_out);
+	
 	return (true);
 }
 
@@ -98,14 +99,12 @@ int	execute(t_msh *msh, t_cmdlist *cmds)
 
 	if (num_of_cmds == 0)
 		return (SUCCESS);
+	msh->last_exit_code = EXIT_FAILURE;
 	if (init_executor(&executor, num_of_cmds) != SUCCESS)
-	{
-		msh->last_exit_code = EXIT_FAILURE;
 		return (SUCCESS);
-	}
 	if (num_of_cmds > 1 || !try_execute_built_in(msh, cmds->content, &executor))
 		execute_on_chain(msh, &executor, cmds);
-	(executor.fd_in > 2 && close(executor.fd_in));
+	(void)(executor.fd_in > 2 && close(executor.fd_in));
 	if (executor.is_parent && executor.num_of_cmds_in_pipe > 0)
 		wait_with_check(&executor, &msh->last_exit_code);
 	if (!executor.is_parent)
