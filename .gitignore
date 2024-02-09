@@ -14,7 +14,8 @@ tester_errors.sh
 # IDE
 .vscode
 
-minishell_tester
+#folders:
+minishell_tester/
 
 # binaries
 *.o

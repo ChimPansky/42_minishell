@@ -8,9 +8,8 @@ char *readline_wrapper(char *prompt)
 		configure_signals(SIG_READLINE_HEREDOC);
 	else
 		configure_signals(SIG_READLINE_MAIN);
-	if (isatty(STDIN_FILENO))
+	if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO))
 	{
-
 		rl_raw = readline(prompt);
 		configure_signals(SIG_NON_INTERACTIVE);
 		return (rl_raw);

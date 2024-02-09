@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 12:15:28 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/06 18:43:09 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/08 15:33:36 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,9 @@ int	lex_tk_word(t_msh *msh, t_lexer *lexer)
 {
 	t_token			*new_token;
 
+	if (check_unexpected_token(msh, lexer->last_tk_type,
+		TK_WORD, lexer) != SUCCESS)
+		return (!SUCCESS);
 	new_token = tokenlist_add_token(lexer->tokens, TK_WORD);
 	if (!new_token)
 		return (!SUCCESS);

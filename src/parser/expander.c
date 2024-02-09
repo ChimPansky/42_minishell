@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
+/*   By: vvilensk <vilenskii.v@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:30:33 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/06 13:21:26 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/09 19:41:43 by vvilensk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ void	expander_destroy(t_expander *expander)
 	ft_lstclear(&expander->true_wildcards, free);
 }
 
+// $'...' and $"..." are special operators, not regular quotes.
+// for now dollar sign is just ommited
 int	expand_next(t_msh *msh, t_expander *expander, t_charptr_array *arr)
 {
 	if (expander->glob && *expander->pos == '\'')
@@ -41,6 +43,9 @@ int	expand_next(t_msh *msh, t_expander *expander, t_charptr_array *arr)
 		expander->pos++;
 		return (SUCCESS);
 	}
+	if (expander->glob && *expander->pos == '$'
+		&& (expander->pos[1] == '"' || expander->pos[1] == '\''))
+		return (expander->pos++, SUCCESS);
 	if (*expander->pos == '$' && is_var_name_start(expander->pos[1]))
 		return (expand_variable(msh, expander, arr));
 	return (check_for_wc_and_improve(expander, &expander->pos));

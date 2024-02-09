@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 12:15:28 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/09 16:05:05 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/09 22:39:24 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,8 @@ int	check_unexpected_token(t_msh *msh, t_token_type last_type,
 	if (cur_type == TK_SUBSHELL && (last_type == TK_SUBSHELL
 		|| last_type == TK_WORD || last_type == TK_REDIR))
 		error_text = "(";
+	else if (cur_type == TK_WORD && last_type == TK_SUBSHELL)
+		error_text = lexer->pos_in_input;
 	else if (cur_type == TK_LOGIC_AND && (last_type == TK_LOGIC_AND
 		|| last_type == TK_LOGIC_OR || last_type == TK_PIPE
 		|| last_type == TK_NULL))

@@ -3,52 +3,63 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
+/*   By: vvilensk <vilenskii.v@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 17:33:15 by tkasbari          #+#    #+#             */
-/*   Updated: 2023/12/18 09:42:10 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/09 21:54:40 by vvilensk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "built_in.h"
+#include "libft.h"
+#include <stdlib.h>
 
-static bool	has_n_flag(char	**cmd_with_args)
+bool	is_n_option(char *arg)
 {
-	int		j;
-	bool	n_flag;
-
-	n_flag = false;
-	if (!cmd_with_args[1] || cmd_with_args[1][0] != '-')
+	if (*arg != '-' || arg[1] != 'n')
 		return (false);
-	j = 1;
-	while ((cmd_with_args[1][j]))
+	while (*++arg)
 	{
-		if (cmd_with_args[1][j++] == 'n')
-			n_flag = true;
-		else
+		if (*arg != 'n')
 			return (false);
 	}
-	return (n_flag);
+	return (true);
+}
+
+static int	handle_echo(char **cmd_with_args, int fd_out)
+{
+	bool	reading_options;
+	bool	has_n_option;
+
+	reading_options = true;
+	has_n_option = false;
+	while (*cmd_with_args)
+	{
+		if (reading_options)
+		{
+			if (is_n_option(*cmd_with_args))
+				has_n_option = true;
+			else
+				reading_options = false;
+		}
+		if (!reading_options)
+		{
+			if (ft_dprintf(fd_out, "%s", *cmd_with_args) == -1)
+				return (!SUCCESS);
+			if (cmd_with_args[1])
+				ft_dprintf(fd_out, " ");
+		}
+		cmd_with_args++;
+	}
+	if (!has_n_option && ft_dprintf(fd_out, "\n") == -1)
+		return (!SUCCESS);
+	return (SUCCESS);
 }
 
 int	built_in_echo(t_msh *msh, char **cmd_with_args, int fd_out)
 {
-	const bool	n_flag = has_n_flag(cmd_with_args);
-	int		i;
-
-	(void)msh;
-	i = 1;
-	while (cmd_with_args[i])
-	{
-		if (i > 1 || ((i == 1) && !n_flag))
-		{
-			dprintf(fd_out, "%s", cmd_with_args[i]);
-			if (cmd_with_args[i + 1])
-				dprintf(fd_out, " ");
-		}
-		i++;
-	}
-	if (!n_flag)
-		dprintf(fd_out, "\n");
-	return (SUCCESS);
+	(void) msh;
+	if (handle_echo(cmd_with_args + 1, fd_out) != SUCCESS)
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }

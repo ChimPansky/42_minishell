@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   executor.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/08 19:41:54 by vvilensk          #+#    #+#             */
+/*   Updated: 2024/02/09 22:38:34 by tkasbari         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 #include "executor.h"
-#include <signal.h>
 #include <stdlib.h>
 #include <sys/wait.h>
 
-int init_executor(t_executor *exec, int num_of_cmds) {
+int	init_executor(t_executor *exec, int num_of_cmds)
+{
 	exec->fd_in = STDIN_FILENO;
 	exec->fd_out = STDOUT_FILENO;
 	exec->num_of_cmds_in_pipe = num_of_cmds;
@@ -17,7 +29,8 @@ int init_executor(t_executor *exec, int num_of_cmds) {
 	return (SUCCESS);
 }
 
-void destroy_executor(t_executor *exec) {
+void	destroy_executor(t_executor *exec)
+{
 	if (exec->fd_in > 2)
 		close(exec->fd_in);
 	if (exec->fd_out > 2)
@@ -26,10 +39,11 @@ void destroy_executor(t_executor *exec) {
 }
 
 // waitpid errors seems to be okay to ignore
-// TODO if the current process exited with WIFSIGNALED kill the others, if not, keep waiting
+// TODO if the current process exited with WIFSIGNALED kill the others
+//  , if not, keep waiting
 void	wait_with_check(t_executor *executor, int *last_exit_code)
 {
-	int i = 0;
+	int	i = 0;
 	int	status;
 
 	while (i < executor->num_of_cmds_in_pipe)
@@ -50,9 +64,12 @@ void	wait_with_check(t_executor *executor, int *last_exit_code)
 		*last_exit_code = WTERMSIG(status) + 128;
 }
 
-bool try_execute_built_in(t_msh *msh, t_simple_command *cmd, t_executor *executor)
+bool	try_execute_built_in(
+	t_msh *msh,
+	t_simple_command *cmd,
+	t_executor *executor)
 {
-	t_built_in func;
+	t_built_in	func;
 
 	if (cmd->cmd_type != CMD_EXEC)
 		return (false);
@@ -63,28 +80,24 @@ bool try_execute_built_in(t_msh *msh, t_simple_command *cmd, t_executor *executo
 	if (process_redirections(executor, cmd->redirections) != SUCCESS)
 		msh->last_exit_code = EXIT_FAILURE;
 	else
-		msh->last_exit_code = func(msh, cmd->cmd_with_args.buf, executor->fd_out);
+		msh->last_exit_code
+			= func(msh, cmd->cmd_with_args.buf, executor->fd_out);
 	return (true);
 }
 
-// todo special case cmdwitargs=NULL, redirections != null
-// if no success frome execute_??_chain, exit code in executor ain't changed
-int execute(t_msh *msh, t_cmdlist *cmds)
+// what if execute on chain returned !SUCCESS meaning sistem error?
+int	execute(t_msh *msh, t_cmdlist *cmds)
 {
-	t_executor executor;
-
+	t_executor	executor;
 	const int	num_of_cmds = ft_lstsize(cmds);
+
 	if (num_of_cmds == 0)
 		return (SUCCESS);
 	if (init_executor(&executor, num_of_cmds) != SUCCESS)
-	{
-		msh->last_exit_code = EXIT_FAILURE;
 		return (SUCCESS);
-	}
 	if (num_of_cmds > 1 || !try_execute_built_in(msh, cmds->content, &executor))
 		execute_on_chain(msh, &executor, cmds);
-	(executor.fd_in > 2 && close(executor.fd_in));
-	// what if execute on chain returned !SUCCESS meaning sistem error?
+	(void)(executor.fd_in > 2 && close(executor.fd_in));
 	if (executor.is_parent && executor.num_of_cmds_in_pipe > 0)
 		wait_with_check(&executor, &msh->last_exit_code);
 	if (!executor.is_parent)

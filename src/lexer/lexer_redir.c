@@ -6,13 +6,13 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 12:15:28 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/09 16:10:43 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/09 22:40:30 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+#include "ft_charptr_array.h"
 #include "lexer.h"
-#include <signal.h>
 
 // cmd d and cmd c check
 // if success return SUCCESS

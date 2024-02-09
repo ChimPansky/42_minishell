@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   wildcards.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vvilensk <vilenskii.v@gmail.com>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/08 19:36:41 by vvilensk          #+#    #+#             */
+/*   Updated: 2024/02/09 21:42:30 by vvilensk         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 #include "ft_charptr_array.h"
 #include "parser.h"
@@ -13,7 +25,7 @@ static bool	does_string_match_wildcard_expression(
 
 	idx = 0;
 	len = *((size_t *)true_wcs->content);
-	if (!ft_str_start_with(string, pattern, len))
+	if (!ft_str_starts_with(string, pattern, len))
 		return (false);
 	string += len;
 	idx += len + 1;
@@ -28,13 +40,11 @@ static bool	does_string_match_wildcard_expression(
 		idx += len + 1;
 		true_wcs = true_wcs->next;
 	}
-	return (ft_str_end_with(string, pattern + idx));
+	return (ft_str_ends_with(string, pattern + idx));
 }
 
 static int	check_dir(char *name, t_expander *expander, t_charptr_array *arr)
 {
-	if (ft_strcmp(name, ".") == SUCCESS || ft_strcmp(name, "..") == SUCCESS)
-		return (SUCCESS);
 	if (name[0] == '.' && expander->replace.buf[0] != '.')
 		return (SUCCESS);
 	if (!does_string_match_wildcard_expression(
