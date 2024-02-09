@@ -6,7 +6,7 @@
 /*   By: vvilensk <vilenskii.v@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 19:39:12 by vvilensk          #+#    #+#             */
-/*   Updated: 2024/02/09 16:19:24 by vvilensk         ###   ########.fr       */
+/*   Updated: 2024/02/09 21:42:27 by vvilensk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static int	check_permissions(char *fname, bool read_only)
 			return (SUCCESS);
 		return (ft_printf_err("msh: %s: Permission denied\n", fname), !SUCCESS);
 	}
-	if (ft_str_end_with(fname, "/"))
+	if (ft_str_ends_with(fname, "/"))
 		return (ft_printf_err("msh: %s: Is a directory\n", fname), !SUCCESS);
 	if (access(fname, F_OK) == SUCCESS)
 	{

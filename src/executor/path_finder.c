@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path_finder.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
+/*   By: vvilensk <vilenskii.v@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 19:39:46 by vvilensk          #+#    #+#             */
-/*   Updated: 2024/02/09 15:13:47 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/09 21:42:24 by vvilensk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static int	try_find_in_path(t_path_finder *pf)
 	i = 0;
 	while (path_entries[i])
 	{
-		if (ft_str_end_with(path_entries[i], "/"))
+		if (ft_str_ends_with(path_entries[i], "/"))
 			pf->exec_with_path = ft_strnjoin(2, path_entries[i], pf->exec);
 		else
 			pf->exec_with_path = ft_strnjoin(3, path_entries[i], "/", pf->exec);

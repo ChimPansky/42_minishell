@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
+/*   By: vvilensk <vilenskii.v@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 17:33:15 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/09 14:32:48 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/09 20:46:54 by vvilensk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,28 @@
 
 int	built_in_exit(t_msh *msh, char **cmd_with_args, int fd_out)
 {
-	(void)		fd_out;
-	int			exit_code;
 	char		*exit_arg;
 
-	ft_printf_err("exit\n");
-	exit_arg = cmd_with_args[1];
-	if (exit_arg && cmd_with_args[2])
-	{
-		ft_printf_err("exit: too many arguments\n");
-		return (EXIT_FAILURE);
-	}
+	(void)fd_out;
+	if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO))
+		ft_printf_err("exit\n");
 	msh->done = true;
-	if (!exit_arg)
-		return (msh->last_exit_code);
-	exit_code = ft_atol_shift(&exit_arg);
-	if (*exit_arg)
-		return (ft_printf_err("exit: %s numeric argument required\n", cmd_with_args[1]), BUILT_IN_EXIT_NONUMERIC);
-	return (((exit_code % 256) + 256) % 256);
+	if (cmd_with_args[1])
+	{
+		exit_arg = cmd_with_args[1];
+		msh->last_exit_code = ft_atol_shift(&exit_arg);
+		if (*exit_arg || !*cmd_with_args[1])
+		{
+			msh->last_exit_code = BUILT_IN_EXIT_NONUMERIC;
+			ft_printf_err("exit: %s numeric argument required\n",
+				cmd_with_args[1]);
+		}
+		else if (cmd_with_args[2])
+		{
+			ft_printf_err("exit: too many arguments\n");
+			msh->done = false;
+			msh->last_exit_code = BUILT_IN_EXIT_TOO_MANY_ARGS;
+		}
+	}
+	return (((msh->last_exit_code % 256) + 256) % 256);
 }

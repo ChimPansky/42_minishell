@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
+/*   By: vvilensk <vilenskii.v@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 17:33:15 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/08 15:07:30 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/09 21:54:40 by vvilensk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ bool	is_n_option(char *arg)
 	return (true);
 }
 
-static int handle_echo(char **cmd_with_args, int fd_out)
+static int	handle_echo(char **cmd_with_args, int fd_out)
 {
 	bool	reading_options;
 	bool	has_n_option;

@@ -1,0 +1,58 @@
+  24:   STD_OUT: ❌  STD_ERR: ✅  EXIT_CODE: ✅  LEAKS: ✅ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/0_compare_parsing.sh:52
+  25:   STD_OUT: ❌  STD_ERR: ✅  EXIT_CODE: ✅  LEAKS: ✅ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/0_compare_parsing.sh:54
+  26:   STD_OUT: ❌  STD_ERR: ✅  EXIT_CODE: ✅  LEAKS: ✅ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/0_compare_parsing.sh:56
+  27:   STD_OUT: ❌  STD_ERR: ✅  EXIT_CODE: ✅  LEAKS: ✅ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/0_compare_parsing.sh:58
+  28:   STD_OUT: ❌  STD_ERR: ✅  EXIT_CODE: ✅  LEAKS: ✅ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/0_compare_parsing.sh:60
+  29:   STD_OUT: ❌  STD_ERR: ✅  EXIT_CODE: ✅  LEAKS: ✅ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/0_compare_parsing.sh:62
+  30:   STD_OUT: ❌  STD_ERR: ✅  EXIT_CODE: ✅  LEAKS: ✅ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/0_compare_parsing.sh:64
+  89:   STD_OUT: ✅  STD_ERR: ✅  EXIT_CODE: ✅  LEAKS: ❌ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/0_compare_parsing.sh:182
+  118:  STD_OUT: ✅  STD_ERR: ✅  EXIT_CODE: ❌ [ minishell(2)  bash(127) ]  LEAKS: ✅ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/10_parsing_hell.sh:304
+  119:  STD_OUT: ✅  STD_ERR: ❌  EXIT_CODE: ❌ [ minishell(1)  bash(0) ]  LEAKS: ✅ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/10_parsing_hell.sh:306
+  1:    STD_OUT: ❌  STD_ERR: ✅  EXIT_CODE: ✅  LEAKS: ✅ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/1_builtins.sh:7
+  27:   STD_OUT: ❌  STD_ERR: ✅  EXIT_CODE: ✅  LEAKS: ✅ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/1_builtins.sh:59
+  28:   STD_OUT: ❌  STD_ERR: ✅  EXIT_CODE: ✅  LEAKS: ✅ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/1_builtins.sh:61
+  29:   STD_OUT: ❌  STD_ERR: ✅  EXIT_CODE: ✅  LEAKS: ✅ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/1_builtins.sh:63
+  30:   STD_OUT: ❌  STD_ERR: ✅  EXIT_CODE: ✅  LEAKS: ✅ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/1_builtins.sh:65
+  31:   STD_OUT: ❌  STD_ERR: ✅  EXIT_CODE: ✅  LEAKS: ✅ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/1_builtins.sh:67
+  32:   STD_OUT: ❌  STD_ERR: ✅  EXIT_CODE: ✅  LEAKS: ✅ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/1_builtins.sh:69
+  33:   STD_OUT: ❌  STD_ERR: ✅  EXIT_CODE: ✅  LEAKS: ✅ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/1_builtins.sh:71
+  101:  STD_OUT: ✅  STD_ERR: ❌  EXIT_CODE: ❌ [ minishell(1)  bash(0) ]  LEAKS: ✅ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/1_builtins.sh:230
+  104:  STD_OUT: ✅  STD_ERR: ❌  EXIT_CODE: ✅  LEAKS: ✅ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/1_builtins.sh:236
+  106:  STD_OUT: ✅  STD_ERR: ❌  EXIT_CODE: ✅  LEAKS: ✅ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/1_builtins.sh:240
+  127:  STD_OUT: ❌  STD_ERR: ✅  EXIT_CODE: ✅  LEAKS: ✅ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/1_builtins.sh:311
+  130:  STD_OUT: ✅  STD_ERR: ❌  EXIT_CODE: ✅  LEAKS: ✅ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/1_builtins.sh:325
+  132:  STD_OUT: ❌  STD_ERR: ❌  EXIT_CODE: ✅  LEAKS: ✅ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/1_builtins.sh:334
+  137:  STD_OUT: ❌  STD_ERR: ✅  EXIT_CODE: ✅  LEAKS: ✅ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/1_builtins.sh:353
+  139:  STD_OUT: ✅  STD_ERR: ✅  EXIT_CODE: ❌ [ minishell(1)  bash(127) ]  LEAKS: ✅ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/1_builtins.sh:357
+  149:  STD_OUT: ❌  STD_ERR: ✅  EXIT_CODE: ✅  LEAKS: ✅ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/1_builtins.sh:387
+  164:  STD_OUT: ✅  STD_ERR: ✅  EXIT_CODE: ❌ [ minishell(1)  bash(2) ]  LEAKS: ✅ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/1_builtins.sh:417
+  169:  STD_OUT: ✅  STD_ERR: ✅  EXIT_CODE: ❌ [ minishell(1)  bash(2) ]  LEAKS: ✅ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/1_builtins.sh:427
+  184:  STD_OUT: ✅  STD_ERR: ✅  EXIT_CODE: ❌ [ minishell(1)  bash(2) ]  LEAKS: ✅ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/1_builtins.sh:457
+  199:  STD_OUT: ✅  STD_ERR: ❌  EXIT_CODE: ❌ [ minishell(1)  bash(0) ]  LEAKS: ✅ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/1_builtins.sh:487
+  223:  STD_OUT: ✅  STD_ERR: ❌  EXIT_CODE: ❌ [ minishell(0)  bash(127) ]  LEAKS: ✅ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/1_builtins.sh:549
+  230:  STD_OUT: ✅  STD_ERR: ✅  EXIT_CODE: ❌ [ minishell(1)  bash(2) ]  LEAKS: ✅ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/1_builtins.sh:563
+  1:    STD_OUT: ✅  STD_ERR: ✅  EXIT_CODE: ✅  LEAKS: ❌ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/1_pipelines.sh:4
+  2:    STD_OUT: ✅  STD_ERR: ✅  EXIT_CODE: ✅  LEAKS: ❌ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/1_pipelines.sh:6
+  15:   STD_OUT: ❌  STD_ERR: ✅  EXIT_CODE: ✅  LEAKS: ✅ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/1_pipelines.sh:32
+  22:   STD_OUT: ✅  STD_ERR: ❌  EXIT_CODE: ✅  LEAKS: ✅ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/1_pipelines.sh:46
+  29:   STD_OUT: ❌  STD_ERR: ✅  EXIT_CODE: ❌ [ minishell(0)  bash(2) ]  LEAKS: ✅ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/1_pipelines.sh:96
+  32:   STD_OUT: ✅  STD_ERR: ❌  EXIT_CODE: ✅  LEAKS: ✅ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/1_pipelines.sh:132
+  43:   STD_OUT: ✅  STD_ERR: ✅  EXIT_CODE: ✅  LEAKS: ❌ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/1_pipelines.sh:176
+  7:    STD_OUT: ✅  STD_ERR: ❌  EXIT_CODE: ❌ [ minishell(2)  bash(0) ]  LEAKS: ✅ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/1_scmds.sh:19
+  81:   STD_OUT: ❌  STD_ERR: ✅  EXIT_CODE: ✅  LEAKS: ✅ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/2_correction.sh:171
+  82:   STD_OUT: ❌  STD_ERR: ✅  EXIT_CODE: ✅  LEAKS: ✅ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/2_correction.sh:173
+  83:   STD_OUT: ❌  STD_ERR: ✅  EXIT_CODE: ✅  LEAKS: ✅ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/2_correction.sh:176
+  7:    STD_OUT: ✅  STD_ERR: ❌  EXIT_CODE: ❌ [ minishell(1)  bash(0) ]  LEAKS: ✅ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/2_path_check.sh:30
+  8:    STD_OUT: ❌  STD_ERR: ❌  EXIT_CODE: ✅  LEAKS: ✅ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/2_path_check.sh:32
+  11:   STD_OUT: ❌  STD_ERR: ❌  EXIT_CODE: ✅  LEAKS: ✅ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/2_path_check.sh:43
+  8:    STD_OUT: ✅  STD_ERR: ✅  EXIT_CODE: ❌ [ minishell(127)  bash(126) ]  LEAKS: ✅ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/8_syntax_errors.sh:19
+  20:   STD_OUT: ✅  STD_ERR: ✅  EXIT_CODE: ❌ [ minishell(0)  bash(2) ]  LEAKS: ✅ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/8_syntax_errors.sh:43
+  21:   STD_OUT: ✅  STD_ERR: ✅  EXIT_CODE: ❌ [ minishell(0)  bash(2) ]  LEAKS: ✅ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/8_syntax_errors.sh:46
+  22:   STD_OUT: ✅  STD_ERR: ✅  EXIT_CODE: ❌ [ minishell(0)  bash(2) ]  LEAKS: ✅ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/8_syntax_errors.sh:49
+  49:   STD_OUT: ✅  STD_ERR: ✅  EXIT_CODE: ✅  LEAKS: ❌ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/8_syntax_errors.sh:115
+  13:   STD_OUT: ❌  STD_ERR: ❌  EXIT_CODE: ✅  LEAKS: ✅ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/9_go_wild.sh:46
+  14:   STD_OUT: ❌  STD_ERR: ✅  EXIT_CODE: ✅  LEAKS: ✅ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/9_go_wild.sh:49
+  15:   STD_OUT: ❌  STD_ERR: ❌  EXIT_CODE: ✅  LEAKS: ✅ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/9_go_wild.sh:52
+  16:   STD_OUT: ✅  STD_ERR: ✅  EXIT_CODE: ✅  LEAKS: ❌ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/9_go_wild.sh:55
+  17:   STD_OUT: ✅  STD_ERR: ✅  EXIT_CODE: ✅  LEAKS: ❌ /nfs/homes/vvilensk/42_minishell_tester/cmds/mand/9_go_wild.sh:57
+                                     ❌ 62
