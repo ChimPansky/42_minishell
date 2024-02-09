@@ -32,6 +32,7 @@ int	check_for_signals(t_msh *msh)
 	if (g_sig_int_received)
 	{
 		msh->last_exit_code = EXIT_SIG_INT;
+		g_sig_int_received = 0;
 		return (true);
 	}
 	else
@@ -53,7 +54,7 @@ static void	sig_handler_rl_heredoc(int signo)
 {
 	(void) signo;
 	g_sig_int_received = true;
-	write(STDOUT_FILENO, "\n", 1);
+	//write(STDOUT_FILENO, "\n", 1);
 	//rl_done = 1;
 	rl_replace_line("", 0);
 	rl_on_new_line();

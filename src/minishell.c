@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 20:05:41 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/09 13:06:39 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/09 16:11:55 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,20 +48,13 @@ int main_loop(t_msh *msh)
 		check_for_signals(msh);
 		if (SUCCESS != lex(msh, &tokens, rl_input.buf))
 		{
-			ft_putstr_fd("Lex returned !0", STDOUT_FILENO);
-			if (check_for_signals(msh))
-			{
-				ft_putstr_fd("prompt after heredoc sigint", STDOUT_FILENO);
-				//tokenlist_destroy(&tokens);
-			}
-			else
+			if (!check_for_signals(msh))
 			{
 				add_history(rl_input.buf);
 				string_destroy(&rl_input);
 			}
 			continue;
 		}
-		//print_tokens(tokens);
 		add_history(rl_input.buf);
 		string_destroy(&rl_input);
 		parse_and_execute(msh, tokens);

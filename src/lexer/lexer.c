@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 12:15:28 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/09 13:49:55 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/09 16:05:05 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,7 @@ int lex_tokens(t_msh *msh, t_tokenlist **tokens_p, char *input)
 		if (*lexer.pos_in_input == '<' || *lexer.pos_in_input == '>')
 		{
 			if (lex_tk_redir(msh, &lexer) != SUCCESS)
-			{
-				ft_putstr_fd("lex_tk_redir returned !0", STDOUT_FILENO);
 				return (tokenlist_destroy(tokens_p), !SUCCESS);
-			}
 		}
 		else if (*lexer.pos_in_input == '&' || *lexer.pos_in_input == '|')
 		{

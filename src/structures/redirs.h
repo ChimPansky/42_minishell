@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:25:17 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/09 13:55:50 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/09 15:59:14 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ typedef struct s_redir_detail
 }		t_redir_detail;
 
 int		redir_init(t_redir_detail **redir, t_redir_type rd_type);
-void	redir_destroy(void **redir_void);
+void	redir_destroy(void *redir_void);
 void	redirlist_destroy(t_redirlist **redirs);
 
 #endif  // REDIRS_H

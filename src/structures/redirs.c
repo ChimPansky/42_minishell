@@ -6,12 +6,13 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 15:34:18 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/09 13:55:42 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/09 16:09:39 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "redirs.h"
 #include "libft.h"
+#include <unistd.h>
 
 int	redir_init(t_redir_detail **redir, t_redir_type rd_type)
 {
@@ -27,16 +28,14 @@ int	redir_init(t_redir_detail **redir, t_redir_type rd_type)
 	return (SUCCESS);
 }
 
-void	redir_destroy(void **redir_void)
+void	redir_destroy(void *redir_void)
 {
-	if (!*redir_void)
+	if (!redir_void)
 		return ;
-	t_redir_detail	*redir = *redir_void;
-
+	t_redir_detail	*redir = redir_void;
 	string_destroy(&redir->string);
 	charptr_array_destroy(&redir->content);
 	free(redir);
-	*redir_void = NULL;
 }
 
 void	redirlist_destroy(t_redirlist **redirs)

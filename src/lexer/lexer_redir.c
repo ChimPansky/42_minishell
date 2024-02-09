@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 12:15:28 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/09 14:16:03 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/09 16:10:43 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,8 @@ static int	lex_heredoc(t_msh *msh, t_redir_detail *redir)
 	while (1)
 	{
 		line = readline_wrapper(PROMPT_HEREDOC);
-		ft_putstr_fd("heredoc line has been read\n", STDOUT_FILENO);
 		if (check_for_signals(msh))
-		{
-			ft_putstr_fd("Lex heredoc ctr + C", STDOUT_FILENO);
 			return (free(line), !SUCCESS);
-		}
 		if (line == NULL)
         {
             if (errno)
@@ -113,13 +109,10 @@ int	lex_tk_redir(t_msh *msh, t_lexer *lexer)
 		return (!SUCCESS);
 	read_shell_spaces(&lexer->pos_in_input);
 	if (read_word(msh, lexer, &(new_redir->string)) != SUCCESS)
-		return (redir_destroy((void**)new_redir), !SUCCESS);
+		return (redir_destroy(new_redir), !SUCCESS);
+	if (new_redir->type == FD_HEREDOC && lex_heredoc(msh, new_redir) != SUCCESS)
+		return (redir_destroy(new_redir), !SUCCESS);
 	new_token->redir = new_redir;
 	lexer->last_tk_type = TK_REDIR;
-	if (new_redir->type == FD_HEREDOC && lex_heredoc(msh, new_redir) != SUCCESS)
-	{
-		ft_putstr_fd("lex_heredoc returned !0", STDOUT_FILENO);
-		return (redir_destroy((void**)new_redir), !SUCCESS);
-	}
 	return (SUCCESS);
 }
