@@ -13,8 +13,12 @@ int	parse_redirection(t_msh *msh, t_parser *parser)
 	if (!new_redir)
 		return (perror("parse_redirection: ft_lstnew"), !SUCCESS);
 	ft_lstadd_back(redirlist, new_redir);
-	if (redir->type == FD_HEREDOC && redir->expand_heredoc)
-		return (expand_heredoc(msh, &redir->content) != SUCCESS);
+	if (redir->type == FD_HEREDOC)
+	{
+		if (redir->expand_heredoc)
+			return (expand_heredoc(msh, &redir->content) != SUCCESS);
+		return (SUCCESS);
+	}
 	return (expand_string_to_arr(msh, redir->string.buf, &redir->content));
 }
 
