@@ -14,14 +14,21 @@
 
 # define PROMPT_MAX_LEN  99 //255
 # define PROMPT_INVITATION "$ "
+# define PROMPT_HEREDOC "> "
 
 # define EXIT_COMMAND_NOT_FOUND		127
 # define EXIT_PERMISSION_DENIED		126
 # define EXIT_SIG_INT				130
 
-extern sig_atomic_t g_signal_received;
+typedef struct s_signal_data
+{
+	sig_atomic_t	signal_code;
+	int				rl_pipe[2];
+}			t_signal_data;
 
-typedef enum e_ms_error
+extern t_signal_data	g_signal_data;
+
+typedef enum	e_ms_error
 {
     ER_UNDEFINED,
     ER_QUOTES,
@@ -30,6 +37,13 @@ typedef enum e_ms_error
 	ER_MALLOC,
 	ER_AMBIGUOUS_REDIRECT
 }		t_ms_error;
+
+typedef enum	e_signal_mode
+{
+	SIG_READLINE_MAIN,
+	SIG_READLINE_HEREDOC,
+	SIG_NO_READLINE
+}				t_signal_mode;
 
 typedef struct s_msh
 {
@@ -42,7 +56,7 @@ typedef struct s_msh
 typedef int (*t_built_in)(t_msh *msh, char **cmd_with_args, int fd_out);
 
 // app.c
-void		ms_init(t_msh *msh, char **envp);
+int			ms_init(t_msh *msh, char **envp);
 void		ms_destroy(t_msh *msh);
 void		ms_stop(t_msh *msh);
 
@@ -65,10 +79,12 @@ int 		lex(t_msh *msh, t_tokenlist **tokens_p, char *input);
 int 	parse_and_execute(t_msh *msh, t_tokenlist *tokens);
 
 // helpers
-char	*readline_wrapper(char *prompt, int last_exit_code);
+char	*readline_wrapper(char *prompt);
 
 // signals.c
-void 		register_signals(void);
+//int 	register_signals(void);
+int		configure_signals(t_signal_mode sig_mode);
+int		check_for_signals(t_msh *msh);
 
 // helpers/string_utils.c
 bool    is_token_seperator(char c);

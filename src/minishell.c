@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 20:05:41 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/08 21:27:44 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/09 13:06:39 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,9 @@ int try_read_with_readline(t_msh *msh, t_string *rl_input)
 {
 	char	*rl_raw;
 
-	rl_raw = readline_wrapper(msh->prompt.buf, msh->last_exit_code);
+	rl_raw = readline_wrapper(msh->prompt.buf);
 	if (!rl_raw)
 	{
-		if (g_signal_received)
-			ft_putendl_fd("RL returned NULL && signal received", STDOUT_FILENO);
 		if (errno) // check for type of err, sometimes ms_stop
 			perror("readline"), ms_stop(msh);
 		else
@@ -34,17 +32,7 @@ int try_read_with_readline(t_msh *msh, t_string *rl_input)
 	return (SUCCESS);
 }
 
-static int	check_for_signals(t_msh *msh)
-{
-	if (g_signal_received == SIGINT)
-	{
-		msh->last_exit_code = EXIT_SIG_INT;
-		g_signal_received = 0;
-		return (true);
-	}
-	else
-		return (false);
-}
+
 
 int main_loop(t_msh *msh)
 {
@@ -77,6 +65,7 @@ int main_loop(t_msh *msh)
 		add_history(rl_input.buf);
 		string_destroy(&rl_input);
 		parse_and_execute(msh, tokens);
+		check_for_signals(msh);
 		tokenlist_destroy(&tokens);
 	}
 	return (SUCCESS);

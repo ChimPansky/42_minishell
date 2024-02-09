@@ -1,5 +1,6 @@
 #include "../minishell.h"
 #include "executor.h"
+#include <signal.h>
 #include <stdlib.h>
 #include <sys/wait.h>
 
@@ -38,14 +39,14 @@ void	wait_with_check(t_executor *executor, int *last_exit_code)
 			*last_exit_code = EXIT_FAILURE;
 			break;
 		}
-		if (g_signal_received)
+		if (g_signal_data.signal_code == SIGINT)
 			kill(executor->pids[i++], SIGINT);
 		if (waitpid(executor->pids[i], &status, WNOHANG) == 0)
 			usleep(1000);
 		else
 			i++;
 	}
-	if (g_signal_received)
+	if (g_signal_data.signal_code == SIGINT)
 		*last_exit_code = EXIT_SIG_INT;
 	else if (WIFEXITED(status))
         *last_exit_code = WEXITSTATUS(status);

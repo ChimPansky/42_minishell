@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 15:34:18 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/03 16:01:55 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/09 11:36:50 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	redir_destroy(void *redir_void)
 	string_destroy(&redir->string);
 	charptr_array_destroy(&redir->content);
 	free(redir);
+	redir = NULL;
 }
 
 void	redirlist_destroy(t_redirlist **redirs)
