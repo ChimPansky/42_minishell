@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 17:33:15 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/01 13:22:49 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/09 15:10:53 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int is_valid_var_name(char *name)
 		return !SUCCESS;
 	while (++name)
 	{
-		if (!(ft_isalpha(*name) || *name == '_'))
+		if (!(ft_isalnum(*name) || *name == '_'))
 			return !SUCCESS;
 	}
 	return SUCCESS;

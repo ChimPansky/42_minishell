@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path_finder.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vvilensk <vilenskii.v@gmail.com>           +#+  +:+       +#+        */
+/*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 19:39:46 by vvilensk          #+#    #+#             */
-/*   Updated: 2024/02/08 19:40:09 by vvilensk         ###   ########.fr       */
+/*   Updated: 2024/02/09 15:13:47 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,8 @@ int	init_path_finder(t_msh *msh, t_path_finder *pf, char *exec_name)
 	else
 	{
 		pf->exec_with_path = ft_strdup(pf->exec);
-		if (pf->exec_with_path)
-			return (perror("execute_in_child_process: ft_strdup"), !SUCCESS);
+		if (!pf->exec_with_path)
+			return (perror("init_path_finder: ft_strdup"), !SUCCESS);
 	}
 	return (SUCCESS);
 }
