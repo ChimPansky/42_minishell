@@ -6,17 +6,17 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 11:46:05 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/09 21:41:20 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/09 22:10:26 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "ft_string.h"
 
-int	ms_init(t_msh *msh, char **envp)
+void	ms_init(t_msh *msh, char **envp)
 {
 	ft_bzero(msh, sizeof(t_msh));
-	g_signal_no = false;
+	g_signal_no = 0;
 	if (string_init_fixed_cap(&msh->prompt, PROMPT_MAX_LEN + 1) != SUCCESS)
 		perror("init prompt"), exit(EXIT_FAILURE);
 	msh->done = false;
@@ -27,7 +27,6 @@ int	ms_init(t_msh *msh, char **envp)
 		if (!msh->env)
 			string_destroy(&msh->prompt), exit(EXIT_FAILURE);
 	}
-	return (SUCCESS);
 }
 
 void	ms_destroy(t_msh *msh)

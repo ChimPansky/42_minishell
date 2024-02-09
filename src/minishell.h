@@ -51,7 +51,7 @@ typedef struct s_msh
 typedef int (*t_built_in)(t_msh *msh, char **cmd_with_args, int fd_out);
 
 // app.c
-int			ms_init(t_msh *msh, char **envp);
+void		ms_init(t_msh *msh, char **envp);
 void		ms_destroy(t_msh *msh);
 void		ms_stop(t_msh *msh);
 
