@@ -1,5 +1,6 @@
 #include "executor.h"
 #include "ft_charptr_array.h"
+#include <unistd.h>
 
 // fileno in child process always STDOUT_FILENO
 static int try_exec_built_in(t_msh *msh, char **cmd_with_args)
@@ -83,6 +84,7 @@ int	execute_in_child_process(t_msh *msh, char **cmd_with_args)
 	}
 	if (varlist_convert_to_array(msh->env, &envp) != SUCCESS)
 		return (perror("msh: "), free(exec_with_path), !SUCCESS);
+	configure_signals(SIG_EXECUTOR);
 	execve(exec_with_path, cmd_with_args, envp.buf);
 	return (perror("msh: exeve"), charptr_array_destroy(&envp), free(exec_with_path), !SUCCESS);
 }

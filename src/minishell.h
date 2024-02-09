@@ -20,7 +20,7 @@
 # define EXIT_PERMISSION_DENIED		126
 # define EXIT_SIG_INT				130
 
-extern sig_atomic_t	g_sig_int_received;
+extern sig_atomic_t	g_signal_no;
 
 typedef enum	e_ms_error
 {
@@ -36,7 +36,8 @@ typedef enum	e_signal_mode
 {
 	SIG_READLINE_MAIN,
 	SIG_READLINE_HEREDOC,
-	SIG_NO_READLINE
+	SIG_NON_INTERACTIVE,
+	SIG_EXECUTOR
 }				t_signal_mode;
 
 typedef struct s_msh
@@ -77,7 +78,7 @@ char	*readline_wrapper(char *prompt);
 
 // signals.c
 //int 	register_signals(void);
-int		configure_signals(t_signal_mode sig_mode);
+void	configure_signals(t_signal_mode sig_mode);
 int		check_for_signals(t_msh *msh);
 
 // helpers/string_utils.c

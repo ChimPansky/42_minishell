@@ -39,20 +39,15 @@ void	wait_with_check(t_executor *executor, int *last_exit_code)
 			*last_exit_code = EXIT_FAILURE;
 			break;
 		}
-		if (g_sig_int_received)
-			kill(executor->pids[i++], SIGINT);
 		if (waitpid(executor->pids[i], &status, WNOHANG) == 0)
 			usleep(1000);
 		else
 			i++;
 	}
-	if (g_sig_int_received )
-		*last_exit_code = EXIT_SIG_INT;
-	else if (WIFEXITED(status))
+	if (WIFEXITED(status))
         *last_exit_code = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
-		*last_exit_code = WSTOPSIG(status);
-	// else ??
+		*last_exit_code = WTERMSIG(status) + 128;
 }
 
 bool try_execute_built_in(t_msh *msh, t_simple_command *cmd, t_executor *executor)

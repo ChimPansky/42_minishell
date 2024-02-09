@@ -6,33 +6,16 @@
 #include "libft.h"
 #include "minishell.h"
 
-sig_atomic_t	g_sig_int_received;
-
-// static void sig_int_handler(int signo)
-// {
-// 	g_signal_data.signal_code = signo;
-// 	//ft_putstr_fd("SIG_INT_HANDLER", STDOUT_FILENO);
-// 	if (signo != SIGINT)
-// 		return ;
-// 	write(STDOUT_FILENO, "\n", 1);
-// 	rl_on_new_line();
-// 	rl_replace_line("", 0);
-// 	rl_redisplay();
-// 	write(g_signal_data.rl_pipe[1], "\n", 1); // write to readline to trigger end of input
-// 	//rl_done = 1;
-// 	//write(STDOUT_FILENO, "\n", 1);
-// 	// rl_on_new_line();
-// 	// rl_replace_line("", 1);
-// 	// rl_redisplay();
-// 	// //rl_done = 1;
-// }
+sig_atomic_t	g_signal_no = 0;
 
 int	check_for_signals(t_msh *msh)
 {
-	if (g_sig_int_received)
+	if (g_signal_no)
 	{
-		msh->last_exit_code = EXIT_SIG_INT;
-		g_sig_int_received = 0;
+		msh->last_exit_code = g_signal_no + 128;
+		if (g_signal_no == SIGQUIT)
+			write(STDOUT_FILENO, "\n", 1);
+		g_signal_no = 0;
 		return (true);
 	}
 	else
@@ -41,85 +24,54 @@ int	check_for_signals(t_msh *msh)
 
 static void	sig_handler_rl_main(int signo)
 {
-	(void) signo;
-	g_sig_int_received = true;
+	g_signal_no = signo;
 	write(STDOUT_FILENO, "\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
-	//write(g_signal_data.rl_pipe[1], "\n", 1); // write to readline to trigger end of input
 }
 
 static void	sig_handler_rl_heredoc(int signo)
 {
-	(void) signo;
-	g_sig_int_received = true;
-	//write(STDOUT_FILENO, "\n", 1);
-	//rl_done = 1;
+	g_signal_no = signo;
 	rl_replace_line("", 0);
 	rl_on_new_line();
 	ioctl(STDIN_FILENO, TIOCSTI, "\n");
-	//rl_forced_update_display();
-	//rl_redisplay();
-	//write(g_signal_data.rl_pipe[1], "\n", 1); // write to readline to trigger end of input
 }
 
-static void	sig_handler_no_rl(int signo)
+static void	sig_handler_non_interactive(int signo)
 {
-	(void) signo;
-	g_sig_int_received = true;
+	g_signal_no = signo;
 	write(STDOUT_FILENO, "\n", 1);
 	rl_on_new_line();
 }
 
-int	configure_signals(t_signal_mode sig_mode)
+static int	set_sigaction(struct sigaction *sig_act, int signo, void *handler_func)
+{
+	sig_act->sa_handler = handler_func;
+	if (sigaction(signo, sig_act, NULL) != SUCCESS)
+		return (perror("set_sigaction"), !SUCCESS);
+	return (SUCCESS);
+}
+
+void	configure_signals(t_signal_mode sig_mode)
 {
 	struct sigaction sig_act;
 
 	sigemptyset(&sig_act.sa_mask);
     sig_act.sa_flags = 0;
+	if (sig_mode == SIG_READLINE_MAIN || sig_mode == SIG_READLINE_HEREDOC
+		|| sig_mode == SIG_NON_INTERACTIVE)
+		set_sigaction(&sig_act, SIGQUIT, SIG_IGN);
 	if (sig_mode == SIG_READLINE_MAIN)
-		sig_act.sa_handler = sig_handler_rl_main;
+		set_sigaction(&sig_act, SIGINT, sig_handler_rl_main);
 	else if (sig_mode == SIG_READLINE_HEREDOC)
-		sig_act.sa_handler = sig_handler_rl_heredoc;
-	else if (sig_mode == SIG_NO_READLINE)
-		sig_act.sa_handler = sig_handler_no_rl;
-	if (sigaction(SIGINT, &sig_act, NULL) != 0)
-		return (ft_printf_err(
-			"An error occurred while configuring signal handler.\n"),
-			!SUCCESS);
-
-	if (sig_mode != SIG_NO_READLINE)
+		set_sigaction(&sig_act, SIGINT, sig_handler_rl_heredoc);
+	else if (sig_mode == SIG_NON_INTERACTIVE)
+		set_sigaction(&sig_act, SIGINT, sig_handler_non_interactive);
+	else if (sig_mode == SIG_EXECUTOR)
 	{
-		sig_act.sa_handler = SIG_IGN;
-		if (sigaction(SIGQUIT, &sig_act, NULL) != 0)
-			return (ft_printf_err(
-				"An error occurred while configuring signal handler.\n"),
-				!SUCCESS);
+		set_sigaction(&sig_act, SIGINT, SIG_DFL);
+		set_sigaction(&sig_act, SIGQUIT, SIG_DFL);
 	}
-	return (SUCCESS);
 }
-
-// int register_signals(void)
-// {
-// 	struct sigaction sig_act;
-
-// 	g_signal_data.signal_code = 0;
-// 	if (pipe(g_signal_data.rl_pipe) == -1)
-// 		return (perror("register_signals: rl_pipe"), !SUCCESS);
-//     sigemptyset(&sig_act.sa_mask);
-//     sig_act.sa_flags = 0;
-// 	sig_act.sa_handler = SIG_IGN;
-//     if (sigaction(SIGQUIT, &sig_act, NULL) != 0)
-//     {
-//         dprintf(STDERR_FILENO, "An error occurred while setting a signal handler.\n");
-//         exit(EXIT_FAILURE);
-//     }
-//     sig_act.sa_handler = sig_int_handler;
-//     if (sigaction(SIGINT, &sig_act, NULL) != 0)
-//     {
-//         dprintf(STDERR_FILENO, "An error occurred while setting a signal handler.\n");
-//         exit(EXIT_FAILURE);
-//     }
-// 	return (SUCCESS);
-// }

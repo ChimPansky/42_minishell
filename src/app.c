@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 11:46:05 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/09 14:13:02 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/09 21:41:20 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,8 @@
 
 int	ms_init(t_msh *msh, char **envp)
 {
-
-
 	ft_bzero(msh, sizeof(t_msh));
-	g_sig_int_received = false;
+	g_signal_no = false;
 	if (string_init_fixed_cap(&msh->prompt, PROMPT_MAX_LEN + 1) != SUCCESS)
 		perror("init prompt"), exit(EXIT_FAILURE);
 	msh->done = false;
