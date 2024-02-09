@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
+/*   By: vvilensk <vilenskii.v@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 19:41:54 by vvilensk          #+#    #+#             */
-/*   Updated: 2024/02/09 22:38:34 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/10 00:28:32 by vvilensk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,15 +43,16 @@ void	destroy_executor(t_executor *exec)
 //  , if not, keep waiting
 void	wait_with_check(t_executor *executor, int *last_exit_code)
 {
-	int	i = 0;
+	int	i;
 	int	status;
 
+	i = 0;
 	while (i < executor->num_of_cmds_in_pipe)
 	{
 		if (executor->pids[i] < 0)
 		{
 			*last_exit_code = EXIT_FAILURE;
-			break;
+			break ;
 		}
 		if (waitpid(executor->pids[i], &status, WNOHANG) == 0)
 			usleep(1000);
@@ -59,7 +60,7 @@ void	wait_with_check(t_executor *executor, int *last_exit_code)
 			i++;
 	}
 	if (WIFEXITED(status))
-        *last_exit_code = WEXITSTATUS(status);
+		*last_exit_code = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
 		*last_exit_code = WTERMSIG(status) + 128;
 }

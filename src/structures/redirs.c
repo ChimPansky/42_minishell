@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirs.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
+/*   By: vvilensk <vilenskii.v@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 15:34:18 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/09 16:09:39 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/10 00:24:34 by vvilensk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,11 @@ int	redir_init(t_redir_detail **redir, t_redir_type rd_type)
 
 void	redir_destroy(void *redir_void)
 {
+	t_redir_detail	*redir;
+
 	if (!redir_void)
 		return ;
-	t_redir_detail	*redir = redir_void;
+	redir = redir_void;
 	string_destroy(&redir->string);
 	charptr_array_destroy(&redir->content);
 	free(redir);
@@ -42,3 +44,31 @@ void	redirlist_destroy(t_redirlist **redirs)
 {
 	ft_lstclear(redirs, NULL);
 }
+
+// void	print_redirs(t_list **redirections)
+// {
+// 	t_redirlist	*cur_redir;
+// 	t_redir_detail	*redir;
+// 	char			*fd_type;
+// 	int			i;
+
+// 	i = 1;
+// 	cur_redir = *redirections;
+// 	while (cur_redir)
+// 	{
+// 		redir = cur_redir->content;
+// 		if (redir->type == FD_IN)
+// 			fd_type = "<";
+// 		else if (redir->type == FD_HEREDOC)
+// 			fd_type = "<<";
+// 		else if (redir->type == FD_OUT_TRUNC)
+// 			fd_type = ">";
+// 		else if (redir->type == FD_OUT_APPEND)
+// 			fd_type = ">>";
+// 		printf("%d:\n", i);
+// 		printf("type: %s\n", fd_type);
+// 		printf("str: %s\n", redir->string.buf);
+// 		cur_redir = cur_redir->next;
+// 		i++;
+// 	}
+// }

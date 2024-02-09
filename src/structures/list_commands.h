@@ -1,11 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   list_commands.h                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vvilensk <vilenskii.v@gmail.com>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/10 00:11:50 by vvilensk          #+#    #+#             */
+/*   Updated: 2024/02/10 00:12:37 by vvilensk         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef LIST_COMMANDS_H
-#define LIST_COMMANDS_H
+# define LIST_COMMANDS_H
 
-#include "list_tokens.h"
-#include "redirs.h"
-#include "ft_list.h"
+# include "list_tokens.h"
+# include "redirs.h"
+# include "ft_list.h"
 
-typedef t_list t_cmdlist;
+typedef t_list	t_cmdlist;
 
 typedef enum e_cmd_type
 {
