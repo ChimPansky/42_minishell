@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 15:34:18 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/06 21:10:55 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/09 14:15:31 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,19 +47,22 @@ t_token	*tokenlist_add_token(t_tokenlist **tokenlist, t_token_type type)
 void	token_destroy(void *token_void)
 {
 	t_token *token = token_void;
-
+	ft_putstr_fd("TOKEN_DESTROY START\n", STDOUT_FILENO);
 	if (token->tk_type == TK_REDIR)
-		redir_destroy(token->redir);
+		redir_destroy((void**)token->redir);
 	if (token->tk_type == TK_WORD)
 		string_destroy(&token->string);
 	if (token->tk_type == TK_SUBSHELL)
 		tokenlist_destroy(&token->subshell_tokens);
+	ft_putstr_fd("TOKEN_DESTROY END\n", STDOUT_FILENO);
 	free(token);
 }
 
 void	tokenlist_destroy(t_tokenlist **tokens)
 {
+	ft_putstr_fd("TOKENLIST_DESTROY BEFORE LSTCLEAR\n", STDOUT_FILENO);
 	ft_lstclear(tokens, token_destroy);
+	ft_putstr_fd("TOKENLIST_DESTROY AFTER LSTCLEAR\n", STDOUT_FILENO);
 }
 
 bool	is_cmd_separator_token(t_token_type tk_type)

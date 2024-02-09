@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:30:33 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/09 11:17:01 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/09 14:14:02 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	parse_and_execute(t_msh *msh, t_tokenlist *tokenlist)
 		return (SUCCESS);
 	init_parser(&parser, tokenlist);
 	while (!parser.done && !msh->done
-		&& !(g_signal_data.signal_code == SIGINT))
+		&& !(g_sig_int_received))
 	{
 		if (SUCCESS != init_token(&parser))
 			return (destroy_parser(&parser), !SUCCESS);

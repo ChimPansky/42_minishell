@@ -20,13 +20,7 @@
 # define EXIT_PERMISSION_DENIED		126
 # define EXIT_SIG_INT				130
 
-typedef struct s_signal_data
-{
-	sig_atomic_t	signal_code;
-	int				rl_pipe[2];
-}			t_signal_data;
-
-extern t_signal_data	g_signal_data;
+extern sig_atomic_t	g_sig_int_received;
 
 typedef enum	e_ms_error
 {

@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 11:46:05 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/09 13:32:32 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/09 14:13:02 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,10 @@
 
 int	ms_init(t_msh *msh, char **envp)
 {
-	//if (register_signals() != SUCCESS)
-	//	return (!SUCCESS);
-	if (pipe(g_signal_data.rl_pipe) == -1)
-	 		return (perror("register_signals: rl_pipe"), !SUCCESS);
+
+
 	ft_bzero(msh, sizeof(t_msh));
-	ft_bzero(&g_signal_data, sizeof(t_signal_data));
+	g_sig_int_received = false;
 	if (string_init_fixed_cap(&msh->prompt, PROMPT_MAX_LEN + 1) != SUCCESS)
 		perror("init prompt"), exit(EXIT_FAILURE);
 	msh->done = false;

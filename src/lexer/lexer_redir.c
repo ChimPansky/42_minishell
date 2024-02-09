@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 12:15:28 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/09 13:00:08 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/09 14:16:03 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,10 +113,13 @@ int	lex_tk_redir(t_msh *msh, t_lexer *lexer)
 		return (!SUCCESS);
 	read_shell_spaces(&lexer->pos_in_input);
 	if (read_word(msh, lexer, &(new_redir->string)) != SUCCESS)
-		return (redir_destroy(new_redir), !SUCCESS);
+		return (redir_destroy((void**)new_redir), !SUCCESS);
 	new_token->redir = new_redir;
 	lexer->last_tk_type = TK_REDIR;
 	if (new_redir->type == FD_HEREDOC && lex_heredoc(msh, new_redir) != SUCCESS)
-		return (redir_destroy(new_redir), !SUCCESS);
+	{
+		ft_putstr_fd("lex_heredoc returned !0", STDOUT_FILENO);
+		return (redir_destroy((void**)new_redir), !SUCCESS);
+	}
 	return (SUCCESS);
 }

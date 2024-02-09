@@ -1,11 +1,12 @@
 #include <signal.h>
+#include <sys/ioctl.h>
 #include <readline/readline.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include "libft.h"
 #include "minishell.h"
 
-t_signal_data	g_signal_data;
+sig_atomic_t	g_sig_int_received;
 
 // static void sig_int_handler(int signo)
 // {
@@ -28,10 +29,9 @@ t_signal_data	g_signal_data;
 
 int	check_for_signals(t_msh *msh)
 {
-	if (g_signal_data.signal_code == SIGINT)
+	if (g_sig_int_received)
 	{
 		msh->last_exit_code = EXIT_SIG_INT;
-		g_signal_data.signal_code = 0;
 		return (true);
 	}
 	else
@@ -40,7 +40,8 @@ int	check_for_signals(t_msh *msh)
 
 static void	sig_handler_rl_main(int signo)
 {
-	g_signal_data.signal_code = signo;
+	(void) signo;
+	g_sig_int_received = true;
 	write(STDOUT_FILENO, "\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);
@@ -50,19 +51,22 @@ static void	sig_handler_rl_main(int signo)
 
 static void	sig_handler_rl_heredoc(int signo)
 {
-	g_signal_data.signal_code = signo;
+	(void) signo;
+	g_sig_int_received = true;
 	write(STDOUT_FILENO, "\n", 1);
-	rl_on_new_line();
+	//rl_done = 1;
 	rl_replace_line("", 0);
-	rl_done = 1;
+	rl_on_new_line();
+	ioctl(STDIN_FILENO, TIOCSTI, "\n");
 	//rl_forced_update_display();
 	//rl_redisplay();
-	write(g_signal_data.rl_pipe[1], "\n", 1); // write to readline to trigger end of input
+	//write(g_signal_data.rl_pipe[1], "\n", 1); // write to readline to trigger end of input
 }
 
 static void	sig_handler_no_rl(int signo)
 {
-	g_signal_data.signal_code = signo;
+	(void) signo;
+	g_sig_int_received = true;
 	write(STDOUT_FILENO, "\n", 1);
 	rl_on_new_line();
 }

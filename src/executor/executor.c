@@ -39,14 +39,14 @@ void	wait_with_check(t_executor *executor, int *last_exit_code)
 			*last_exit_code = EXIT_FAILURE;
 			break;
 		}
-		if (g_signal_data.signal_code == SIGINT)
+		if (g_sig_int_received)
 			kill(executor->pids[i++], SIGINT);
 		if (waitpid(executor->pids[i], &status, WNOHANG) == 0)
 			usleep(1000);
 		else
 			i++;
 	}
-	if (g_signal_data.signal_code == SIGINT)
+	if (g_sig_int_received )
 		*last_exit_code = EXIT_SIG_INT;
 	else if (WIFEXITED(status))
         *last_exit_code = WEXITSTATUS(status);
