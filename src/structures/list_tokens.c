@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 15:34:18 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/06 21:10:55 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/09 16:06:44 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ t_token	*tokenlist_add_token(t_tokenlist **tokenlist, t_token_type type)
 void	token_destroy(void *token_void)
 {
 	t_token *token = token_void;
-
 	if (token->tk_type == TK_REDIR)
 		redir_destroy(token->redir);
 	if (token->tk_type == TK_WORD)

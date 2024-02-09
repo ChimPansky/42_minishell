@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_on_chain.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vvilensk <vilenskii.v@gmail.com>           +#+  +:+       +#+        */
+/*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 19:42:48 by vvilensk          #+#    #+#             */
-/*   Updated: 2024/02/09 20:43:52 by vvilensk         ###   ########.fr       */
+/*   Updated: 2024/02/09 22:37:57 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ static int	execute_one_on_chain(
 	t_executor *executor)
 {
 	executor->is_parent = false;
+	configure_signals(SIG_EXECUTOR);
 	msh->last_exit_code = EXIT_FAILURE;
 	if (process_redirections(executor, cmd->redirections) != SUCCESS)
 		return (SUCCESS);
@@ -73,7 +74,7 @@ int	execute_on_chain(t_msh *msh, t_executor *executor, t_cmdlist *cmds)
 
 	msh->last_exit_code = EXIT_FAILURE;
 	idx = 0;
-	while (cmds->next && !g_sigint_received)
+	while (cmds->next && !g_signal_no)
 	{
 		if (execute_to_pipe(msh, executor, cmds->content, &executor->pids[idx])
 			!= SUCCESS)
@@ -83,7 +84,7 @@ int	execute_on_chain(t_msh *msh, t_executor *executor, t_cmdlist *cmds)
 		idx++;
 		cmds = cmds->next;
 	}
-	if (g_sigint_received)
+	if (g_signal_no)
 		return (!SUCCESS);
 	executor->pids[idx] = fork();
 	if (executor->pids[idx] < 0)

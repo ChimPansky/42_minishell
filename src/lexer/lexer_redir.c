@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 12:15:28 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/08 18:05:55 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/09 22:40:30 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@
 // 	}
 // 	return (SUCCESS);
 // }
-static int	lex_heredoc(t_redir_detail *redir)
+static int	lex_heredoc(t_msh *msh, t_redir_detail *redir)
 {
     char    	*line;
 	t_string	line_w_nl;
@@ -47,7 +47,9 @@ static int	lex_heredoc(t_redir_detail *redir)
 		redir->expand_heredoc = true;
 	while (1)
 	{
-		line = readline_wrapper("> ");
+		line = readline_wrapper(PROMPT_HEREDOC);
+		if (check_for_signals(msh))
+			return (free(line), !SUCCESS);
 		if (line == NULL)
         {
             if (errno)
@@ -94,7 +96,7 @@ static void	read_redir_type(t_lexer *lexer)
 	}
 }
 
-int	lex_tk_redir(t_msh *msh,  t_lexer *lexer)
+int	lex_tk_redir(t_msh *msh, t_lexer *lexer)
 {
 	t_token			*new_token;
 	t_redir_detail	*new_redir;
@@ -108,9 +110,9 @@ int	lex_tk_redir(t_msh *msh,  t_lexer *lexer)
 	read_shell_spaces(&lexer->pos_in_input);
 	if (read_word(msh, lexer, &(new_redir->string)) != SUCCESS)
 		return (redir_destroy(new_redir), !SUCCESS);
+	if (new_redir->type == FD_HEREDOC && lex_heredoc(msh, new_redir) != SUCCESS)
+		return (redir_destroy(new_redir), !SUCCESS);
 	new_token->redir = new_redir;
 	lexer->last_tk_type = TK_REDIR;
-	if (new_redir->type == FD_HEREDOC && lex_heredoc(new_redir) != SUCCESS)
-		return (redir_destroy(new_redir), !SUCCESS);
 	return (SUCCESS);
 }

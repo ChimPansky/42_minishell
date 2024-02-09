@@ -1,7 +1,7 @@
 NAME = minishell
 CC = cc
 CFLAGS = -Wall -Werror -Wextra #-Wpedantic
-CFLAGS += -g -Og -fsanitize=address,undefined,leak
+CFLAGS += -g -Og #-fsanitize=address,undefined,leak
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
 IFLAGS = -I $(LIBFT_DIR)/include
@@ -92,6 +92,6 @@ test: $(NAME)
 	bash tests/test_runner.sh
 
 valgrind:
-	valgrind --trace-children=yes --track-origins=yes --leak-check=full --show-leak-kinds=all ./$(NAME)
+	valgrind --trace-children=yes --track-origins=yes --leak-check=full --show-leak-kinds=all --track-fds=all ./$(NAME)
 
 .PHONY: all bonus clean fclean re test lft

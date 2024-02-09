@@ -52,6 +52,8 @@
 42_minishell_tester/cmds/mand/1_scmds.sh:19
 !! env format order !!
 42_minishell_tester/cmds/mand/2_correction.sh:171
+42_minishell_tester/cmds/mand/2_correction.sh:173
+42_minishell_tester/cmds/mand/2_correction.sh:175
 !! ~ !!
 42_minishell_tester/cmds/mand/2_path_check.sh:30
 42_minishell_tester/cmds/mand/2_path_check.sh:32

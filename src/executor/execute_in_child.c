@@ -6,12 +6,13 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 19:48:14 by vvilensk          #+#    #+#             */
-/*   Updated: 2024/02/09 15:22:35 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/09 22:36:51 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 #include "ft_charptr_array.h"
+#include <unistd.h>
 #include <sys/stat.h>
 
 // fileno in child process always STDOUT_FILENO

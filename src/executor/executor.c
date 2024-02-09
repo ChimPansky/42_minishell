@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vvilensk <vilenskii.v@gmail.com>           +#+  +:+       +#+        */
+/*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 19:41:54 by vvilensk          #+#    #+#             */
-/*   Updated: 2024/02/09 20:43:17 by vvilensk         ###   ########.fr       */
+/*   Updated: 2024/02/09 22:38:34 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,20 +53,15 @@ void	wait_with_check(t_executor *executor, int *last_exit_code)
 			*last_exit_code = EXIT_FAILURE;
 			break;
 		}
-		if (g_sigint_received)
-			kill(executor->pids[i++], SIGINT);
 		if (waitpid(executor->pids[i], &status, WNOHANG) == 0)
 			usleep(1000);
 		else
 			i++;
 	}
-	if (g_sigint_received)
-		*last_exit_code = EXIT_SIG_INT;
-	else if (WIFEXITED(status))
+	if (WIFEXITED(status))
         *last_exit_code = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
-		*last_exit_code = WSTOPSIG(status);
-	// else ??
+		*last_exit_code = WTERMSIG(status) + 128;
 }
 
 bool	try_execute_built_in(
