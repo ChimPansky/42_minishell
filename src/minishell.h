@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vvilensk <vilenskii.v@gmail.com>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/10 00:35:32 by vvilensk          #+#    #+#             */
+/*   Updated: 2024/02/10 00:42:32 by vvilensk         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -23,7 +35,7 @@
 
 extern sig_atomic_t	g_signal_no;
 
-typedef enum	e_signal_mode
+typedef enum e_signal_mode
 {
 	SIG_READLINE_MAIN,
 	SIG_READLINE_HEREDOC,
@@ -35,50 +47,36 @@ typedef struct s_msh
 {
 	t_string		prompt;
 	int				last_exit_code;
-	t_varlist 		*env;
-	bool		 	done;
+	t_varlist		*env;
+	bool			done;
 }			t_msh;
 
-typedef int (*t_built_in)(t_msh *msh, char **cmd_with_args, int fd_out);
+typedef int (*		t_built_in)(t_msh *msh, char **cmd_with_args, int fd_out);
 
-// app.c
 void		ms_init(t_msh *msh, char **envp);
 void		ms_destroy(t_msh *msh);
 void		ms_stop(t_msh *msh);
 
-// prompt.c
+int			lex(t_msh *msh, t_tokenlist **tokens_p, char *input);
+int			parse_and_execute(t_msh *msh, t_tokenlist *tokens);
+int			execute(t_msh *msh, t_cmdlist *cmds);
+
 void		update_prompt(t_msh *msh);
 
-//exit_error.c
 void		error_unexp_tk_s(t_msh *msh, char *token);
 void		error_unexp_tk_c(t_msh *msh, char symbol);
 
-// built_ins/built_in.c
 t_built_in	get_built_in_by_name(char *func_name);
+char		*readline_wrapper(char *prompt);
 
-// lexer/lexer.c
-int 		lex(t_msh *msh, t_tokenlist **tokens_p, char *input);
+void		configure_signals(t_signal_mode sig_mode);
+int			check_for_signals(t_msh *msh);
 
-// parser.c
-int 	parse_and_execute(t_msh *msh, t_tokenlist *tokens);
-
-// helpers
-char	*readline_wrapper(char *prompt);
-
-// signals.c
-//int 	register_signals(void);
-void	configure_signals(t_signal_mode sig_mode);
-int		check_for_signals(t_msh *msh);
-
-// helpers/string_utils.c
-bool    is_token_seperator(char c);
-bool	is_special_var_name(char c);
-bool	is_var_name_start(char c);
-bool    is_var_separator(char c);
-size_t	str_remove_quotes(char **str);
-size_t	string_remove_quotes(t_string *string);
-
-// executor/executor.c
-int 		execute(t_msh *msh, t_cmdlist *cmds);
+bool		is_token_seperator(char c);
+bool		is_special_var_name(char c);
+bool		is_var_name_start(char c);
+bool		is_var_separator(char c);
+size_t		str_remove_quotes(char **str);
+size_t		string_remove_quotes(t_string *string);
 
 #endif
