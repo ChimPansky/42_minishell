@@ -17,8 +17,7 @@ int	parse_redirection(t_msh *msh, t_parser *parser)
 	{
 		if (redir->expand_heredoc)
 			return (expand_heredoc(msh, &redir->content) != SUCCESS);
-		else
-			return (SUCCESS);
+		return (SUCCESS);
 	}
 	return (expand_string_to_arr(msh, redir->string.buf, &redir->content));
 }
