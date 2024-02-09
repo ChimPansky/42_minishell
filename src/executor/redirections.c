@@ -6,7 +6,7 @@
 /*   By: vvilensk <vilenskii.v@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 19:39:12 by vvilensk          #+#    #+#             */
-/*   Updated: 2024/02/09 16:17:19 by vvilensk         ###   ########.fr       */
+/*   Updated: 2024/02/09 16:19:24 by vvilensk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,11 @@ static int	check_if_can_be_created(char *fname)
 		return (perror("check_permissions: malloc"), !SUCCESS);
 	if (access(f_dir, F_OK) != SUCCESS)
 		return (free(f_dir),
-			ft_printf_err("msh: %s: No such file or directory", fname),
+			ft_printf_err("msh: %s: No such file or directory\n", fname),
 			!SUCCESS);
 	if (access(f_dir, W_OK) != SUCCESS)
 		return (free(f_dir),
-			ft_printf_err("msh: %s: Permission denied", fname), !SUCCESS);
+			ft_printf_err("msh: %s: Permission denied\n", fname), !SUCCESS);
 	return (free(f_dir), SUCCESS);
 }
 
@@ -69,23 +69,24 @@ static int	check_permissions(char *fname, bool read_only)
 	if (read_only)
 	{
 		if (access(fname, F_OK) != SUCCESS)
-			return (ft_printf_err("msh: %s: No such file or directory", fname),
-				!SUCCESS);
+			return (ft_printf_err("msh: %s: No such file or directory\n",
+					fname), !SUCCESS);
 		if (access(fname, R_OK) == SUCCESS)
 			return (SUCCESS);
-		return (ft_printf_err("msh: %s: Permission denied", fname), !SUCCESS);
+		return (ft_printf_err("msh: %s: Permission denied\n", fname), !SUCCESS);
 	}
 	if (ft_str_end_with(fname, "/"))
-		return (ft_printf_err("msh: %s: Is a directory", fname), !SUCCESS);
+		return (ft_printf_err("msh: %s: Is a directory\n", fname), !SUCCESS);
 	if (access(fname, F_OK) == SUCCESS)
 	{
 		if (SUCCESS != stat(fname, &fstat))
 			return (perror("check_permissions: stat"), !SUCCESS);
 		if (S_ISDIR(fstat.st_mode))
-			return (ft_printf_err("msh: %s: Is a directory", fname), !SUCCESS);
+			return (ft_printf_err("msh: %s: Is a directory\n", fname),
+				!SUCCESS);
 		if (access(fname, W_OK) == SUCCESS)
 			return (SUCCESS);
-		return (ft_printf_err("msh: %s: Permission denied", fname), !SUCCESS);
+		return (ft_printf_err("msh: %s: Permission denied\n", fname), !SUCCESS);
 	}
 	return (check_if_can_be_created(fname));
 }
@@ -126,7 +127,7 @@ int	process_redirections(t_executor *executor, t_redirlist *redirs)
 	{
 		redir = redirs->content;
 		if (!redir)
-			return (ft_printf_err("CRIT ERR: empty redir details"), !SUCCESS);
+			return (ft_printf_err("CRIT ERR: empty redir details\n"), !SUCCESS);
 		if (redir->type == FD_HEREDOC)
 			res = process_heredoc(&redir->content, executor);
 		else if (redir->content.sz != 1)
