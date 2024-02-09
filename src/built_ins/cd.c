@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vvilensk <vilenskii.v@gmail.com>           +#+  +:+       +#+        */
+/*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 17:33:15 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/09 20:17:56 by vvilensk         ###   ########.fr       */
+/*   Updated: 2024/02/09 23:04:01 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	built_in_cd(t_msh *msh, char **cmd_with_args, int fd_out)
 	else
 		dir = cmd_with_args[1];
 	if (dir[0] == '\0')
-		return (EXIT_SUCCESS);
+		dir = ".";
 	if (check_permissions(dir) != SUCCESS)
 		return (EXIT_FAILURE);
 	if (chdir(dir) != SUCCESS)
