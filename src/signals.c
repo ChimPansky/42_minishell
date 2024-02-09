@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   signals.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/10 00:46:07 by tkasbari          #+#    #+#             */
+/*   Updated: 2024/02/10 00:49:26 by tkasbari         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <signal.h>
 #include <sys/ioctl.h>
 #include <readline/readline.h>
@@ -7,20 +19,6 @@
 #include "minishell.h"
 
 sig_atomic_t	g_signal_no = 0;
-
-int	check_for_signals(t_msh *msh)
-{
-	if (g_signal_no)
-	{
-		msh->last_exit_code = g_signal_no + 128;
-		if (g_signal_no == SIGQUIT)
-			write(STDOUT_FILENO, "\n", 1);
-		g_signal_no = 0;
-		return (true);
-	}
-	else
-		return (false);
-}
 
 static void	sig_handler_rl_main(int signo)
 {
@@ -46,7 +44,8 @@ static void	sig_handler_non_interactive(int signo)
 	rl_on_new_line();
 }
 
-static int	set_sigaction(struct sigaction *sig_act, int signo, void *handler_func)
+static int	set_sigaction(struct sigaction *sig_act, int signo,
+	void *handler_func)
 {
 	sig_act->sa_handler = handler_func;
 	if (sigaction(signo, sig_act, NULL) != SUCCESS)
@@ -56,10 +55,10 @@ static int	set_sigaction(struct sigaction *sig_act, int signo, void *handler_fun
 
 void	configure_signals(t_signal_mode sig_mode)
 {
-	struct sigaction sig_act;
+	struct sigaction	sig_act;
 
 	sigemptyset(&sig_act.sa_mask);
-    sig_act.sa_flags = 0;
+	sig_act.sa_flags = 0;
 	if (sig_mode == SIG_READLINE_MAIN || sig_mode == SIG_READLINE_HEREDOC
 		|| sig_mode == SIG_NON_INTERACTIVE)
 		set_sigaction(&sig_act, SIGQUIT, SIG_IGN);

@@ -3,39 +3,39 @@
 /*                                                        :::      ::::::::   */
 /*   redirs.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
+/*   By: vvilensk <vilenskii.v@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:25:17 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/09 15:59:14 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/10 00:25:44 by vvilensk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef REDIRS_H
 # define REDIRS_H
 
-#include "ft_string.h"
-#include "ft_charptr_array.h"
-#include "ft_list.h"
-#include <stdbool.h>
+# include "ft_string.h"
+# include "ft_charptr_array.h"
+# include "ft_list.h"
+# include <stdbool.h>
 
 // redirlist doesn't own redir_details!
 // details should be free through tokens!
-typedef t_list t_redirlist;
+typedef t_list	t_redirlist;
 
 typedef enum e_redir_type
 {
 	FD_NULL,
-    FD_IN,
-    FD_HEREDOC,
-    FD_OUT_TRUNC,
-    FD_OUT_APPEND
+	FD_IN,
+	FD_HEREDOC,
+	FD_OUT_TRUNC,
+	FD_OUT_APPEND
 }		t_redir_type;
 
 typedef struct s_redir_detail
 {
 	t_redir_type	type;
 	t_string		string;
-	t_charptr_array content;
+	t_charptr_array	content;
 	bool			expand_heredoc;
 }		t_redir_detail;
 

@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 11:46:05 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/09 22:35:28 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/10 00:47:22 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,20 @@ void	ms_init(t_msh *msh, char **envp)
 		if (!msh->env)
 			(string_destroy(&msh->prompt), exit(EXIT_FAILURE));
 	}
+}
+
+int	check_for_signals(t_msh *msh)
+{
+	if (g_signal_no)
+	{
+		msh->last_exit_code = g_signal_no + 128;
+		if (g_signal_no == SIGQUIT)
+			write(STDOUT_FILENO, "\n", 1);
+		g_signal_no = 0;
+		return (true);
+	}
+	else
+		return (false);
 }
 
 void	ms_destroy(t_msh *msh)

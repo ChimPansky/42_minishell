@@ -3,32 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   list_commands.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
+/*   By: vvilensk <vilenskii.v@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:43:57 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/09 14:38:20 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/10 00:11:38 by vvilensk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "list_commands.h"
 #include "libft.h"
 
-static int command_init(t_simple_command **cmd)
+static int	command_init(t_simple_command **cmd)
 {
 	*cmd = malloc(sizeof(t_simple_command));
 	if (!*cmd)
-		return !SUCCESS;
+		return (!SUCCESS);
 	(*cmd)->cmd_type = CMD_NULL;
 	(*cmd)->redirections = NULL;
-	return SUCCESS;
+	return (SUCCESS);
 }
 
-static void command_destroy(void *cmd_p)
+static void	command_destroy(void *cmd_p)
 {
-	t_simple_command *cmd = cmd_p;
+	t_simple_command	*cmd;
 
+	cmd = cmd_p;
 	if (cmd->cmd_type == CMD_EXEC)
-	 	charptr_array_destroy(&cmd->cmd_with_args);
+		charptr_array_destroy(&cmd->cmd_with_args);
 	redirlist_destroy(&cmd->redirections);
 	free(cmd);
 }
@@ -36,84 +37,36 @@ static void command_destroy(void *cmd_p)
 int	command_specialise(t_simple_command *cmd, t_cmd_type type)
 {
 	if (!cmd)
-		return !SUCCESS;
+		return (!SUCCESS);
 	if (cmd->cmd_type != CMD_NULL)
-		return !SUCCESS;
+		return (!SUCCESS);
 	if (type == CMD_EXEC)
 	{
 		if (charptr_array_init(&cmd->cmd_with_args) != SUCCESS)
 			return (!SUCCESS);
 	}
 	cmd->cmd_type = type;
-	return SUCCESS;
+	return (SUCCESS);
 }
 
-void cmdlist_destroy(t_cmdlist **commands)
+void	cmdlist_destroy(t_cmdlist **commands)
 {
 	ft_lstclear(commands, command_destroy);
 }
 
-t_simple_command *cmdlist_add_cmd(t_cmdlist **cmdlist)
+t_simple_command	*cmdlist_add_cmd(t_cmdlist **cmdlist)
 {
-	t_simple_command *cmd;
+	t_simple_command	*cmd;
+	t_cmdlist			*new_node;
 
 	if (SUCCESS != command_init(&cmd))
-		return NULL;
-	t_cmdlist *new_node = ft_lstnew(cmd);
+		return (NULL);
+	new_node = ft_lstnew(cmd);
 	if (!new_node)
 		return (command_destroy(&cmd), NULL);
 	ft_lstadd_back(cmdlist, new_node);
-	return cmd;
+	return (cmd);
 }
-
-// t_simple_command	*command_add(t_cmdlist **commands, char **cmd_with_args, t_list *redirections)
-// {
-// 	t_simple_command *command;
-
-// 	command = malloc(sizeof(t_simple_command));
-// 	if (!command)
-// 		return NULL;
-// 	ft_bzero(command, sizeof(t_simple_command));
-// 	if (cmd_with_args)
-// 		command->cmd_with_args = cmd_with_args;
-// 	if (redirections)
-// 		command->redirections = redirections;
-// 	t_cmdlist *new_command = ft_lstnew(command);
-// 	if (!new_command)
-// 		return (command_destroy(command), NULL);
-// 	ft_lstadd_back(commands, new_command);
-// 	return (command);
-// }
-
-
-
-// void	print_redirs(t_list **redirections)
-// {
-// 	t_redirlist	*cur_redir;
-// 	t_redir_detail	*redir;
-// 	char			*fd_type;
-// 	int			i;
-
-// 	i = 1;
-// 	cur_redir = *redirections;
-// 	while (cur_redir)
-// 	{
-// 		redir = cur_redir->content;
-// 		if (redir->type == FD_IN)
-// 			fd_type = "<";
-// 		else if (redir->type == FD_HEREDOC)
-// 			fd_type = "<<";
-// 		else if (redir->type == FD_OUT_TRUNC)
-// 			fd_type = ">";
-// 		else if (redir->type == FD_OUT_APPEND)
-// 			fd_type = ">>";
-// 		printf("%d:\n", i);
-// 		printf("type: %s\n", fd_type);
-// 		printf("str: %s\n", redir->string.buf);
-// 		cur_redir = cur_redir->next;
-// 		i++;
-// 	}
-// }
 
 // void	cmdlist_print(t_cmdlist **commands)
 // {
