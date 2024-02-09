@@ -87,8 +87,7 @@ int execute(t_msh *msh, t_cmdlist *cmds)
 	}
 	if (num_of_cmds > 1 || !try_execute_built_in(msh, cmds->content, &executor))
 		execute_on_chain(msh, &executor, cmds);
-	if (executor.fd_in > 2)
-		close(executor.fd_in);
+	(executor.fd_in > 2 && close(executor.fd_in));
 	// what if execute on chain returned !SUCCESS meaning sistem error?
 	if (executor.is_parent && executor.num_of_cmds_in_pipe > 0)
 		wait_with_check(&executor, &msh->last_exit_code);
