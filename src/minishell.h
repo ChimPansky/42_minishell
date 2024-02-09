@@ -5,21 +5,20 @@
 # include <readline/history.h>
 # include <stdio.h>
 # include <signal.h>
-# include "ms_macros.h"
 # include "libft.h"
 # include "ft_string.h"
 # include "structures/list_variables.h"
 # include "structures/list_tokens.h"
 # include "structures/list_commands.h"
 
-# define PROMPT_MAX_LEN  99 //255
+# define PROMPT_MAX_LEN  99
 # define PROMPT_INVITATION "$ "
 # define PROMPT_HEREDOC "> "
 
 # define EXIT_COMMAND_NOT_FOUND		127
 # define EXIT_PERMISSION_DENIED		126
 # define EXIT_SIG_INT				130
-#   define	ER_UNEXPECTED_TOKEN     2
+# define EXIT_UNEXPECTED_TOKEN     2
 
 extern sig_atomic_t	g_signal_no;
 
@@ -57,13 +56,13 @@ void		error_unexp_tk_c(t_msh *msh, char symbol);
 t_built_in	get_built_in_by_name(char *func_name);
 
 // lexer/lexer.c
-int 		lex(t_msh *msh, t_tokenlist **tokens_p, char *input);
+int 	lex(t_msh *msh, t_tokenlist **tokens_p, char *input);
 
 // parser.c
 int 	parse_and_execute(t_msh *msh, t_tokenlist *tokens);
 
 // helpers
-char	*readline_wrapper(char *prompt);
+char	*readline_wrapper(char *prompt, bool is_heredoc);
 
 // signals.c
 //int 	register_signals(void);

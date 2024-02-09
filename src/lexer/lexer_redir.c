@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 12:15:28 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/09 22:40:30 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/10 00:21:43 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,59 +14,42 @@
 #include "ft_charptr_array.h"
 #include "lexer.h"
 
-// cmd d and cmd c check
-// if success return SUCCESS
-// + expansionon the expansion step
-// + empty delimeter case
+static int	check_ctrl_d(char *line, char *delimiter)
+{
+	if (line == NULL)
+	{
+		if (errno)
+			return (perror("readline heredoc"), !SUCCESS);
+		ft_printf("\nwarning: here-document delimited "
+			"by end-of-file (wanted '%s')\n", delimiter);
+	}
+	return (SUCCESS);
+}
 
-
-// newlines appear as ^J in rl_history.
-// this is a limitation of the rl_history library and can not be changed...
-// so for now we wont use this function...
-// static int	add_heredoc_to_history(t_string *rl_mainloop_input,
-// 	t_charptr_array heredoc_content)
-// {
-// 	size_t	i;
-
-// 	i = 0;
-// 	while (i < heredoc_content.sz)
-// 	{
-// 		if (string_add_chr(rl_mainloop_input, '\n') != SUCCESS
-// 			|| string_add_str(rl_mainloop_input, heredoc_content.buf[i]) != SUCCESS)
-// 			return (!SUCCESS);
-// 		i++;
-// 	}
-// 	return (SUCCESS);
-// }
 static int	lex_heredoc(t_msh *msh, t_redir_detail *redir)
 {
-    char    	*line;
+	char		*line;
 	t_string	line_w_nl;
 
 	if (!(ft_strlen(redir->string.buf) > string_remove_quotes(&redir->string)))
 		redir->expand_heredoc = true;
 	while (1)
 	{
-		line = readline_wrapper(PROMPT_HEREDOC);
+		line = readline_wrapper(PROMPT_HEREDOC, true);
 		if (check_for_signals(msh))
 			return (free(line), !SUCCESS);
-		if (line == NULL)
-        {
-            if (errno)
-            	return (perror("readline heredoc"), !SUCCESS);
-			ft_printf("\nwarning: here-document delimited "
-				"by end-of-file (wanted '%s')\n", redir->string.buf);
-        }
+		if (check_ctrl_d(line, redir->string.buf) != SUCCESS)
+			return (!SUCCESS);
 		if (line == NULL || ft_strcmp(redir->string.buf, line) == SUCCESS)
 			break ;
 		string_init_with_allocated(&line_w_nl, line);
 		if (string_add_chr(&line_w_nl, '\n') != SUCCESS)
 			return (string_destroy(&line_w_nl), !SUCCESS);
 		if (charptr_array_add_allocated_str(&redir->content,
-			&(line_w_nl.buf)) != SUCCESS)
+				&(line_w_nl.buf)) != SUCCESS)
 			return (!SUCCESS);
 	}
-    return (free(line), SUCCESS);
+	return (free(line), SUCCESS);
 }
 
 static void	read_redir_type(t_lexer *lexer)
@@ -76,7 +59,7 @@ static void	read_redir_type(t_lexer *lexer)
 		lexer->pos_in_input += 2;
 		lexer->redir_type = FD_HEREDOC;
 	}
-	else 	if (ft_strncmp(">>", lexer->pos_in_input, 2) == SUCCESS)
+	else if (ft_strncmp(">>", lexer->pos_in_input, 2) == SUCCESS)
 	{
 		lexer->pos_in_input += 2;
 		lexer->redir_type = FD_OUT_APPEND;
@@ -91,9 +74,8 @@ static void	read_redir_type(t_lexer *lexer)
 		lexer->pos_in_input += 1;
 		lexer->redir_type = FD_OUT_TRUNC;
 	}
-	else {
+	else
 		lexer->redir_type = FD_NULL;
-	}
 }
 
 int	lex_tk_redir(t_msh *msh, t_lexer *lexer)

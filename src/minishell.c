@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 20:05:41 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/09 16:11:55 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/09 23:54:30 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int try_read_with_readline(t_msh *msh, t_string *rl_input)
 {
 	char	*rl_raw;
 
-	rl_raw = readline_wrapper(msh->prompt.buf);
+	rl_raw = readline_wrapper(msh->prompt.buf, false);
 	if (!rl_raw)
 	{
 		if (errno) // check for type of err, sometimes ms_stop

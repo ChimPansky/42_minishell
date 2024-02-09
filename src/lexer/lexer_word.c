@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 12:15:28 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/08 15:33:36 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/10 00:16:34 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,15 @@
 #include "ft_string.h"
 #include "lexer.h"
 
-
-int read_word(t_msh *msh, t_lexer *lexer, t_string *str)
+int	read_word(t_msh *msh, t_lexer *lexer, t_string *str)
 {
-	char    quote_type;
+	char	quote_type;
 
 	quote_type = 0;
 	while (*lexer->pos_in_input)
 	{
 		if (quote_type == 0 && is_token_seperator(*lexer->pos_in_input))
-			break;
+			break ;
 		if (quote_type == 0
 			&& (*lexer->pos_in_input == '\'' || *lexer->pos_in_input == '"'))
 			quote_type = *lexer->pos_in_input;
@@ -33,11 +32,7 @@ int read_word(t_msh *msh, t_lexer *lexer, t_string *str)
 		(lexer->pos_in_input) += 1;
 	}
 	if (quote_type != 0 || string_is_empty(str))
-	{
-		error_unexp_tk_c(msh, *lexer->pos_in_input);
-		msh->last_exit_code = ER_UNEXPECTED_TOKEN;
-		return (!SUCCESS);
-	}
+		return (error_unexp_tk_c(msh, *lexer->pos_in_input), !SUCCESS);
 	return (SUCCESS);
 }
 
@@ -46,7 +41,7 @@ int	lex_tk_word(t_msh *msh, t_lexer *lexer)
 	t_token			*new_token;
 
 	if (check_unexpected_token(msh, lexer->last_tk_type,
-		TK_WORD, lexer) != SUCCESS)
+			TK_WORD, lexer) != SUCCESS)
 		return (!SUCCESS);
 	new_token = tokenlist_add_token(lexer->tokens, TK_WORD);
 	if (!new_token)

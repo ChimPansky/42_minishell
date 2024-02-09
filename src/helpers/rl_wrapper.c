@@ -1,10 +1,10 @@
 #include "../minishell.h"
 
-char *readline_wrapper(char *prompt)
+char *readline_wrapper(char *prompt, bool is_heredoc)
 {
 	char *rl_raw;
 
-	if (ft_strcmp(prompt, PROMPT_HEREDOC) == SUCCESS)
+	if (is_heredoc)
 		configure_signals(SIG_READLINE_HEREDOC);
 	else
 		configure_signals(SIG_READLINE_MAIN);

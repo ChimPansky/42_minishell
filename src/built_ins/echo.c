@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vvilensk <vilenskii.v@gmail.com>           +#+  +:+       +#+        */
+/*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 17:33:15 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/09 21:54:40 by vvilensk         ###   ########.fr       */
+/*   Updated: 2024/02/10 00:30:46 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,26 @@ bool	is_n_option(char *arg)
 	return (true);
 }
 
+static int	handle_arg(char **cmd_with_args, int fd_out,
+	bool *reading_options, bool *has_n_option)
+{
+	if (*reading_options)
+	{
+		if (is_n_option(*cmd_with_args))
+			*has_n_option = true;
+		else
+			*reading_options = false;
+	}
+	if (!*reading_options)
+	{
+		if (ft_dprintf(fd_out, "%s", *cmd_with_args) == -1)
+			return (!SUCCESS);
+		if (cmd_with_args[1])
+			ft_dprintf(fd_out, " ");
+	}
+	return (SUCCESS);
+}
+
 static int	handle_echo(char **cmd_with_args, int fd_out)
 {
 	bool	reading_options;
@@ -35,20 +55,9 @@ static int	handle_echo(char **cmd_with_args, int fd_out)
 	has_n_option = false;
 	while (*cmd_with_args)
 	{
-		if (reading_options)
-		{
-			if (is_n_option(*cmd_with_args))
-				has_n_option = true;
-			else
-				reading_options = false;
-		}
-		if (!reading_options)
-		{
-			if (ft_dprintf(fd_out, "%s", *cmd_with_args) == -1)
-				return (!SUCCESS);
-			if (cmd_with_args[1])
-				ft_dprintf(fd_out, " ");
-		}
+		if (handle_arg(cmd_with_args, fd_out, &reading_options, &has_n_option)
+			!= SUCCESS)
+			return (!SUCCESS);
 		cmd_with_args++;
 	}
 	if (!has_n_option && ft_dprintf(fd_out, "\n") == -1)
