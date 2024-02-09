@@ -19,18 +19,9 @@
 # define EXIT_COMMAND_NOT_FOUND		127
 # define EXIT_PERMISSION_DENIED		126
 # define EXIT_SIG_INT				130
+#   define	ER_UNEXPECTED_TOKEN     2
 
 extern sig_atomic_t	g_signal_no;
-
-typedef enum	e_ms_error
-{
-    ER_UNDEFINED,
-    ER_QUOTES,
-	ER_UNEXPECTED_TOKEN,
-	ER_READLINE,
-	ER_MALLOC,
-	ER_AMBIGUOUS_REDIRECT
-}		t_ms_error;
 
 typedef enum	e_signal_mode
 {
@@ -61,8 +52,6 @@ void		update_prompt(t_msh *msh);
 //exit_error.c
 void		error_unexp_tk_s(t_msh *msh, char *token);
 void		error_unexp_tk_c(t_msh *msh, char symbol);
-void		ms_error_msg(int error_nr, char *err_info);
-void		ms_error(int error_nr);
 
 // built_ins/built_in.c
 t_built_in	get_built_in_by_name(char *func_name);
