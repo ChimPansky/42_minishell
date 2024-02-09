@@ -1,3 +1,1 @@
 -I./libft/include
--I $(LIBFT_DIR)/include
--I ./src/
