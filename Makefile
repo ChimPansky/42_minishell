@@ -58,8 +58,10 @@ MS_FILENAMES += \
 MS_FILENAMES += \
 	structures/list_commands.c \
 	structures/list_tokens.c \
+	structures/list_var_minishell.c \
 	structures/list_variables.c \
-	structures/redirs.c
+	structures/redirs.c \
+	structures/variable.c
 
 SRC = $(addprefix $(SOURCE_DIR)/,$(MS_FILENAMES))
 

@@ -3,38 +3,39 @@
 /*                                                        :::      ::::::::   */
 /*   list_tokens.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
+/*   By: vvilensk <vilenskii.v@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 15:34:33 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/06 13:06:59 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/10 00:26:02 by vvilensk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIST_TOKENS_H
-#define LIST_TOKENS_H
+# define LIST_TOKENS_H
 
-#include "ft_string.h"
-#include "ft_list.h"
-#include "redirs.h"
+# include "ft_string.h"
+# include "ft_list.h"
+# include "redirs.h"
 
-typedef t_list t_tokenlist;
+typedef t_list	t_tokenlist;
 
 // mb add semicolon
 typedef enum e_token_type
 {
 	TK_NULL,
-    TK_WORD,
-    TK_REDIR,
+	TK_WORD,
+	TK_REDIR,
 	TK_PIPE,
 	TK_SUBSHELL,
 	TK_LOGIC_AND,
-    TK_LOGIC_OR
+	TK_LOGIC_OR
 }		t_token_type;
 
 typedef struct s_token
 {
 	t_token_type		tk_type;
-	union {
+	union
+	{
 		t_string		string;
 		t_redir_detail	*redir;
 		t_tokenlist		*subshell_tokens;		//	only for bonus
@@ -43,10 +44,9 @@ typedef struct s_token
 
 int			token_init(t_token **token, t_token_type type);
 t_token		*tokenlist_add_token(t_tokenlist **tokenlist, t_token_type type);
-void 		token_destroy(void *token_void);
+void		token_destroy(void *token_void);
 void		tokenlist_destroy(t_tokenlist **tokens);
-bool	is_cmd_separator_token(t_token_type tk_type);
-
-void	print_tokens(t_tokenlist *tokens);
+bool		is_cmd_separator_token(t_token_type tk_type);
+// void		print_tokens(t_tokenlist *tokens);
 
 #endif  // LIST_TOKENS_H

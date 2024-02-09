@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list_tokens.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
+/*   By: vvilensk <vilenskii.v@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 15:34:18 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/09 16:06:44 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/10 00:14:09 by vvilensk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,9 @@ t_token	*tokenlist_add_token(t_tokenlist **tokenlist, t_token_type type)
 
 void	token_destroy(void *token_void)
 {
-	t_token *token = token_void;
+	t_token	*token;
+
+	token = token_void;
 	if (token->tk_type == TK_REDIR)
 		redir_destroy(token->redir);
 	if (token->tk_type == TK_WORD)
@@ -69,52 +71,7 @@ bool	is_cmd_separator_token(t_token_type tk_type)
 		|| tk_type == TK_NULL);
 }
 
-//void	tokelist_print()
-
-// int	token_add(t_tokenlist **tokens, t_token *token)
-// {
-// 	if (!token)
-// 		return (!SUCCESS);
-
-// 	t_token 	*token;
-
-// 	token = malloc(sizeof(t_token));	//ask vova why its not sizeof(t_token *)...
-// 	if (!token)
-// 		return NULL;
-// 	ft_bzero(token, sizeof(token));
-// 	token->tk_type = tk_type;
-// 	if (tk_type == TK_REDIR)
-// 		token->redir = *redir;
-// 	else if (tk_type == TK_WORD)
-// 		token->string = *str;
-// 	t_tokenlist *new_token = ft_lstnew(token);
-// 	if (!new_token)
-// 		return (token_destroy(token), NULL);
-// 	ft_lstadd_back(tokens, new_token);
-// 	return (token);
-// }
-
-// t_token		*token_add(t_tokenlist **tokens, t_token_type tk_type,
-// 						t_string *str, t_redir_detail *redir)
-// {
-// 	t_token 	*token;
-
-// 	token = malloc(sizeof(t_token));	//ask vova why its not sizeof(t_token *)...
-// 	if (!token)
-// 		return NULL;
-// 	ft_bzero(token, sizeof(token));
-// 	token->tk_type = tk_type;
-// 	if (tk_type == TK_REDIR)
-// 		token->redir = *redir;
-// 	else if (tk_type == TK_WORD)
-// 		token->string = *str;
-// 	t_tokenlist *new_token = ft_lstnew(token);
-// 	if (!new_token)
-// 		return (token_destroy(token), NULL);
-// 	ft_lstadd_back(tokens, new_token);
-// 	return (token);
-// }
-
+/*
 void	print_tokens(t_tokenlist *tokens)
 {
 	t_token		*token;
@@ -176,7 +133,9 @@ void	print_tokens(t_tokenlist *tokens)
 			fd_type = NULL;
 			fd_str = NULL;
 		}
-		printf(" {T%d: Type: %s; t_string: %s; FD_Type: %s; FD_t_string: %s)} -->\n",  i, type_text, token->string.buf, fd_type, fd_str);
+		printf(
+		" {T%d: Type: %s; t_string: %s; FD_Type: %s; FD_t_string: %s)} -->\n",
+		i, type_text, token->string.buf, fd_type, fd_str);
 		if (token->tk_type == TK_SUBSHELL)
 		{
 			type_text = "SUBSHELL";
@@ -193,3 +152,4 @@ void	print_tokens(t_tokenlist *tokens)
 	}
 	printf("\n");
 }
+*/
