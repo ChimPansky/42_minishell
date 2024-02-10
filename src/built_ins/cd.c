@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 17:33:15 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/09 23:04:01 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/10 21:20:53 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	built_in_cd(t_msh *msh, char **cmd_with_args, int fd_out)
 		return (ft_printf_err("cd: too many arguments\n"), EXIT_FAILURE);
 	if (!cmd_with_args[1])
 		dir = varlist_get_value(msh->env, "HOME");
-	else if (strcmp(cmd_with_args[1], "-") == SUCCESS)
+	else if (ft_strcmp(cmd_with_args[1], "-") == SUCCESS)
 		dir = varlist_get_value(msh->env, "OLDPWD");
 	else
 		dir = cmd_with_args[1];
@@ -47,7 +47,7 @@ int	built_in_cd(t_msh *msh, char **cmd_with_args, int fd_out)
 		return (EXIT_FAILURE);
 	if (chdir(dir) != SUCCESS)
 		return (ft_printf_err("cd: %s: ", dir), perror("chdir"), EXIT_FAILURE);
-	if (cmd_with_args[1] && strcmp(cmd_with_args[1], "-") == SUCCESS)
+	if (cmd_with_args[1] && ft_strcmp(cmd_with_args[1], "-") == SUCCESS)
 		ft_dprintf(fd_out, "%s\n", dir);
 	varlist_set(&msh->env, "OLDPWD", varlist_get_value(msh->env, "PWD"));
 	dir = getcwd(NULL, 0);

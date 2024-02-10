@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 11:49:31 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/10 00:56:38 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/10 21:21:33 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	add_relative_dir(t_string *prompt, char *cwd, const char *home)
 	const int	cont_len = ft_strlen(cwd);
 	const int	home_len = ft_strlen(home);
 
-	if (home_len && strncmp(home, cwd, home_len) == SUCCESS)
+	if (home_len && ft_strncmp(home, cwd, home_len) == SUCCESS)
 	{
 		if (cont_len - home_len + 1 < len_left)
 			(string_add_str(prompt, "~"),
