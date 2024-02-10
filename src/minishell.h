@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vvilensk <vilenskii.v@gmail.com>           +#+  +:+       +#+        */
+/*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 00:35:32 by vvilensk          #+#    #+#             */
-/*   Updated: 2024/02/10 00:42:32 by vvilensk         ###   ########.fr       */
+/*   Updated: 2024/02/10 00:50:21 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,21 +17,20 @@
 # include <readline/history.h>
 # include <stdio.h>
 # include <signal.h>
-# include "ms_macros.h"
 # include "libft.h"
 # include "ft_string.h"
 # include "structures/list_variables.h"
 # include "structures/list_tokens.h"
 # include "structures/list_commands.h"
 
-# define PROMPT_MAX_LEN  99 //255
+# define PROMPT_MAX_LEN  99
 # define PROMPT_INVITATION "$ "
 # define PROMPT_HEREDOC "> "
 
 # define EXIT_COMMAND_NOT_FOUND		127
 # define EXIT_PERMISSION_DENIED		126
 # define EXIT_SIG_INT				130
-#   define	ER_UNEXPECTED_TOKEN     2
+# define EXIT_UNEXPECTED_TOKEN     2
 
 extern sig_atomic_t	g_signal_no;
 
@@ -54,6 +53,7 @@ typedef struct s_msh
 typedef int (*		t_built_in)(t_msh *msh, char **cmd_with_args, int fd_out);
 
 void		ms_init(t_msh *msh, char **envp);
+int			check_for_signals(t_msh *msh);
 void		ms_destroy(t_msh *msh);
 void		ms_stop(t_msh *msh);
 
@@ -67,10 +67,9 @@ void		error_unexp_tk_s(t_msh *msh, char *token);
 void		error_unexp_tk_c(t_msh *msh, char symbol);
 
 t_built_in	get_built_in_by_name(char *func_name);
-char		*readline_wrapper(char *prompt);
+char		*readline_wrapper(char *prompt, bool is_heredoc);
 
 void		configure_signals(t_signal_mode sig_mode);
-int			check_for_signals(t_msh *msh);
 
 bool		is_token_seperator(char c);
 bool		is_special_var_name(char c);

@@ -1,13 +1,26 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   rl_wrapper.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/10 00:58:10 by tkasbari          #+#    #+#             */
+/*   Updated: 2024/02/10 00:58:32 by tkasbari         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
-char *readline_wrapper(char *prompt)
+char	*readline_wrapper(char *prompt, bool is_heredoc)
 {
-	char *rl_raw;
+	char	*rl_raw;
 
-	if (ft_strcmp(prompt, PROMPT_HEREDOC) == SUCCESS)
+	if (is_heredoc)
 		configure_signals(SIG_READLINE_HEREDOC);
 	else
 		configure_signals(SIG_READLINE_MAIN);
+	errno = 0;
 	if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO))
 	{
 		rl_raw = readline(prompt);
