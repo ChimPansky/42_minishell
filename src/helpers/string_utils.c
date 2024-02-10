@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 11:29:38 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/10 00:43:16 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/10 02:22:13 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ bool	is_var_name_start(char c)
 {
 	const char	*special_var_names = "?";
 
+	if (!c)
+		return (false);
 	if (ft_isalnum(c) || c == '_')
 		return (true);
 	if (ft_strchr(special_var_names, c) != NULL)
