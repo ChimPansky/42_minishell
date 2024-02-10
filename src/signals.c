@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
+/*   By: vvilensk <vilenskii.v@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 00:46:07 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/10 00:49:26 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/10 01:30:16 by vvilensk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static void	sig_handler_non_interactive(int signo)
 }
 
 static int	set_sigaction(struct sigaction *sig_act, int signo,
-	void *handler_func)
+		void (handler_func)(int))
 {
 	sig_act->sa_handler = handler_func;
 	if (sigaction(signo, sig_act, NULL) != SUCCESS)
